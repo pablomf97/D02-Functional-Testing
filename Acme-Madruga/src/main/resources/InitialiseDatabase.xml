@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- * PopulateDatabase.xml * * Copyright (C) 2019 Universidad de Sevilla 
+	* * The use of this project is hereby constrained to the conditions of the 
+	* TDG Licence, a copy of which you may download from * http://www.tdg-seville.info/License.html -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	">
+
+	<!-- Admin -->
+
+	<bean id="userAdmin1" class="security.UserAccount">
+		<property name="username" value="admin" />
+		<property name="password" value="21232f297a57a5a743894a0e4a801fc3" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="ADMINISTRATOR" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="administrator1" class="domain.Administrator">
+		<property name="name" value="José" />
+		<property name="middleName" value="Carlos" />
+		<property name="surname" value="Gamiz Redondo" />
+		<property name="photo"
+			value="https://ih1.redbubble.net/image.376305132.3400/flat,550x550,075,f.u1.jpg" />
+		<property name="email" value="josgamred@mail.com" />
+		<property name="phoneNumber" value="+34611987654" />
+		<property name="address" value="C/ Atlántica, 1 (Málaga)" />
+		<property name="userAccount" ref="userAdmin1" />
+	</bean>
+
+	<!-- SYSTEM CONFIGURATION -->
+
+	<bean id="sysConf" class="domain.SystemConfiguration">
+		<property name="systemName" value="Acme Madrugá" />
+		<property name="welcomeMessage">
+			<util:map id="utilmap0" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español"
+					value="¡Bienvenidos a Acme
+Madrugá! Tu sitio para organizar procesiones." />
+				<entry key="English"
+					value="Welcome to Acme Madrugá, the site to organise
+your processions." />
+			</util:map>
+		</property>
+		<property name="banner" value="https://image.ibb.co/iuaDgV/Untitled.png" />
+
+
+		<property name="countryCode" value="+034" />
+		<property name="timeResultsCached" value="1" />
+		<property name="maxResults" value="10" />
+		<property name="messagePriority" value="HIGH,NEUTRAL,LOW" />
+		<property name="spamWords"
+			value="sex,viagra,cialis,one million,you've been selected,nigeria,sexo,un millón,un millon,has sido seleccionado" />
+		<property name="possitiveWords"
+			value="good,fantastic,excellent,great,amazing,terrific,beautiful,bueno,fantástico,excelente,genial,increíble,terrorífico,bonita" />
+		<property name="negativeWords"
+			value="not,bad,horrible,average,disaster,no,malo,horroroso,regular,desastre" />
+
+	</bean>
+
+	<!-- MESSAGE BOXES -->
+	<!-- ADMIN 1 -->
+	<bean id="inBoxAdmin1" class="domain.MessageBox">
+		<property name="name" value="In box" />
+		<property name="isPredefined" value="true" />
+		<property name="parentMessageBoxes">
+			<null />
+		</property>
+		<property name="messages">
+			<list>
+				<null />
+			</list>
+		</property>
+
+
+	</bean>
+
+	<bean id="spamBoxAdmin1" class="domain.MessageBox">
+		<property name="name" value="Spam box" />
+		<property name="isPredefined" value="true" />
+		<property name="parentMessageBoxes">
+			<null />
+		</property>
+		<property name="messages">
+			<null />
+		</property>
+
+	</bean>
+
+	<bean id="outBoxAdmin1" class="domain.MessageBox">
+		<property name="name" value="Out box" />
+		<property name="isPredefined" value="true" />
+		<property name="parentMessageBoxes">
+			<null />
+		</property>
+		<property name="messages">
+			<list>
+
+			</list>
+		</property>
+
+
+	</bean>
+
+	<bean id="trashBoxAdmin1" class="domain.MessageBox">
+		<property name="name" value="Trash box" />
+		<property name="isPredefined" value="true" />
+		<property name="parentMessageBoxes">
+			<null />
+		</property>
+		<property name="messages">
+			<null />
+		</property>
+
+	</bean>
+
+	<bean id="notificationBoxAdmin1" class="domain.MessageBox">
+		<property name="name" value="Notification box" />
+		<property name="isPredefined" value="true" />
+		<property name="parentMessageBoxes">
+			<null />
+		</property>
+		<property name="messages">
+			<list>
+
+			</list>
+		</property>
+
+	</bean>
+
+	<!--POSITION -->
+
+	<bean id="POSITION1" class="domain.Position">
+		<property name="name">
+			<util:map id="utilmap1" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Presidente" />
+
+				<entry key="English" value="President" />
+
+			</util:map>
+		</property>
+
+	</bean>
+	<bean id="POSITION2" class="domain.Position">
+		<property name="name">
+			<util:map id="utilmap2" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Vice Presidente" />
+
+				<entry key="English" value="Vicepresident" />
+
+			</util:map>
+		</property>
+
+	</bean>
+
+	<bean id="POSITION3" class="domain.Position">
+		<property name="name">
+			<util:map id="utilmap3" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Secretario" />
+
+				<entry key="English" value="Secretary" />
+
+			</util:map>
+		</property>
+
+	</bean>
+
+	<bean id="POSITION4" class="domain.Position">
+		<property name="name">
+			<util:map id="utilmap4" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Tesorero" />
+
+				<entry key="English" value="Treasurer" />
+
+			</util:map>
+		</property>
+
+	</bean>
+
+	<bean id="POSITION5" class="domain.Position">
+		<property name="name">
+			<util:map id="utilmap5" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Historiador" />
+
+				<entry key="English" value="Historian" />
+
+			</util:map>
+		</property>
+
+	</bean>
+
+
+	<bean id="POSITION6" class="domain.Position">
+		<property name="name">
+			<util:map id="utilmap6" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Promotor" />
+
+				<entry key="English" value="Fundraiser" />
+
+			</util:map>
+		</property>
+
+	</bean>
+
+
+	<bean id="POSITION7" class="domain.Position">
+		<property name="name">
+			<util:map id="utilmap7" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Vocal" />
+
+				<entry key="English" value="Officer" />
+
+			</util:map>
+		</property>
+
+	</bean>
+
+
+
+</beans>

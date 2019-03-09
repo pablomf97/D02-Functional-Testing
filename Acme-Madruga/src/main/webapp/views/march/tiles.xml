@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 
+ * tiles.xml
+ *
+ * Copyright (C) 2019 Universidad de Sevilla
+ * 
+ * The use of this project is hereby constrained to the conditions of the 
+ * TDG Licence, a copy of which you may download from 
+ * http://www.tdg-seville.info/License.html
+ -->
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+       
+<tiles-definitions>
+
+	<definition name="march/list" extends="master.page">	
+		<put-attribute name="title" value="List of marchs" />
+		<put-attribute name="body" value="/views/march/list.jsp" />
+	</definition>
+	
+	<definition name="march/display" extends="master.page">	
+		<put-attribute name="title" value="March display" />
+		<put-attribute name="body" value="/views/march/display.jsp" />
+	</definition>
+	
+	<definition name="march/edit" extends="master.page">	
+		<put-attribute name="title" value="Create march" />
+		<put-attribute name="body" value="/views/march/edit.jsp" />
+	</definition>
+	
+	<definition name="march/accept" extends="master.page">	
+		<put-attribute name="title" value="Accept march" />
+		<put-attribute name="body" value="/views/march/accept.jsp" />
+	</definition>
+	
+	<definition name="march/reject" extends="master.page">	
+		<put-attribute name="title" value="Reject march" />
+		<put-attribute name="body" value="/views/march/reject.jsp" />
+	</definition>
+	
+</tiles-definitions>
