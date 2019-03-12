@@ -18,10 +18,10 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.MarchService;
 import services.MessageService;
-import services.ProcessionService;
+import services.ParadeService;
 import domain.Actor;
 import domain.March;
-import domain.Procession;
+import domain.Parade;
 
 @Controller
 @RequestMapping("/march")
@@ -36,7 +36,7 @@ public class MarchController extends AbstractController {
 	private ActorService actorService;
 	
 	@Autowired
-	private ProcessionService processionService;
+	private ParadeService processionService;
 	
 	@Autowired
 	private MessageService messageService;
@@ -192,9 +192,9 @@ public class MarchController extends AbstractController {
 		Assert.notNull(march);
 		
 		
-		recomendedPos = this.processionService.recommendedPos(march.getProcession());
+		recomendedPos = this.processionService.recommendedPos(march.getParade());
 		
-		if(march.getProcession().getBrotherhood().getId() == principal.getId())
+		if(march.getParade().getBrotherhood().getId() == principal.getId())
 			isPrincipal = true;
 		
 		result = new ModelAndView("march/accept");
@@ -245,7 +245,7 @@ public class MarchController extends AbstractController {
 		march = this.marchService.findOne(marchId);
 		Assert.notNull(march);
 		
-		if(march.getProcession().getBrotherhood().getId() == principal.getId())
+		if(march.getParade().getBrotherhood().getId() == principal.getId())
 			isPrincipal = true;
 		
 		result = new ModelAndView("march/reject");
@@ -314,7 +314,7 @@ public class MarchController extends AbstractController {
 		final ModelAndView result;
 		Actor principal;
 		boolean isPrincipal = false;
-		Collection<Procession> toApply = new ArrayList<>();
+		Collection<Parade> toApply = new ArrayList<>();
 		
 		principal = this.actorService.findByPrincipal();
 		
@@ -325,7 +325,7 @@ public class MarchController extends AbstractController {
 			if(principal.getId() == march.getId()){
 				isPrincipal = true;
 			}
-		} else if(this.actorService.checkAuthority(principal, "BROTHERHOOD") && (principal.getId() == march.getProcession().getBrotherhood().getId())){
+		} else if(this.actorService.checkAuthority(principal, "BROTHERHOOD") && (principal.getId() == march.getParade().getBrotherhood().getId())){
 			isPrincipal = true;
 		}
 		

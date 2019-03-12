@@ -1,13 +1,11 @@
 #./src/main/resources/Entities.map
-#Thu Mar 07 23:21:34 CET 2019
+#Tue Mar 12 14:29:28 CET 2019
 socialAdministrator2=538
 socialAdministrator1=537
 socialbrotherhood2=542
 socialbrotherhood1=541
 socialmember2=540
 socialmember1=539
-procession2=518
-procession1=517
 outBoxAdmin2=475
 brotherhood2=514
 trashBoxBrotherhood2=496
@@ -30,7 +28,9 @@ member2=516
 member1=515
 notificationBoxBrotherhood2=497
 notificationBoxBrotherhood1=492
+parade2=518
 spamBoxAdmin2=474
+parade1=517
 spamBoxAdmin1=469
 inBoxBrotherhood2=493
 inBoxBrotherhood1=488

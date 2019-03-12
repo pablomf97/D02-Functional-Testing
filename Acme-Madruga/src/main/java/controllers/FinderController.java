@@ -21,7 +21,7 @@ import services.MemberService;
 import services.SystemConfigurationService;
 import domain.Finder;
 import domain.Member;
-import domain.Procession;
+import domain.Parade;
 
 @Controller
 @RequestMapping("/finder/member")
@@ -55,7 +55,7 @@ public class FinderController extends AbstractController {
 		principal = this.memberService.findByPrincipal();
 		finder = principal.getFinder();
 
-		Collection<Procession> processions = finder.getSearchResults();
+		Collection<Parade> processions = finder.getSearchResults();
 
 		result = new ModelAndView("finder/list");
 		result.addObject("processions", processions);
@@ -157,7 +157,7 @@ public class FinderController extends AbstractController {
 	protected ModelAndView createEditModelAndView(final Finder finder,
 			final String messageCode) {
 		ModelAndView result;
-		final Collection<Procession> processions;
+		final Collection<Parade> processions;
 		processions = finder.getSearchResults();
 
 		result = new ModelAndView("finder/search");
