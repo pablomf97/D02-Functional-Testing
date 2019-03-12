@@ -162,12 +162,6 @@
 
 			<li><a class="fNiv" href="brotherhood/list.do"><spring:message
 						code="master.page.administrator.brotherhoods" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="brotherhood/members/list.do"><spring:message
-								code="master.page.brotherhood.members.list" /></a></li>
-				</ul></li>
-
 		</security:authorize>
 
 		<security:authorize access="isAuthenticated()">
