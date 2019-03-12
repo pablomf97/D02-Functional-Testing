@@ -6,7 +6,6 @@ import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -28,7 +27,6 @@ public class Chapter extends Actor {
 	}
 
 	@Valid
-	@NotNull
 	@OneToOne(optional = true)
 	public Zone getZone() {
 		return this.zone;
