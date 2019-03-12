@@ -102,27 +102,27 @@ public class MessageBoxService {
 
 		final MessageBox in = this.create(a);
 		in.setIsPredefined(true);
-		in.setName("IN");
+		in.setName("In box");
 		this.save(in);
 
 		final MessageBox trash = this.create(a);
 		trash.setIsPredefined(true);
-		trash.setName("TRASH");
+		trash.setName("Trash box");
 		this.save(trash);
 
 		final MessageBox out = this.create(a);
 		out.setIsPredefined(true);
-		out.setName("OUT");
+		out.setName("Out box");
 		this.save(out);
 
 		final MessageBox spam = this.create(a);
 		spam.setIsPredefined(true);
-		spam.setName("SPAM");
+		spam.setName("Spam box");
 		this.save(spam);
 
 		final MessageBox notification = this.create(a);
 		notification.setIsPredefined(true);
-		notification.setName("NOTIFICATION");
+		notification.setName("Notification box");
 		this.save(notification);
 
 	}

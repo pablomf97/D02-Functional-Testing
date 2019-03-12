@@ -1,4 +1,3 @@
-
 package controllers;
 
 import java.util.ArrayList;
@@ -26,13 +25,13 @@ import domain.MessageBox;
 @RequestMapping("/message/actor")
 public class MessageController extends AbstractController {
 
-	//Services
+	// Services
 
 	@Autowired
-	private MessageService		messageService;
+	private MessageService messageService;
 
 	@Autowired
-	private ActorService		actorService;
+	private ActorService actorService;
 
 	@Autowired
 	private MessageBoxService messageBoxService;
@@ -40,9 +39,8 @@ public class MessageController extends AbstractController {
 	@Autowired
 	private SystemConfigurationService systemConfigurationService;
 
-
-
-	//Create ----------------------------------------------------------------------
+	// Create
+	// ----------------------------------------------------------------------
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
@@ -56,7 +54,7 @@ public class MessageController extends AbstractController {
 		return result;
 	}
 
-	//Edition ------------------------------------------------------------
+	// Edition ------------------------------------------------------------
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int messageId) {
@@ -85,6 +83,7 @@ public class MessageController extends AbstractController {
 		return result;
 
 	}
+
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(final Message mensaje, final BindingResult binding) {
 		ModelAndView result;
@@ -99,7 +98,8 @@ public class MessageController extends AbstractController {
 				this.messageService.save(message);
 				result = new ModelAndView("redirect:/messagebox/list.do");
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(message, "message.commit.error");
+				result = this.createEditModelAndView(message,
+						"message.commit.error");
 			}
 		return result;
 
@@ -123,7 +123,8 @@ public class MessageController extends AbstractController {
 				this.messageService.move(message, destination);
 				result = new ModelAndView("redirect:/messagebox/list.do");
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(message, "message.commit.error");
+				result = this.createEditModelAndView(message,
+						"message.commit.error");
 
 			}
 
@@ -132,7 +133,8 @@ public class MessageController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(final Message mensaje, final BindingResult binding) {
+	public ModelAndView delete(final Message mensaje,
+			final BindingResult binding) {
 		ModelAndView result;
 
 		Message message;
@@ -147,14 +149,15 @@ public class MessageController extends AbstractController {
 				result = new ModelAndView("redirect:/messagebox/list.do");
 
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(message, "message.commit.error");
+				result = this.createEditModelAndView(message,
+						"message.commit.error");
 
 			}
 
 		return result;
 	}
 
-	//Ancillary methods ------------------------------------------------------
+	// Ancillary methods ------------------------------------------------------
 
 	protected ModelAndView createEditModelAndView(final Message mensaje) {
 		ModelAndView result;
@@ -165,7 +168,8 @@ public class MessageController extends AbstractController {
 
 	}
 
-	protected ModelAndView createEditModelAndView(final Message mensaje, final String messageError) {
+	protected ModelAndView createEditModelAndView(final Message mensaje,
+			final String messageError) {
 		ModelAndView result;
 		Collection<MessageBox> boxes, messageBoxes;
 		Collection<Message> messages;
@@ -189,7 +193,8 @@ public class MessageController extends AbstractController {
 
 		for (final MessageBox mb : boxes) {
 			messages.addAll(mb.getMessages());
-			if (mb.getMessages().contains(mensaje) && mb.getOwner().equals(principal))
+			if (mb.getMessages().contains(mensaje)
+					&& mb.getOwner().equals(principal))
 				possible = true;
 		}
 
@@ -198,12 +203,13 @@ public class MessageController extends AbstractController {
 		sender = mensaje.getSender();
 
 		recipients = this.actorService.findAllExceptPrincipal();
-		
-		priority = this.systemConfigurationService.findMySystemConfiguration().getMessagePriority();
-		
+
+		priority = this.systemConfigurationService.findMySystemConfiguration()
+				.getMessagePriority();
+
 		priorities = priority.split(",");
-		
-		for(String p : priorities){
+
+		for (String p : priorities) {
 			splitPriorities.add(p);
 		}
 		result = new ModelAndView("message/edit");
@@ -219,9 +225,6 @@ public class MessageController extends AbstractController {
 		result.addObject("recipients", recipients);
 
 		result.addObject("priorities", splitPriorities);
-		
-
-
 
 		return result;
 	}

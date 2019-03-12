@@ -20,30 +20,34 @@
 		<bean class="converters.BrotherhoodToStringConverter" />
 		<bean class="converters.StringToBrotherhoodConverter" />
 
-		<bean class="converters.MemberToStringConverter" /> 
+		<bean class="converters.MemberToStringConverter" />
 		<bean class="converters.StringToMemberConverter" />
 
 		<bean class="converters.PositionToStringConverter" />
 		<bean class="converters.StringToPositionConverter" />
-		
+
 		<bean class="converters.ZoneToStringConverter" />
 		<bean class="converters.StringToZoneConverter" />
-		<bean class="converters.MarchToStringConverter" /> 
+		<bean class="converters.MarchToStringConverter" />
 
-		<bean class="converters.StringToMarchConverter" /> 
-		
-		<bean class="converters.PlatformToStringConverter" /> 
+		<bean class="converters.StringToMarchConverter" />
+
+		<bean class="converters.PlatformToStringConverter" />
 		<bean class="converters.StringToPlatformConverter" />
-		
-		<bean class="converters.ProcessionToStringConverter" /> 
+
+		<bean class="converters.ProcessionToStringConverter" />
 		<bean class="converters.StringToProcessionConverter" />
-		
-		<bean class="converters.MessageBoxToStringConverter" /> 
+
+		<bean class="converters.MessageBoxToStringConverter" />
 		<bean class="converters.StringToMessageBoxConverter" />
-		
-		<bean class="converters.ActorToStringConverter"	/>
-		<bean class="converters.StringToActorConverter"	/>
-		
+
+		<bean class="converters.ActorToStringConverter" />
+		<bean class="converters.StringToActorConverter" />
+
+
+		<bean class="converters.StringToMessageConverter" />
+		<bean class="converters.MessageToStringConverter" />
+
 	</util:list>
 
 </beans>
