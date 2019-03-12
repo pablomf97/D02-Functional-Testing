@@ -107,15 +107,13 @@ Madrugá! Tu sitio para organizar procesiones." />
 your processions." />
 			</util:map>
 		</property>
-			<property name="breachNotification">
-		<util:map id="utilmap10" map-class="java.util.HashMap"
+		<property name="breachNotification">
+			<util:map id="utilmap10" map-class="java.util.HashMap"
 				key-type="java.lang.String" value-type="java.lang.String">
-				<entry key="Español"
-					value="" />
-				<entry key="English"
-					value="" />
+				<entry key="Español" value="" />
+				<entry key="English" value="" />
 			</util:map>
-			</property>
+		</property>
 		<property name="banner" value="https://image.ibb.co/iuaDgV/Untitled.png" />
 
 
@@ -165,7 +163,8 @@ your processions." />
 	<bean id="message2" class="domain.Message">
 		<property name="sentMoment" value="07/08/2016 14:10:53" />
 		<property name="subject" value="Message 2" />
-		<property name="body" value="Message bad good from admin1 to brotherhood 1" />
+		<property name="body"
+			value="Message bad good from admin1 to brotherhood 1" />
 		<property name="priority" value="LOW" />
 		<property name="tags" value="good" />
 		<property name="messageBoxes">
@@ -209,7 +208,8 @@ your processions." />
 	<bean id="message4" class="domain.Message">
 		<property name="sentMoment" value="09/05/2016 17:32:14" />
 		<property name="subject" value="Message 4" />
-		<property name="body" value="Message from good bad admin2 to brotherhood 2" />
+		<property name="body"
+			value="Message from good bad admin2 to brotherhood 2" />
 		<property name="priority" value="LOW" />
 		<property name="tags" value="good" />
 		<property name="messageBoxes">
@@ -1098,6 +1098,7 @@ your processions." />
 		<property name="establishmentDate" value="02/03/2016" />
 		<property name="pictures" value="https://imgur/ima7saS.png" />
 		<property name="zone" ref="zone1" />
+		<property name="history" ref="history1" />
 
 
 	</bean>
@@ -1116,6 +1117,7 @@ your processions." />
 		<property name="establishmentDate" value="06/01/2016" />
 		<property name="pictures" value="https://imgur/ima7saS.png" />
 		<property name="zone" ref="zone2" />
+		<property name="history" ref="history2" />
 
 	</bean>
 
@@ -1172,12 +1174,12 @@ your processions." />
 		<property name="status" value="ACCEPTED"></property>
 		<property name="reason" value=""></property>
 		<property name="path">
-		
+
 			<null />
-			
+
 		</property>
 	</bean>
-	
+
 
 	<bean id="parade2" class="domain.Parade">
 		<property name="ticker" value="190519-XZRTY" />
@@ -1198,13 +1200,13 @@ your processions." />
 
 			<ref bean="brotherhood2" />
 		</property>
-		
+
 		<property name="status" value="REJECTED"></property>
 		<property name="reason" value="Bad guy"></property>
 		<property name="path">
-		
+
 			<null />
-			
+
 		</property>
 	</bean>
 
@@ -1337,8 +1339,160 @@ your processions." />
 		</property>
 	</bean>
 
+
+	<!-- LEVEL C ACME-PARADE -->
+	<!-- domain.InceptionRecord -->
+	<bean id="inceptionRecord1" class="domain.InceptionRecord">
+		<property name="title" value="Creación" />
+		<property name="description" value="Primer registro de la Cofradía" />
+		<property name="photos" value="https://www.google.com/img=219" />
+
+	</bean>
+	<bean id="inceptionRecord2" class="domain.InceptionRecord">
+		<property name="title" value="Inicio oficial" />
+		<property name="description"
+			value="Primer registro oficial de la cofradía en las escrituras" />
+		<property name="photos" value="https://www.google.com/img=217puha9" />
+
+	</bean>
+
+	<!-- domain.LinkRecord -->
+	<bean id="linkRecord1" class="domain.LinkRecord">
+		<property name="title" value="Enlace bueno" />
+		<property name="description" value="Enlace al Brotherhood con mayor cargo" />
+		<property name="linkedBrotherhood">
+			<ref bean="brotherhood2" />
+		</property>
+
+	</bean>
+
+	<bean id="linkRecord2" class="domain.LinkRecord">
+		<property name="title" value="Enlace2" />
+		<property name="description" value="Enlace backup del Brotherhood" />
+		<property name="linkedBrotherhood">
+			<ref bean="brotherhood1" />
+		</property>
+
+	</bean>
+	<!-- domain.MiscellaneousRecord -->
+	<bean id="miscellaneousRecord1" class="domain.MiscellaneousRecord">
+		<property name="title" value="Incendio en la Inglesia" />
+		<property name="description" value="No se conoce la causa de este." />
+
+
+	</bean>
+	<bean id="miscellaneousRecord2" class="domain.MiscellaneousRecord">
+		<property name="title" value="Caída de un paso" />
+		<property name="description" value="Sobrepeso en la parte trasera del paso" />
+
+
+	</bean>
+	<bean id="miscellaneousRecord3" class="domain.MiscellaneousRecord">
+		<property name="title" value="Multa" />
+		<property name="description"
+			value="Irregularidades en la inspección de la seguridad de los pasos" />
+
+
+	</bean>
+
+	<!-- domain.LegalRecord -->
+	<bean id="legalRecord1" class="domain.LegalRecord">
+		<property name="title" value="Registro de las leyes anteriores a los 90" />
+		<property name="description" value="Registro oficial" />
+		<property name="name" value="Registro oficial" />
+		<property name="VAT" value="0.21" />
+		<property name="laws"
+			value="GDPR de la Cofradía. Ley protección de datos de la Cofradía" />
+	</bean>
+	<!-- domain.PeriodRecord -->
+	<bean id="periodRecord1" class="domain.PeriodRecord">
+		<property name="title" value="Periodo de transición" />
+		<property name="description" value="Transición en el traslado de la Cofradía" />
+		<property name="startYear" value="1996" />
+		<property name="endYear" value="1998" />
+		<property name="photos" value="https://www.google.com/search?q=cofradia123" />
+
+	</bean>
+	<bean id="periodRecord2" class="domain.PeriodRecord">
+		<property name="title" value="Periodo que estuvimos sin capilla" />
+		<property name="description" value="Ciertos problemas económicos" />
+		<property name="startYear" value="1877" />
+		<property name="endYear" value="1880" />
+		<property name="photos"
+			value="https://www.google.com/search?q=cofrad123odiyg" />
+
+	</bean>
+	<!-- HISTORY -->
+
+	<bean id="history1" class="domain.History">
+
+
+		<property name="inceptionRecord">
+			<ref bean="inceptionRecord1" />
+		</property>
+		<property name="periodRecords">
+			<list>
+				<ref bean="periodRecord1" />
+
+			</list>
+		</property>
+		<property name="legalRecords">
+			<list>
+				<ref bean="legalRecord1" />
+
+			</list>
+		</property>
+
+		<property name="linkRecords">
+			<list>
+				<ref bean="linkRecord1" />
+
+			</list>
+		</property>
+
+		<property name="miscellaneousRecords">
+			<list>
+				<ref bean="miscellaneousRecord1" />
+
+			</list>
+		</property>
+
+	</bean>
+	<bean id="history2" class="domain.History">
+
+
+		<property name="inceptionRecord">
+			<ref bean="inceptionRecord2" />
+		</property>
+		<property name="periodRecords">
+			<list>
+				<ref bean="periodRecord2" />
+
+			</list>
+		</property>
+		<property name="legalRecords">
+			<list>
+
+
+			</list>
+		</property>
+
+		<property name="linkRecords">
+			<list>
+				<ref bean="linkRecord2" />
+
+			</list>
+		</property>
+
+		<property name="miscellaneousRecords">
+			<list>
+				<ref bean="miscellaneousRecord2" />
+				<ref bean="miscellaneousRecord3" />
+			</list>
+		</property>
+
+	</bean>
+
+
+
 </beans>
-
-
-	
-	

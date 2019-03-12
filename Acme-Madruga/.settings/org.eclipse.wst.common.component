@@ -4,7 +4,7 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <property name="context-root" value="Acme-Madruga"/>
         <property name="java-output-path" value="/Sample-Project-1.18.2/target/classes"/>
+        <property name="context-root" value="Acme-Parade"/>
     </wb-module>
 </project-modules>

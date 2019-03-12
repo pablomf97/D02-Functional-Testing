@@ -6,6 +6,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
@@ -25,12 +26,23 @@ public class Brotherhood extends Actor {
 	private String pictures;
 	// Hay un tipo area en java, por lo que por ahora Area pasa a ser Zone
 	private Zone zone;
-
+	private History history;
 	/* Getters&Setters */
-
+	
+	
 	@NotBlank
 	public String getTitle() {
 		return title;
+	}
+	@Valid
+	 @NotNull
+	@OneToOne(optional = false)
+	public History getHistory() {
+		return history;
+	}
+
+	public void setHistory(History history) {
+		this.history = history;
 	}
 
 	public void setTitle(String title) {

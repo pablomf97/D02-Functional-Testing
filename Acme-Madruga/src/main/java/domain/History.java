@@ -9,29 +9,20 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @Entity
 @Access(AccessType.PROPERTY)
 public class History extends DomainEntity {
 
-	private Brotherhood						brotherhood;
+	
 	private InceptionRecord					inceptionRecord;
 	private Collection<PeriodRecord>		periodRecords;
 	private Collection<LegalRecord>			legalRecords;
 	private Collection<LinkRecord>			linkRecords;
 	private Collection<MiscellaneousRecord>	miscellaneousRecords;
 
-
-	@NotNull
-	@OneToOne(optional = false)
-	public Brotherhood getBrotherhood() {
-		return this.brotherhood;
-	}
-
-	public void setBrotherhood(final Brotherhood brotherhood) {
-		this.brotherhood = brotherhood;
-	}
 
 	@OneToOne(cascade = CascadeType.ALL)
 	public InceptionRecord getInceptionRecord() {
