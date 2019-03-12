@@ -14,13 +14,14 @@ import services.FinderService;
 import services.MarchService;
 import services.MemberService;
 import services.PositionService;
-import services.ProcessionService;
+import services.ParadeService;
 import domain.Brotherhood;
 import domain.Finder;
 import domain.March;
 import domain.Member;
+import domain.Parade;
 import domain.Position;
-import domain.Procession;
+
 
 @Controller
 @RequestMapping(value="statistics/administrator")
@@ -38,16 +39,13 @@ public class DashboardAdministratorController extends AbstractController{
 	private MarchService marchService;
 	
 	@Autowired
-	private ProcessionService processionService;
+	private ParadeService processionService;
 	
 	@Autowired
 	private PositionService positionService;
 	
 	@Autowired
 	private FinderService finderService;
-	
-
-	
 	
 	//Display
 	
@@ -58,7 +56,7 @@ public class DashboardAdministratorController extends AbstractController{
 		final ModelAndView result;
 		Collection<Member> members=this.memberService.findAll();
 		Collection<Brotherhood> bros=this.brotherhoodService.findAll();
-		Collection<Procession> processions;
+		Collection<Parade> processions;
 		processions = this.processionService.findAll();
 		Collection<March>marchs=this.marchService.findAll();
 		
@@ -86,7 +84,7 @@ public class DashboardAdministratorController extends AbstractController{
 //		Integer[] histogram;
 		Collection<Integer> countPositions;
 		countPositions=this.positionService.countPositions();
-		Collection<Procession> earlyProcessions;
+		Collection<Parade> earlyProcessions;
 		Collection<String>nameEsPositions;
 		Collection<String>nameEnPositions;
 		

@@ -16,7 +16,7 @@ import domain.Actor;
 import domain.Brotherhood;
 import domain.March;
 import domain.Member;
-import domain.Procession;
+import domain.Parade;
 
 
 @Service
@@ -37,7 +37,7 @@ public class MarchService {
 	private Validator validator;
 
 	@Autowired
-	private ProcessionService processionService;
+	private ParadeService processionService;
 
 
 	// Simple CRUD methods -----------------------------------
@@ -93,12 +93,12 @@ public class MarchService {
 
 			Assert.isTrue(march.getId() != 0);
 			Assert.notNull(march.getMember());
-			Assert.notNull(march.getProcession());
+			Assert.notNull(march.getParade());
 			Assert.notNull(march.getStatus());
 			
 			brotherhood = (Brotherhood) principal;
 
-			Assert.isTrue(march.getProcession().getBrotherhood().equals(brotherhood), "not.allowed");
+			Assert.isTrue(march.getParade().getBrotherhood().equals(brotherhood), "not.allowed");
 			if(march.getStatus() == "REJECT") {
 				Assert.notNull(march.getReason());
 			}
@@ -199,7 +199,7 @@ public class MarchService {
 
 	public Double[] ratioApprovedInAProcession(){
 		
-		Collection<Procession> processions;
+		Collection<Parade> processions;
 		Collection<March> marchsInAProcession = new ArrayList<March>(),marchsApprovedInAProcession = new ArrayList<March>();
 
 		int count = 0;
@@ -208,7 +208,7 @@ public class MarchService {
 		
 		Double[] result = new Double[processions.size()];
 		
-		for(Procession p : processions){
+		for(Parade p : processions){
 
 			Double ratio = 0.0;
 
@@ -263,7 +263,7 @@ public class MarchService {
 	
 	public Double[] ratioRejectedInAProcession(){
 		
-		Collection<Procession> processions;
+		Collection<Parade> processions;
 		Collection<March> marchsInAProcession = new ArrayList<March>(),marchsRejectedInAProcession = new ArrayList<March>();
 
 		int count = 0;
@@ -272,7 +272,7 @@ public class MarchService {
 		
 		Double[] result = new Double[processions.size()];
 		
-		for(Procession p : processions){
+		for(Parade p : processions){
 
 			Double ratio = 0.0;
 
@@ -305,7 +305,7 @@ public class MarchService {
 	}
 	public Double[] ratioPendingInAProcession(){
 		
-		Collection<Procession> processions;
+		Collection<Parade> processions;
 		Collection<March> marchsInAProcession = new ArrayList<March>(),marchsPendingInAProcession = new ArrayList<March>();
 
 		int count = 0;
@@ -314,7 +314,7 @@ public class MarchService {
 		
 		Double[] result = new Double[processions.size()];
 		
-		for(Procession p : processions){
+		for(Parade p : processions){
 
 			Double ratio = 0.0;
 

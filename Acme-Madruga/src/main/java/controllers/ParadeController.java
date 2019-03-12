@@ -13,21 +13,21 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.MessageService;
+import services.ParadeService;
 import services.PlatformService;
-import services.ProcessionService;
 import domain.Actor;
 import domain.Brotherhood;
+import domain.Parade;
 import domain.Platform;
-import domain.Procession;
 
 @Controller
 @RequestMapping("/procession")
-public class ProcessionController extends AbstractController {
+public class ParadeController extends AbstractController {
 
 	// Services
 
 	@Autowired
-	private ProcessionService processionService;
+	private ParadeService processionService;
 
 	@Autowired
 	private PlatformService platformService;
@@ -44,7 +44,7 @@ public class ProcessionController extends AbstractController {
 	public ModelAndView display(@RequestParam int processionId) {
 
 		ModelAndView result;
-		Procession procession;
+		Parade procession;
 		boolean isPrincipal = false;
 		Actor principal;
 
@@ -69,7 +69,7 @@ public class ProcessionController extends AbstractController {
 	public ModelAndView list(@RequestParam(required = false) Integer memberId,
 			@RequestParam(required = false) Integer brotherhoodId) {
 		ModelAndView result;
-		Collection<Procession> processions;
+		Collection<Parade> processions;
 		Actor principal;
 
 		Boolean permission;
@@ -96,7 +96,7 @@ public class ProcessionController extends AbstractController {
 
 			} else {
 
-				Collection<Procession> toApply;
+				Collection<Parade> toApply;
 
 				processions = this.processionService
 						.findAcceptedProcessionsByMemberId(principal.getId());
@@ -130,7 +130,7 @@ public class ProcessionController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result;
-		Procession procession;
+		Parade procession;
 
 		Actor principal;
 		Boolean error;
@@ -162,7 +162,7 @@ public class ProcessionController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int processionId) {
 		ModelAndView result;
-		Procession procession;
+		Parade procession;
 		Actor principal;
 
 		try {
@@ -184,7 +184,7 @@ public class ProcessionController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "saveFinal")
-	public ModelAndView saveFinal(Procession procession,
+	public ModelAndView saveFinal(Parade procession,
 			final BindingResult binding) {
 		ModelAndView result;
 
@@ -212,7 +212,7 @@ public class ProcessionController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(Procession procession, final BindingResult binding) {
+	public ModelAndView save(Parade procession, final BindingResult binding) {
 		ModelAndView result;
 
 		if (binding.hasErrors())
@@ -231,7 +231,7 @@ public class ProcessionController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(Procession procession,
+	public ModelAndView delete(Parade procession,
 			final BindingResult binding) {
 		ModelAndView result;
 
@@ -249,7 +249,7 @@ public class ProcessionController extends AbstractController {
 	}
 
 	// Ancillary methods
-	protected ModelAndView createEditModelAndView(final Procession procession) {
+	protected ModelAndView createEditModelAndView(final Parade procession) {
 		ModelAndView result;
 
 		result = this.createEditModelAndView(procession, null);
@@ -257,7 +257,7 @@ public class ProcessionController extends AbstractController {
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final Procession procession,
+	protected ModelAndView createEditModelAndView(final Parade procession,
 			final String messageCode) {
 		final ModelAndView result;
 		Actor principal;
