@@ -34,8 +34,12 @@ public class BrotherhoodService {
 
 	@Autowired
 	private BrotherhoodRepository brotherhoodRepository;
+
 	@Autowired
 	private Validator validator;
+
+	@Autowired
+	private ActorService actorService;
 
 	@Autowired
 	private EnrolmentService enrolmentService;
@@ -155,7 +159,9 @@ public class BrotherhoodService {
 	public Brotherhood reconstruct(final BrotherhoodForm brotherhoodForm,
 			final BindingResult binding) {
 		Brotherhood result = this.create();
+
 		if (brotherhoodForm.getId() == 0) {
+
 			result.getUserAccount().setUsername(brotherhoodForm.getUsername());
 			result.getUserAccount().setPassword(brotherhoodForm.getPassword());
 			result.setAddress(brotherhoodForm.getAddress());
@@ -171,25 +177,29 @@ public class BrotherhoodService {
 			this.validator.validate(brotherhoodForm, binding);
 
 		} else {
+
 			final Brotherhood bd = this.brotherhoodRepository
 					.findOne(brotherhoodForm.getId());
 			Assert.notNull(bd, "NotIdValid");
+			Assert.isTrue(this.actorService.findByPrincipal().getId() == bd
+					.getId());
+
 			if (this.checkValidation(brotherhoodForm, binding, bd)) {
-				result.setId(brotherhoodForm.getId());
-				final UserAccount user = new UserAccount();
-				// user.setAuthorities(bd.getUserAccount().getAuthorities());
-				result.setUserAccount(user);
-				result.setAddress(brotherhoodForm.getAddress());
-				result.setEmail(brotherhoodForm.getEmail());
-				result.setMiddleName(brotherhoodForm.getMiddleName());
-				result.setName(brotherhoodForm.getName());
-				result.setPhoneNumber(brotherhoodForm.getPhoneNumber());
-				result.setPhoto(brotherhoodForm.getPhoto());
-				result.setSurname(brotherhoodForm.getSurname());
-				result.setTitle(brotherhoodForm.getTitle());
+
+				bd.setAddress(brotherhoodForm.getAddress());
+				bd.setEmail(brotherhoodForm.getEmail());
+				bd.setMiddleName(brotherhoodForm.getMiddleName());
+				bd.setName(brotherhoodForm.getName());
+				bd.setPhoneNumber(brotherhoodForm.getPhoneNumber());
+				bd.setPhoto(brotherhoodForm.getPhoto());
+				bd.setSurname(brotherhoodForm.getSurname());
+				bd.setTitle(brotherhoodForm.getTitle());
 				if (bd.getZone() == null && brotherhoodForm.getZone() != null)
-					result.setZone(brotherhoodForm.getZone());
+					bd.setZone(brotherhoodForm.getZone());
+				result = bd;
+
 			} else {
+
 				result = this.create();
 				result.setAddress(brotherhoodForm.getAddress());
 				result.setEmail(brotherhoodForm.getEmail());
@@ -431,7 +441,7 @@ public class BrotherhoodService {
 
 		return res;
 	}
-	
+
 	public Collection<Brotherhood> brotherhoodsByMemberInId(int memberId) {
 		Collection<Brotherhood> res;
 
