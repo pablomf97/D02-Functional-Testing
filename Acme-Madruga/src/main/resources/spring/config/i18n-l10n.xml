@@ -42,6 +42,8 @@
 		<value>/views/socialProfile/messages</value>
 
 		<value>/views/socialProfile/messages</value>
+		
+		<value>/views/history/messages</value>
 
 	</util:list>
 

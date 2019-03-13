@@ -16,10 +16,10 @@ public interface ParadeRepository extends JpaRepository<Parade, Integer> {
 	@Query("select p from Parade p where p.brotherhood.id= ?1")
 	Collection<Parade> findParadesByBrotherhoodId(int brotherhoodId);
 
-	@Query("select p from March m join m.procession p where m.status = 'APPROVED' and m.member.id = ?1")
+	@Query("select p from March m join m.parade p where m.status = 'APPROVED' and m.member.id = ?1")
 	Collection<Parade> findAcceptedParadesByMemberId(int memberId);
 
-	@Query("select p from March m join m.procession p where m.member.id = ?1")
+	@Query("select p from March m join m.parade p where m.member.id = ?1")
 	Collection<Parade> findParadesAlreadyApplied(int memberId);
 
 	@Query("select p from Parade p where p.isDraft = 'false'")

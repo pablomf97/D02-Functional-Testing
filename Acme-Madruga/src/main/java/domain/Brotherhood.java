@@ -35,7 +35,7 @@ public class Brotherhood extends Actor {
 		return title;
 	}
 	@Valid
-	 @NotNull
+	@NotNull
 	@OneToOne(optional = false)
 	public History getHistory() {
 		return history;
