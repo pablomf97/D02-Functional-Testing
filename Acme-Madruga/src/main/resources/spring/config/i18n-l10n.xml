@@ -39,11 +39,12 @@
 		<value>/views/messagebox/messages</value>
 		<value>/views/message/messages</value>
 		
-		<value>/views/socialProfile/messages</value>
-		
+		<value>/views/socialProfile/messages</value>		
 		<value>/views/inceptionRecord/messages</value>
 		<value>/views/periodRecord/messages</value>
-		<value>/views/legalRecord/messages</value>
+		<value>/views/legalRecord/messages</value>	
+		<value>/views/history/messages</value>
+
 
 	</util:list>
 

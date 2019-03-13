@@ -43,6 +43,10 @@
 		
 		<value>/views/periodRecord/tiles.xml</value>
 		<value>/views/legalRecord/tiles.xml</value>
+
+		
+		<value>/views/history/tiles.xml</value>
+
 		
 	</util:list>
 

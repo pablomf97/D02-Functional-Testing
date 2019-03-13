@@ -35,8 +35,8 @@
 		<bean class="converters.PlatformToStringConverter" /> 
 		<bean class="converters.StringToPlatformConverter" />
 		
-		<bean class="converters.ProcessionToStringConverter" /> 
-		<bean class="converters.StringToProcessionConverter" />
+		<bean class="converters.ParadeToStringConverter" /> 
+		<bean class="converters.StringToParadeConverter" />
 		
 		<bean class="converters.MessageBoxToStringConverter" /> 
 		<bean class="converters.StringToMessageBoxConverter" />
