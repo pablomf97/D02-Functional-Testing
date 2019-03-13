@@ -112,9 +112,9 @@ public class AdministratorController extends AbstractController {
 		a = this.actorService.findByPrincipal();
 		Assert.isTrue(this.actorService.checkAuthority(a, "ADMINISTRATOR"));
 
-		Integer spammers = this.utilityService.checkSpammers();
+		this.utilityService.checkSpammers();
 		
-		res = new ModelAndView("administrator/display");
+		res = new ModelAndView("redirect:/administrator/display.do?id=" + a.getId());
 		res.addObject("administrator", a);
 
 		return res;
@@ -131,7 +131,7 @@ public class AdministratorController extends AbstractController {
 
 		this.utilityService.computeScore();
 		
-		res = new ModelAndView("administrator/display");
+		res = new ModelAndView("redirect:/administrator/display.do?id=" + a.getId());
 		res.addObject("administrator", a);
 
 		return res;
