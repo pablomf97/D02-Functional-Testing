@@ -177,12 +177,41 @@ public class ActorService {
 		result.remove(principal);
 		return result;
 	}
-	
+
 	public Actor findBySocialProfileId(int socialProfileId) {
-		Actor result = this.actorRepository.findBySocialProfileId(socialProfileId);
+		Actor result = this.actorRepository
+				.findBySocialProfileId(socialProfileId);
 		Assert.notNull(result);
-		
+
 		return result;
+	}
+
+	// Other business methods
+
+	public void ban(Actor a) {
+		Actor principal;
+
+		principal = this.findByPrincipal();
+		Assert.isTrue(this.checkAuthority(principal, "ADMINISTRATOR"));
+		Assert.notNull(a);
+		Assert.isTrue(!a.getUserAccount().getIsBanned());
+//		Assert.isTrue(a.getScore() < -0.5);
+
+		a.getUserAccount().setIsBanned(true);
+		a = this.actorRepository.save(a);
+	}
+
+	public void unban(Actor a) {
+		Actor principal;
+
+		principal = this.findByPrincipal();
+		Assert.isTrue(this.checkAuthority(principal, "ADMINISTRATOR"));
+		Assert.notNull(principal);
+		Assert.notNull(a);
+		Assert.isTrue(a.getUserAccount().getIsBanned());
+
+		a.getUserAccount().setIsBanned(false);
+		a = this.actorRepository.save(a);
 	}
 
 }

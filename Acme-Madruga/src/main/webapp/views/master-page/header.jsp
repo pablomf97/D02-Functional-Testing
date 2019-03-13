@@ -42,6 +42,10 @@
 
 				</ul></li>
 
+			<li><a class="fNiv"
+				href="actor/administrator/list-suspicious-actors.do"><spring:message
+						code="master.page.administrator.creations" /></a></li>
+
 			<li><a class="fNiv"><spring:message
 						code="master.page.administrator.positions" /></a>
 				<ul>
