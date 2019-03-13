@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -81,6 +82,11 @@ public class MessageBoxService {
 
 	public Collection<MessageBox> findByParent(final int idBox) {
 		final Collection<MessageBox> boxes = this.messageBoxRepository.findByParent(idBox);
+		if (!boxes.isEmpty()) {
+			final List<MessageBox> childs = new ArrayList<>(boxes);
+			for (int i = 0; i < childs.size(); i++)
+				boxes.addAll(this.findByParent(childs.get(i).getId()));
+		}
 		return boxes;
 	}
 
