@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.Validator;
 
+import repositories.PeriodRecordRepository;
+
 
 import domain.Actor;
 
@@ -19,7 +21,7 @@ import domain.PeriodRecord;
 public class PeriodRecordService {
 
 	@Autowired
-	private PeriodRecordService periodRecordRepository;
+	private PeriodRecordRepository periodRecordRepository;
 	
 	@Autowired
 	private Validator validator;
