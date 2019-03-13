@@ -167,13 +167,10 @@
 		<security:authorize access="isAuthenticated()">
 
 			<li><a class="fNiv" href="brotherhood/list.do"><spring:message
-						code="master.page.administrator.brotherhoods" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="brotherhood/members/list.do"><spring:message
-								code="master.page.brotherhood.members.list" /></a></li>
-				</ul></li>
+						code="master.page.administrator.brotherhoods" /></a></li>
 
+			<li><a class="fNiv" href="socialProfile/actor/list.do"><spring:message
+						code="master.page.actor.social" /></a></li>
 
 			<li><a class="fNiv"> <spring:message
 						code="master.page.profile" /> (<security:authentication
