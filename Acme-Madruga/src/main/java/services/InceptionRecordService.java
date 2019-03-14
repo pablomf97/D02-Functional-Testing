@@ -1,5 +1,6 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.transaction.Transactional;
@@ -87,6 +88,19 @@ public class InceptionRecordService {
 	//ancillary methods
 
 	
-	
+	public Collection<String> getSplitPhotos(final String photos) {
+		final Collection<String> res = new ArrayList<>();
+		final String[] slice = photos.split("< >");
+		for (final String p : slice)
+			res.add(p);
+		return res;
+	}
+	public String checkURLPhotos(final Collection<String> photos) {
+		String result = "";
+		if (!photos.isEmpty())
+			for (final String p : photos)
+				result = result + p.trim() + "< >";
+		return result;
+	}
 	
 }

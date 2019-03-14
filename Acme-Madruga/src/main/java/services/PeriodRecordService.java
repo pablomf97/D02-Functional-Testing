@@ -24,11 +24,7 @@ public class PeriodRecordService {
 	private PeriodRecordRepository periodRecordRepository;
 	
 	@Autowired
-	private Validator validator;
-	
-	@Autowired
 	private ActorService actorService;
-	
 	
 	public PeriodRecord findOne(int id){
 		PeriodRecord res;
