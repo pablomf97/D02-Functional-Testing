@@ -49,11 +49,13 @@ public class LinkRecordController extends AbstractController{
 			linkRecord = this.linkRecordService.create();
 
 			result = this.createEditModelAndView(linkRecord);
+			
 		}catch(IllegalArgumentException oops){
 			result = new ModelAndView("misc/403");
 		}
 		return result;
 	}
+
 
 	//Display
 

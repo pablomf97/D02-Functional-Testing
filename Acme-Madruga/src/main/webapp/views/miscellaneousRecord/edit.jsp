@@ -26,6 +26,7 @@
 		
 		<acme:cancel url="miscellaneousRecord/list.do?historyId=${historyId}" code="miscellaneousRecord.cancel"/>
 		
+		<acme:delete name="delete" confirmation="mr.confirm.delete" code="miscellaneousRecord.delete"/>
 		<br/>
 		<br/>
 		
