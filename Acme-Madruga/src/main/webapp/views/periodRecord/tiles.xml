@@ -16,10 +16,20 @@
        
 <tiles-definitions>
 
-	<definition name="terms" extends="master.page">	
-		<put-attribute name="title" value="Terms and Conditions" />
-		<put-attribute name="body" value="/views/terms/terms.jsp" />
+	<definition name="periodRecord/list" extends="master.page">	
+		<put-attribute name="title" value="List period records" />
+		<put-attribute name="body" value="/views/periodRecord/list.jsp" />
 	</definition>
+		
+ 	<definition name="periodRecord/display" extends="master.page">	
+		<put-attribute name="title" value="Show period record" />
+		<put-attribute name="body" value="/views/periodRecord/display.jsp" />
+	</definition>
+		
 	
+	<definition name="periodRecord/edit" extends="master.page">	
+		<put-attribute name="title" value="Edit period record" />
+		<put-attribute name="body" value="/views/periodRecord/edit.jsp" />
+	</definition>
 	
 </tiles-definitions>

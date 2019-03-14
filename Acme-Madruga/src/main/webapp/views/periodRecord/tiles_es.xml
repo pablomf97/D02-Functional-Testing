@@ -16,9 +16,20 @@
       
 <tiles-definitions>
 
-	<definition name="terms" extends="master.page">	
-		<put-attribute name="title" value="Términos y Condiciones" />
-		<put-attribute name="body" value="/views/terms/terms.jsp" />
+	<definition name="periodRecord/list" extends="master.page">	
+		<put-attribute name="title" value="Lista de registros temporales" />
+		<put-attribute name="body" value="/views/periodRecord/list.jsp" />
+	</definition>
+		
+ 	<definition name="periodRecord/display" extends="master.page">	
+		<put-attribute name="title" value="Mostrar registro temporal" />
+		<put-attribute name="body" value="/views/periodRecord/display.jsp" />
+	</definition>
+		
+	
+	<definition name="periodRecord/edit" extends="master.page">	
+		<put-attribute name="title" value="Editar registro temporal" />
+		<put-attribute name="body" value="/views/periodRecord/edit.jsp" />
 	</definition>
 	
 

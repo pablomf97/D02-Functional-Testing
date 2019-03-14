@@ -16,9 +16,14 @@
       
 <tiles-definitions>
 
-	<definition name="terms" extends="master.page">	
-		<put-attribute name="title" value="Términos y Condiciones" />
-		<put-attribute name="body" value="/views/terms/terms.jsp" />
+	<definition name="inceptionRecord/display" extends="master.page">	
+		<put-attribute name="title" value="Mostrar inceptionRecord " />
+		<put-attribute name="body" value="/views/inceptionRecord/display.jsp" />
+	</definition>
+		
+	<definition name="inceptionRecord/edit" extends="master.page">	
+		<put-attribute name="title" value="Edición inception record" />
+		<put-attribute name="body" value="/views/inceptionRecord/edit.jsp" />
 	</definition>
 	
 

@@ -1,7 +1,10 @@
 
 package repositories;
 
+import java.util.Collection;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import domain.InceptionRecord;
@@ -16,5 +19,6 @@ public interface InceptionRecordRepository extends JpaRepository<InceptionRecord
 	//select size(e.miscellaneousRecords)from History e ;
 	//select size(b.history.periodRecords) from Brotherhood b;
 	//select max(m.history.miscellaneousRecords.size), min(m.history.miscellaneousRecords.size), avg(m.history.miscellaneousRecords.size),sqrt(sum(m.history.miscellaneousRecords.size* m.history.miscellaneousRecords.size) / count(m.history.miscellaneousRecords.size) -(avg(m.history.miscellaneousRecords.size) * avg(m.history.miscellaneousRecords.size))) from Brotherhood m;
-	
+	@Query("select max(m.history.miscellaneousRecords.size), min(m.history.miscellaneousRecords.size), avg(m.history.miscellaneousRecords.size),sqrt(sum(m.history.miscellaneousRecords.size* m.history.miscellaneousRecords.size) / count(m.history.miscellaneousRecords.size) -(avg(m.history.miscellaneousRecords.size) * avg(m.history.miscellaneousRecords.size))) from Brotherhood m")
+	Collection<Double> statsMisc();
 }

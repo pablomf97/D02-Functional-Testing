@@ -82,7 +82,7 @@ public class LegalRecordController {
 			records=history.getLegalRecords();
 			possible = true;
 
-			result = new ModelAndView("periodRecord/list");
+			result = new ModelAndView("legalRecord/list");
 			result.addObject("legalRecords",records);
 			result.addObject("possible", possible);
 			

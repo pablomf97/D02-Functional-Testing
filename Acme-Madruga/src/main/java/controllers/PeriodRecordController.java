@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.validation.Valid;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import domain.Actor;
 import domain.Brotherhood;
 import domain.History;
+
 
 import domain.PeriodRecord;
 
@@ -51,15 +53,24 @@ public class PeriodRecordController extends AbstractController{
 		ModelAndView res;
 		Actor principal;
 		PeriodRecord periodRecord;
-		principal = this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal,
-				"BROTHERHOOD"));
-		periodRecord=this.periodRecordService.findOne(periodRecordId);
+		
+		try{
+			principal = this.actorService.findByPrincipal();
+			Assert.isTrue(this.actorService.checkAuthority(principal,
+					"BROTHERHOOD"));
+			periodRecord=this.periodRecordService.findOne(periodRecordId);
 
-		res = new ModelAndView("miscellaneousRecord/display");
-		res.addObject("periodRecord", periodRecord);
+			final Collection<String> photos = this.periodRecordService
+					.getSplitPhotos(periodRecord.getPhotos());
+
+			res=new ModelAndView("periodRecord/display");
+			res.addObject("photos",photos);
+			res.addObject("periodRecord",periodRecord);
+		} catch (final Throwable opps) {
+
+			res = new ModelAndView("redirect:/welcome/index.do");
+		}
 		return res;
-
 	}
 	//list
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -83,6 +94,7 @@ public class PeriodRecordController extends AbstractController{
 		result = new ModelAndView("periodRecord/list");
 		result.addObject("periodRecords",records);
 		result.addObject("possible", possible);
+		result.addObject("historyId", history.getId());
 		
 		}catch(IllegalArgumentException oops){
 			result = new ModelAndView("misc/403");
@@ -96,18 +108,49 @@ public class PeriodRecordController extends AbstractController{
 		
 			return result;
 	}
+	//CREATE 
+	
+	@RequestMapping(value="/create", method = RequestMethod.GET)
+	public ModelAndView create(){
+		ModelAndView result;
+		Actor principal;
+		PeriodRecord periodRecord;
+
+		try{
+
+			principal = this.actorService.findByPrincipal();
+			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+			periodRecord = this.periodRecordService.create();
+
+			result = this.createEditModelAndView(periodRecord);
+		}catch(IllegalArgumentException oops){
+			result = new ModelAndView("misc/403");
+		}
+
+		return result;
+	}
+
 	//EDIT 
 	@RequestMapping(value="/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int periodRecordId){
-		ModelAndView result;
+		ModelAndView result = null;
 		PeriodRecord periodRecord;
+		Brotherhood principal;
+		principal = (Brotherhood) this.actorService.findByPrincipal();
+		//Assert.isTrue(principal.getHistory().getInceptionRecord().getId()==periodRecordId,"not.allowed");
+
 
 		periodRecord = this.periodRecordService.findOne(periodRecordId);
 		Assert.notNull(periodRecord);
 
-		result = this.createEditModelAndView(periodRecord);
+		final Collection<String> photos = this.periodRecordService
+				.getSplitPhotos(periodRecord.getPhotos());
+		
 
+		result = this.createEditModelAndView(periodRecord);
+		result.addObject("photos", photos);
 		return result;
+
 
 	}
 	//SAVE
@@ -115,17 +158,27 @@ public class PeriodRecordController extends AbstractController{
 	public ModelAndView save(@Valid final PeriodRecord periodRecord, final BindingResult binding){
 		ModelAndView result;
 
-		if(binding.hasErrors())
-			result = this.createEditModelAndView(periodRecord);
-		else
+		Brotherhood principal;
+		Integer historyId;
+		Collection<String> photos = new ArrayList<>();
+		photos = this.periodRecordService.getSplitPhotos(periodRecord
+				.getPhotos());
+		if(binding.hasErrors()){
+			result=this.createEditModelAndView(periodRecord);
+		}
+		else{
 			try{
+				principal = (Brotherhood) this.actorService.findByPrincipal();
+				historyId = principal.getHistory().getId();
+				Assert.isTrue(this.actorService.checkAuthority(principal,
+						"BROTHERHOOD"));
 				this.periodRecordService.save(periodRecord);
-				result = new ModelAndView("redirect:/history/list.do");
-
+				result = new ModelAndView("redirect:/periodRecord/list.do?historyId="+historyId);
+				result.addObject("photos", photos);
 			}catch(final Throwable oops){
-				result = this.createEditModelAndView(periodRecord, "mr.commit.error");
+				result=this.createEditModelAndView(periodRecord,"mr.commit.error");
 			}
-
+		}
 		return result;
 	}
 	//delete
@@ -163,7 +216,7 @@ public class PeriodRecordController extends AbstractController{
 		ModelAndView result;
 
 
-		result = new ModelAndView("miscellaneousRecord/edit");
+		result = new ModelAndView("periodRecord/edit");
 		result.addObject("periodRecord", periodRecord);
 		result.addObject("messageError", messageError);
 

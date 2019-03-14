@@ -28,7 +28,7 @@
 						code="history.inceptionRecord" />: </strong></td>
 			<td><jstl:out value="${inceptionRecord.title}"></jstl:out></td>
 			<td><a
-				href="inceptionRecord.display.do?inceptionRecordId=${inceptionRecord.id}">
+				href="inceptionRecord/display.do?inceptionRecordId=${inceptionRecord.id}">
 					<spring:message code="history.inceptionRecord.display" />
 			</a></td>
 		</tr>

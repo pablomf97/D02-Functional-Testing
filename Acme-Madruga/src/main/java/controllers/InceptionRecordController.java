@@ -61,7 +61,7 @@ public class InceptionRecordController extends AbstractController {
 			final Collection<String> photos = this.inceptionRecordService
 					.getSplitPhotos(inceptionRecord.getPhotos());
 
-			res=this.createEditModelAndView(inceptionRecord);
+			res=new ModelAndView("inceptionRecord/display");
 			res.addObject("photos",photos);
 			res.addObject("inceptionRecord",inceptionRecord);
 		} catch (final Throwable opps) {
@@ -129,7 +129,8 @@ public class InceptionRecordController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid InceptionRecord inceptionRecord, final BindingResult binding) {
 		ModelAndView result;
-		Actor principal;
+		Brotherhood principal;
+		Integer historyId;
 		Collection<String> photos = new ArrayList<>();
 		photos = this.inceptionRecordService.getSplitPhotos(inceptionRecord
 				.getPhotos());
@@ -138,11 +139,12 @@ public class InceptionRecordController extends AbstractController {
 		}
 		else{
 			try{
-				principal = this.actorService.findByPrincipal();
+				principal = (Brotherhood) this.actorService.findByPrincipal();
+				historyId = principal.getHistory().getId();
 				Assert.isTrue(this.actorService.checkAuthority(principal,
 						"BROTHERHOOD"));
 				this.inceptionRecordService.save(inceptionRecord);
-				result=new ModelAndView("redirect:/history/list.do");
+				result = new ModelAndView("redirect:/inceptionRecord/list.do?historyId="+historyId);
 				result.addObject("photos", photos);
 			}catch(final Throwable oops){
 				result=this.createEditModelAndView(inceptionRecord,"mr.commit.error");

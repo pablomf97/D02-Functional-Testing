@@ -1,5 +1,6 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.transaction.Transactional;
@@ -7,7 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.springframework.validation.Validator;
+
 
 import repositories.PeriodRecordRepository;
 
@@ -28,7 +29,6 @@ public class PeriodRecordService {
 	
 	public PeriodRecord findOne(int id){
 		PeriodRecord res;
-		Assert.isTrue(id!=0,"not saved");
 		res=this.periodRecordRepository.findOne(id);
 		return res;
 		
@@ -67,6 +67,9 @@ public class PeriodRecordService {
 		Assert.isTrue(
 				periodRecord.getStartYear()<=(periodRecord.getEndYear()),
 				"not.date");
+		Assert.isTrue(
+				periodRecord.getStartYear()<1500||(periodRecord.getEndYear()>2100),
+				"not.date");
 		
 		res=this.periodRecordRepository.save(periodRecord);
 		Assert.notNull(res);
@@ -88,5 +91,19 @@ public class PeriodRecordService {
 		Assert.isTrue(periodRecord==null);
 	}
 
+	public Collection<String> getSplitPhotos(final String photos) {
+		final Collection<String> res = new ArrayList<>();
+		final String[] slice = photos.split("< >");
+		for (final String p : slice)
+			res.add(p);
+		return res;
+	}
+	public String checkURLPhotos(final Collection<String> photos) {
+		String result = "";
+		if (!photos.isEmpty())
+			for (final String p : photos)
+				result = result + p.trim() + "< >";
+		return result;
+	}
 	
 }
