@@ -16,13 +16,14 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.HistoryService;
 import services.MiscellaneousRecordService;
+import domain.Actor;
 import domain.Brotherhood;
 import domain.History;
 import domain.MiscellaneousRecord;
 
 @Controller
 @RequestMapping("/miscellaneousRecord")
-public class MiscellaneousRecordController {
+public class MiscellaneousRecordController extends AbstractController{
 
 	//Services
 
@@ -59,6 +60,7 @@ public class MiscellaneousRecordController {
 			result = new ModelAndView("miscellaneousRecord/list");
 			result.addObject("miscellaneousRecords",records);
 			result.addObject("possible", possible);
+			result.addObject("historyId", history.getId());
 
 		}catch(IllegalArgumentException oops){
 			result = new ModelAndView("misc/403");
@@ -71,6 +73,7 @@ public class MiscellaneousRecordController {
 
 		return result;
 	}
+
 
 	//Display
 
@@ -104,18 +107,26 @@ public class MiscellaneousRecordController {
 
 		return result;
 
+
 	}
+
 
 	@RequestMapping(value="/edit", method = RequestMethod.POST, params= "save")
 	public ModelAndView save(@Valid final MiscellaneousRecord record, final BindingResult binding){
 		ModelAndView result;
-
+		Brotherhood principal;
+		Integer historyId;
+		
+		principal = (Brotherhood) this.actorService.findByPrincipal();
+		
+		historyId = principal.getHistory().getId();
+		
 		if(binding.hasErrors())
 			result = this.createEditModelAndView(record);
 		else
 			try{
 				this.miscellaneousRecordService.save(record);
-				result = new ModelAndView("redirect:/history/list.do");
+				result = new ModelAndView("redirect:/miscellaneousRecord/list.do?historyId="+historyId);
 
 			}catch(final Throwable oops){
 				result = this.createEditModelAndView(record, "mr.commit.error");
@@ -127,13 +138,19 @@ public class MiscellaneousRecordController {
 	@RequestMapping(value="/edit", method = RequestMethod.POST, params= "delete")
 	public ModelAndView delete(@Valid final MiscellaneousRecord record, final BindingResult binding){
 		ModelAndView result;
-
+		Brotherhood principal;
+		Integer historyId;
+		
+		principal = (Brotherhood) this.actorService.findByPrincipal();
+		
+		historyId = principal.getHistory().getId();
+		
 		if(binding.hasErrors())
 			result = this.createEditModelAndView(record);
 		else
 			try{
 				this.miscellaneousRecordService.delete(record);
-				result = new ModelAndView("redirect:/history/list.do");
+				result = new ModelAndView("redirect:/miscellaneousRecord/list.do?historyId="+historyId);
 
 			}catch(final Throwable oops){
 				result = this.createEditModelAndView(record, "mr.commit.error");
@@ -141,6 +158,30 @@ public class MiscellaneousRecordController {
 
 		return result;
 	}
+
+	//Create
+
+	@RequestMapping(value="/create", method = RequestMethod.GET)
+	public ModelAndView create(){
+		ModelAndView result;
+		Actor principal;
+		MiscellaneousRecord miscellaneousRecord;
+
+		try{
+
+			principal = this.actorService.findByPrincipal();
+			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+			miscellaneousRecord = this.miscellaneousRecordService.create();
+
+			result = this.createEditModelAndView(miscellaneousRecord);
+		}catch(IllegalArgumentException oops){
+			result = new ModelAndView("misc/403");
+		}
+
+		return result;
+	}
+
+
 
 	//Ancillary methods
 
@@ -155,12 +196,18 @@ public class MiscellaneousRecordController {
 
 	protected ModelAndView createEditModelAndView(final MiscellaneousRecord record, final String messageError){
 		ModelAndView result;
-
+		Brotherhood principal;
+		int historyId;
+		
+		principal = (Brotherhood) this.actorService.findByPrincipal();
+		
+		historyId = principal.getHistory().getId();
 
 		result = new ModelAndView("miscellaneousRecord/edit");
 		result.addObject("miscellaneousRecord", record);
 		result.addObject("messageError", messageError);
-
+		result.addObject("historyId", historyId);
+		
 		return result;
 	}
 

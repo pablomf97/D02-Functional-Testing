@@ -19,58 +19,137 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-
 <security:authorize access="hasRole('BROTHERHOOD')">
 
 	<table class="displayStyle">
-		<tr>
-			<td><strong> <spring:message code="history.inception" />
-					:
-			</strong></td>
-			<td><jstl:out value="${history.inceptionRecord.title}"></jstl:out></td>
-			<td></td>
-		</tr>
-
-
 
 		<tr>
-			<td><strong><spring:message code="history.periods" />:
-			</strong></td>
-			<td></td>
+			<td><strong><spring:message
+						code="history.inceptionRecord" />: </strong></td>
+			<td><jstl:out value="${inceptionRecord.title}"></jstl:out></td>
 			<td><a
-				href="periodRecord/brotherhood/list.do?historyId?${history.id}">
-					<spring:message code="list.periods" />
-			</a></td>
-		</tr>
-
-		<tr>
-			<td><strong><spring:message code="history.legals" />:
-			</strong></td>
-			<td></td>
-			<td><a
-				href="legalRecord/brotherhood/list.do?historyId?${history.id}">
-					<spring:message code="list.legals" />
-			</a></td>
-		</tr>
-
-		<tr>
-			<td><strong><spring:message code="history.links" />: </strong></td>
-			<td></td>
-			<td><a
-				href="linkRecord/brotherhood/list.do?historyId?${history.id}"> <spring:message
-						code="list.links" />
+				href="inceptionRecord.display.do?inceptionRecordId=${inceptionRecord.id}">
+					<spring:message code="history.inceptionRecord.display" />
 			</a></td>
 		</tr>
 
 		<tr>
 			<td><strong><spring:message
-						code="history.miscellaneous" />: </strong></td>
-			<td></td>
-			<td><a
-				href="miscellaneousRecord/brotherhood/list.do?historyId?${history.id}">
-					<spring:message code="list.miscellaneous" />
-			</a></td>
+						code="history.first.miscellaneousRecord" />: </strong></td>
+			<jstl:if test="${!miscellaneousRecords.isEmpty()}">
+				<td><jstl:out value="${miscellaneousRecord.title}"></jstl:out></td>
+
+				<td><a
+					href="miscellaneousRecord/list.do?historyId=${history.id}"> <spring:message
+							code="history.miscellaneousRecord.list" />
+				</a></td>
+			</jstl:if>
 		</tr>
 
+		<tr>
+			<td><strong><spring:message
+						code="history.first.periodRecord" />: </strong></td>
+			<jstl:if test="${!periodRecords.isEmpty()}">
+				<td><jstl:out value="${periodRecord.title}"></jstl:out></td>
+
+				<td><a href="periodRecord/list.do?historyId=${history.id}">
+						<spring:message code="history.periodRecord.list" />
+				</a></td>
+			</jstl:if>
+		</tr>
+
+		<tr>
+			<td><strong><spring:message
+						code="history.first.legalRecord" />: </strong></td>
+			<jstl:if test="${!legalRecords.isEmpty()}">
+				<td><jstl:out value="${legalRecord.title}"></jstl:out></td>
+
+				<td><a href="legalRecord/list.do?historyId=${history.id}">
+						<spring:message code="history.legalRecord.list" />
+				</a></td>
+			</jstl:if>
+		</tr>
+
+		<tr>
+			<td><strong><spring:message
+						code="history.first.linkRecord" />: </strong></td>
+			<jstl:if test="${!linkRecords.isEmpty()}">
+				<td><jstl:out value="${linkRecord.title}"></jstl:out></td>
+
+				<td><a href="linkRecord/list.do?historyId=${history.id}"> <spring:message
+							code="history.linkRecord.list" />
+				</a></td>
+			</jstl:if>
+
+			<jstl:if test="${linkRecords.isEmpty()}">
+				<td><spring:message code="history.empty.record" /></td>
+			</jstl:if>
+
+		</tr>
+
+
+
+
 	</table>
+</security:authorize>
+
+<security:authorize access="isAnonymous()">
+
+	<!-- INCEPTION RECORD -->
+	<tr>
+		<td><strong> <spring:message
+					code="history.inceptionRecord" />
+		</strong></td>
+
+		<td>
+			<table class="displayStyle">
+
+				<tr>
+					<td><strong><spring:message
+								code="history.inceptionRecord.title" /> </strong></td>
+					<td><jstl:out value="${inceptionRecord.title }"></jstl:out></td>
+				</tr>
+
+				<tr>
+					<td><strong><spring:message
+								code="history.inceptionRecord.description" /> </strong></td>
+					<td><jstl:out value="${inceptionRecord.description}"></jstl:out>
+					</td>
+				</tr>
+
+				<tr>
+					<td><strong><spring:message
+								code="history.inceptionRecord.photos" /> </strong></td>
+					<td><jstl:out value="${inceptionRecord.photos }"></jstl:out></td>
+				</tr>
+			</table> <!-- MISCELLANEOUS RECORDS -->
+	<tr>
+		<td><h3>
+				<strong><spring:message code="history.miscellaneousRecords" />:
+				</strong>
+			</h3></td>
+
+		<jstl:forEach var="mr" items="${miscellaneousRecords}">
+
+			<table class="displayStyle">
+
+				<tr>
+					<td><strong> <spring:message
+								code="history.miscellaneousRecord.title" />:
+					</strong></td>
+					<td>	<jstl:out value="${mr.title}"></jstl:out>	</td>
+				</tr>
+				
+				<tr>
+					<td><strong> <spring:message
+								code="history.miscellaneousRecord.description" />:
+					</strong></td>
+					<td>	<jstl:out value="${mr.description}"></jstl:out>	</td>
+				</tr>
+
+			</table>
+
+		</jstl:forEach>
+
+	</tr>
 </security:authorize>

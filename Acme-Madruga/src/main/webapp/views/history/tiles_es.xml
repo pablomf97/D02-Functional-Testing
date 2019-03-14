@@ -10,14 +10,10 @@
 
 <tiles-definitions>
 
-	<definition name="position/list" extends="master.page">
-		<put-attribute name="title" value="Lista de posiciones" />
-		<put-attribute name="body" value="/views/position/list.jsp" />
+	<definition name="history/display" extends="master.page">
+		<put-attribute name="title" value="Mostrar historia" />
+		<put-attribute name="body" value="/views/history/display.jsp" />
 	</definition>
 
-	<definition name="position/edit" extends="master.page">
-		<put-attribute name="title" value="Editar posición" />
-		<put-attribute name="body" value="/views/position/edit.jsp" />
-	</definition>
-
+	
 </tiles-definitions>
