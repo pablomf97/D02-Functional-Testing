@@ -138,13 +138,19 @@ public class MiscellaneousRecordController extends AbstractController{
 	@RequestMapping(value="/edit", method = RequestMethod.POST, params= "delete")
 	public ModelAndView delete(@Valid final MiscellaneousRecord record, final BindingResult binding){
 		ModelAndView result;
-
+		Brotherhood principal;
+		Integer historyId;
+		
+		principal = (Brotherhood) this.actorService.findByPrincipal();
+		
+		historyId = principal.getHistory().getId();
+		
 		if(binding.hasErrors())
 			result = this.createEditModelAndView(record);
 		else
 			try{
 				this.miscellaneousRecordService.delete(record);
-				result = new ModelAndView("redirect:/history/list.do");
+				result = new ModelAndView("redirect:/miscellaneousRecord/list.do?historyId="+historyId);
 
 			}catch(final Throwable oops){
 				result = this.createEditModelAndView(record, "mr.commit.error");

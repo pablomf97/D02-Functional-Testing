@@ -14,6 +14,8 @@
 	<form:form modelAttribute = "miscellaneousRecord" action="miscellaneousRecord/edit.do"
 		id="form">
 		
+		<form:hidden path="id"/>
+		
 		<acme:textbox code="miscellaneousRecord.title" path="title"/><br><br>
 		
 		<spring:message code="miscellaneousRecord.description" /> <br>

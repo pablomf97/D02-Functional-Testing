@@ -21,14 +21,14 @@
 
 <security:authorize access="hasRole('BROTHERHOOD')">
 
-	<display:table pagesize="5" class="displaytag"
+	<display:table pagesize="10" class="displaytag"
 		name="miscellaneousRecords"
 		requestURI="miscellanousReord/list.do?historyId=${historyId}" id="row">
 
 		<display:column titleKey="miscellaneousRecord.title">
 			<jstl:out value="${row.title}"></jstl:out>
 		</display:column>
-		
+
 		<display:column titleKey="miscellaneousRecord.display">
 			<a
 				href="miscellaneousRecord/display.do?miscellaneousRecordId=${row.id}">
@@ -36,5 +36,13 @@
 			</a>
 		</display:column>
 	</display:table>
-	
+
+	<a href="miscellaneousRecord/create.do"> <spring:message
+			code="miscellaneousRecord.create" />
+
+	</a>&nbsp;&nbsp;&nbsp;
+		
+	<acme:cancel url="history/display.do"
+		code="miscellaneousRecord.cancel" />
+
 </security:authorize>

@@ -33,22 +33,16 @@
 			</a></td>
 		</tr>
 
-
-
-
-
-
-
 		<tr>
 			<td><strong><spring:message
 						code="history.first.miscellaneousRecord" />: </strong></td>
 			<jstl:if test="${!miscellaneousRecords.isEmpty()}">
-			<td><jstl:out value="${miscellaneousRecord.title}"></jstl:out></td>
+				<td><jstl:out value="${miscellaneousRecord.title}"></jstl:out></td>
 
-			<td><a
-				href="miscellaneousRecord/list.do?historyId=${history.id}"> <spring:message
-						code="history.miscellaneousRecord.list" />
-			</a></td>
+				<td><a
+					href="miscellaneousRecord/list.do?historyId=${history.id}"> <spring:message
+							code="history.miscellaneousRecord.list" />
+				</a></td>
 			</jstl:if>
 		</tr>
 
@@ -56,11 +50,11 @@
 			<td><strong><spring:message
 						code="history.first.periodRecord" />: </strong></td>
 			<jstl:if test="${!periodRecords.isEmpty()}">
-			<td><jstl:out value="${periodRecord.title}"></jstl:out></td>
+				<td><jstl:out value="${periodRecord.title}"></jstl:out></td>
 
-			<td><a href="periodRecord/list.do?historyId=${history.id}">
-					<spring:message code="history.periodRecord.list" />
-			</a></td>
+				<td><a href="periodRecord/list.do?historyId=${history.id}">
+						<spring:message code="history.periodRecord.list" />
+				</a></td>
 			</jstl:if>
 		</tr>
 
@@ -68,11 +62,11 @@
 			<td><strong><spring:message
 						code="history.first.legalRecord" />: </strong></td>
 			<jstl:if test="${!legalRecords.isEmpty()}">
-			<td><jstl:out value="${legalRecord.title}"></jstl:out></td>
+				<td><jstl:out value="${legalRecord.title}"></jstl:out></td>
 
-			<td><a href="legalRecord/list.do?historyId=${history.id}"> <spring:message
-						code="history.legalRecord.list" />
-			</a></td>
+				<td><a href="legalRecord/list.do?historyId=${history.id}">
+						<spring:message code="history.legalRecord.list" />
+				</a></td>
 			</jstl:if>
 		</tr>
 
@@ -86,11 +80,9 @@
 							code="history.linkRecord.list" />
 				</a></td>
 			</jstl:if>
-			
+
 			<jstl:if test="${linkRecords.isEmpty()}">
-				<td>
-					<spring:message code="history.empty.record"/>
-				</td>
+				<td><spring:message code="history.empty.record" /></td>
 			</jstl:if>
 
 		</tr>
@@ -99,4 +91,65 @@
 
 
 	</table>
+</security:authorize>
+
+<security:authorize access="isAnonymous()">
+
+	<!-- INCEPTION RECORD -->
+	<tr>
+		<td><strong> <spring:message
+					code="history.inceptionRecord" />
+		</strong></td>
+
+		<td>
+			<table class="displayStyle">
+
+				<tr>
+					<td><strong><spring:message
+								code="history.inceptionRecord.title" /> </strong></td>
+					<td><jstl:out value="${inceptionRecord.title }"></jstl:out></td>
+				</tr>
+
+				<tr>
+					<td><strong><spring:message
+								code="history.inceptionRecord.description" /> </strong></td>
+					<td><jstl:out value="${inceptionRecord.description}"></jstl:out>
+					</td>
+				</tr>
+
+				<tr>
+					<td><strong><spring:message
+								code="history.inceptionRecord.photos" /> </strong></td>
+					<td><jstl:out value="${inceptionRecord.photos }"></jstl:out></td>
+				</tr>
+			</table> <!-- MISCELLANEOUS RECORDS -->
+	<tr>
+		<td><h3>
+				<strong><spring:message code="history.miscellaneousRecords" />:
+				</strong>
+			</h3></td>
+
+		<jstl:forEach var="mr" items="${miscellaneousRecords}">
+
+			<table class="displayStyle">
+
+				<tr>
+					<td><strong> <spring:message
+								code="history.miscellaneousRecord.title" />:
+					</strong></td>
+					<td>	<jstl:out value="${mr.title}"></jstl:out>	</td>
+				</tr>
+				
+				<tr>
+					<td><strong> <spring:message
+								code="history.miscellaneousRecord.description" />:
+					</strong></td>
+					<td>	<jstl:out value="${mr.description}"></jstl:out>	</td>
+				</tr>
+
+			</table>
+
+		</jstl:forEach>
+
+	</tr>
 </security:authorize>
