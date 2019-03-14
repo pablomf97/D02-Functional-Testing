@@ -1445,7 +1445,7 @@ your processions." />
 
 		<property name="linkRecords">
 			<list>
-				<ref bean="linkRecord1" />
+				
 
 			</list>
 		</property>
@@ -1479,7 +1479,7 @@ your processions." />
 
 		<property name="linkRecords">
 			<list>
-				<ref bean="linkRecord2" />
+				
 
 			</list>
 		</property>

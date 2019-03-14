@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.HistoryService;
 import services.MiscellaneousRecordService;
+import domain.Actor;
 import domain.Brotherhood;
 import domain.History;
 import domain.MiscellaneousRecord;
@@ -59,6 +60,7 @@ public class MiscellaneousRecordController {
 			result = new ModelAndView("miscellaneousRecord/list");
 			result.addObject("miscellaneousRecords",records);
 			result.addObject("possible", possible);
+			result.addObject("historyId", history.getId());
 
 		}catch(IllegalArgumentException oops){
 			result = new ModelAndView("misc/403");
@@ -71,6 +73,7 @@ public class MiscellaneousRecordController {
 
 		return result;
 	}
+
 
 	//Display
 
@@ -104,7 +107,9 @@ public class MiscellaneousRecordController {
 
 		return result;
 
+
 	}
+
 
 	@RequestMapping(value="/edit", method = RequestMethod.POST, params= "save")
 	public ModelAndView save(@Valid final MiscellaneousRecord record, final BindingResult binding){
@@ -142,6 +147,30 @@ public class MiscellaneousRecordController {
 		return result;
 	}
 
+	//Create
+
+	@RequestMapping(value="/create", method = RequestMethod.GET)
+	public ModelAndView create(){
+		ModelAndView result;
+		Actor principal;
+		MiscellaneousRecord miscellaneousRecord;
+
+		try{
+
+			principal = this.actorService.findByPrincipal();
+			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+			miscellaneousRecord = this.miscellaneousRecordService.create();
+
+			result = this.createEditModelAndView(miscellaneousRecord);
+		}catch(IllegalArgumentException oops){
+			result = new ModelAndView("misc/403");
+		}
+
+		return result;
+	}
+
+
+
 	//Ancillary methods
 
 	protected ModelAndView createEditModelAndView(final MiscellaneousRecord record){
@@ -155,12 +184,18 @@ public class MiscellaneousRecordController {
 
 	protected ModelAndView createEditModelAndView(final MiscellaneousRecord record, final String messageError){
 		ModelAndView result;
-
+		Brotherhood principal;
+		int historyId;
+		
+		principal = (Brotherhood) this.actorService.findByPrincipal();
+		
+		historyId = principal.getHistory().getId();
 
 		result = new ModelAndView("miscellaneousRecord/edit");
 		result.addObject("miscellaneousRecord", record);
 		result.addObject("messageError", messageError);
-
+		result.addObject("historyId", historyId);
+		
 		return result;
 	}
 

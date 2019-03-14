@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
@@ -14,7 +15,7 @@ import domain.Brotherhood;
 import domain.History;
 
 @Controller
-@RequestMapping("/history/brotherhood")
+@RequestMapping("/history")
 public class HistoryBrotherhoodController {
 
 	//Services
@@ -31,7 +32,7 @@ public class HistoryBrotherhoodController {
 	//Display
 	
 	@RequestMapping(value="/display", method = RequestMethod.GET)
-	public ModelAndView display(){
+	public ModelAndView display(@RequestParam (required = false) final int brotherhoodId) {
 		ModelAndView result;
 		Brotherhood principal;
 		History history;
@@ -45,13 +46,7 @@ public class HistoryBrotherhoodController {
 		
 		return result;
 	}
+
 	
-	@RequestMapping(value="/")
-	public ModelAndView save(final History history, final BindingResult binding){
-		ModelAndView result;
-		
-		return null;
-		
-	}
 	
 }

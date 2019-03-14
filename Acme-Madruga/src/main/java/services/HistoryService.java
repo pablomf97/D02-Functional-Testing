@@ -51,37 +51,37 @@ public class HistoryService {
 		
 	}
 	
-	public History save(final History history){
-		Brotherhood principal;
-		History saved;
-		
-		principal = (Brotherhood) this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
-		
-		//No se puede guardar un history sin inception record
-		Assert.notNull(history.getInceptionRecord());
-		
-		saved = this.historyRepository.save(history);
-		
-		return saved;
-		
-	}
-	
-	public void delete(final History history){
-		Brotherhood principal;
-		
-		principal = (Brotherhood) this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
-		
-		Assert.isTrue(history.getId() != 0);
-		
-		//Comprobar que el history a eliminar es el de la brotherhood logeada
-		Assert.isTrue(principal.getHistory().getId() == history.getId());
-		
-		this.historyRepository.delete(history);
-		
-	}
-	
+//	public History save(final History history){
+//		Brotherhood principal;
+//		History saved;
+//		
+//		principal = (Brotherhood) this.actorService.findByPrincipal();
+//		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+//		
+//		//No se puede guardar un history sin inception record
+//		Assert.notNull(history.getInceptionRecord());
+//		
+//		saved = this.historyRepository.save(history);
+//		
+//		return saved;
+//		
+//	}
+//	
+//	public void delete(final History history){
+//		Brotherhood principal;
+//		
+//		principal = (Brotherhood) this.actorService.findByPrincipal();
+//		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+//		
+//		Assert.isTrue(history.getId() != 0);
+//		
+//		//Comprobar que el history a eliminar es el de la brotherhood logeada
+//		Assert.isTrue(principal.getHistory().getId() == history.getId());
+//		
+//		this.historyRepository.delete(history);
+//		
+//	}
+//	
 	public History findOne(int historyId){
 		History result;
 		
