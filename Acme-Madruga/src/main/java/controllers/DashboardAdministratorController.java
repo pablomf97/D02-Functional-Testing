@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.BrotherhoodService;
 import services.FinderService;
+import services.InceptionRecordService;
 import services.MarchService;
 import services.MemberService;
 import services.PositionService;
@@ -47,6 +48,8 @@ public class DashboardAdministratorController extends AbstractController{
 	@Autowired
 	private FinderService finderService;
 	
+	@Autowired
+	private InceptionRecordService inceptionRecordService;
 	//Display
 	
 	
@@ -134,7 +137,22 @@ public class DashboardAdministratorController extends AbstractController{
 		
 //		histogram = this.positionService.histogram();
 		
+		
+		Double minRecordsPerHistory=this.inceptionRecordService.minRecordsPerHistory();
+		Double maxRecordsPerHistory=this.inceptionRecordService.maxRecordsPerHistory();
+		Double avgRecordsPerHistory=this.inceptionRecordService.avgRecordsPerHistory();
+		Double stedvRecordsPerHistory =this.inceptionRecordService.stedvRecordsPerHistory();
+		Collection<Brotherhood> largerBrosthanAvg=this.inceptionRecordService.largerBrosthanAvg();
+		String getLargestBrotherhood=this.inceptionRecordService.getLargestBrotherhood();
+		
 		result = new ModelAndView("administrator/statistics");
+		
+		result.addObject("getLargestBrotherhood",getLargestBrotherhood);
+		result.addObject("largerBrosthanAvg",largerBrosthanAvg);
+		result.addObject("maxRecordsPerHistory",maxRecordsPerHistory);
+		result.addObject("minRecordsPerHistory", minRecordsPerHistory);
+		result.addObject("avgRecordsPerHistory", avgRecordsPerHistory);
+		result.addObject("stedvRecordsPerHistory",stedvRecordsPerHistory);
 		
 		result.addObject("stdevBrotherhoodPerArea", stdevBrotherhoodPerArea);
 		result.addObject("nameEsPositions", nameEsPositions);

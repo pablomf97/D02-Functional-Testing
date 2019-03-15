@@ -119,7 +119,7 @@ public class InceptionRecordService {
 	}
 
 	// The brotherhood with the largest history.
-	public String getLargestBrotherhood(){
+/*	public String getLargestBrotherhood(){
 		Collection<Brotherhood> bros;
 		List<Integer> results=new ArrayList<Integer>();
 		bros=this.brotherhoodService.findAll();
@@ -131,7 +131,7 @@ public class InceptionRecordService {
 		maxValue=Collections.max(results);
 		return null ;
 
-	}
+	}*/
 	//number of records of a bro
 	public Integer getSizeAll(Brotherhood b){
 		Integer res ;
@@ -149,48 +149,154 @@ public class InceptionRecordService {
 		return res;
 	}
 	//The average
-	
+
 	public Double avgRecordsPerHistory(){
-		//sumo todas las avg y luego divido entre 5 
 		
-		return null;
+		Double misc;
+		Double legals;
+		Double links;
+		Double periods;
+		Double inception=0.;
+		Double res;
+		if(this.brotherhoodService.findAll()!=null){
+			inception=1.;
+		}
+
+		misc=this.inceptionRecordRepository.statsMisc()[2];
+		periods=this.inceptionRecordRepository.statsPeriod()[2];
+		legals=this.inceptionRecordRepository.statsLegal()[2];
+		links=this.inceptionRecordRepository.statsLink()[2];
 		
+		res=misc+periods+legals+links+inception;
+
+
+		return res;
+		
+
 	}
-	
+
 
 	//the minimum
-	
-	public Integer minRecordsPerHistory(){
-		return null;
-		//sumo todos los mins de stats query
-	}
-	
-	
 
-	//the maximum
-	public Integer maxRecordsPerHistory(){
-		////sumo todos los max de stats query
-		return null;
+	public Double minRecordsPerHistory(){
+		Double misc;
+		Double legals;
+		Double links;
+		Double periods;
+		Double inception=0.;
+		Double res;
+		if(this.brotherhoodService.findAll()!=null){
+			inception=1.;
+		}
+
+		misc=this.inceptionRecordRepository.statsMisc()[1];
+		periods=this.inceptionRecordRepository.statsPeriod()[1];
+		legals=this.inceptionRecordRepository.statsLegal()[1];
+		links=this.inceptionRecordRepository.statsLink()[1];
+		
+		res=misc+periods+legals+links+inception;
+
+
+		return res;
 		
 	}
-	
-	
+
+
+
+	//the maximum
+	public Double maxRecordsPerHistory(){
+		
+		Double misc;
+		Double legals;
+		Double links;
+		Double periods;
+		Double inception=0.;
+		Double res;
+		if(this.brotherhoodService.findAll()!=null){
+			inception=1.;
+		}
+
+		misc=this.inceptionRecordRepository.statsMisc()[0];
+		periods=this.inceptionRecordRepository.statsPeriod()[0];
+		legals=this.inceptionRecordRepository.statsLegal()[0];
+		links=this.inceptionRecordRepository.statsLink()[0];
+		
+		res=misc+periods+legals+links+inception;
+
+
+		return res;
+
+	}
+
+
 
 	//the standard deviation of the
 	//number of records per history
 	public Double stedvRecordsPerHistory(){
-		//sumo todas las stedv y luego entre 5
-		return null;
+		Double misc;
+		Double legals;
+		Double links;
+		Double periods;
+		Double inception=0.;
+		Double res;
+		if(this.brotherhoodService.findAll()!=null){
+			inception=1.;
+		}
+
+		misc=this.inceptionRecordRepository.statsMisc()[3];
+		periods=this.inceptionRecordRepository.statsPeriod()[3];
+		legals=this.inceptionRecordRepository.statsLegal()[3];
+		links=this.inceptionRecordRepository.statsLink()[3];
 		
+		res=(misc+periods+legals+links+inception)/5;
+
+
+		return res;
+
 	}
-	
-	
+
+
 	// The brotherhoods whose history is larger than the average.
 	public Collection<Brotherhood> largerBrosthanAvg(){
-		return null;
+		Collection<Brotherhood> bros;
+		Collection<Brotherhood> results = new ArrayList<Brotherhood>();
+		Double records;
+		bros=this.brotherhoodService.findAll();
 		
+		for(Brotherhood b:bros){
+			records=1.+b.getHistory().getLegalRecords().size()+
+					b.getHistory().getLinkRecords().size()+
+					b.getHistory().getMiscellaneousRecords().size()+b.getHistory().getPeriodRecords().size();
+			if(records>=avgRecordsPerHistory()){
+				results.add(b);
+			}
+		}
+		return results;
+
 	}
-	
-	
+	// The brotherhood with the largest history.
+	public String getLargestBrotherhood(){
+
+		Collection<Brotherhood> bros;
+		Collection<Double> results = new ArrayList<Double>();
+		Double records;
+		String bro = "";
+		bros=this.brotherhoodService.findAll();
+		
+		for(Brotherhood b:bros){
+			records=1.+b.getHistory().getLegalRecords().size()+
+					b.getHistory().getLinkRecords().size()+
+					b.getHistory().getMiscellaneousRecords().size()+b.getHistory().getPeriodRecords().size();
+			results.add(records);
+			if(records==Collections.max(results)){
+				bro=b.getUserAccount().getUsername();
+			}
+		}
+		return bro;
+
+	}
+
+
+
 
 }
