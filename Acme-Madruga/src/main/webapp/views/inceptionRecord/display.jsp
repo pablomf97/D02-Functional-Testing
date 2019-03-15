@@ -43,7 +43,7 @@
 			</display:table>
 
 		</tr>
-
+	<jstl:if test="${inceptionRecord.id != 0}">
 		<tr>
 
 			<td><input type="button" name="edit"
@@ -53,7 +53,11 @@
 			</td>
 
 		</tr>
-		
+		</jstl:if>
+		<jstl:if test="${ inceptionRecord.id == 0}">
+			<a href="inceptionRecord/create.do"> <spring:message
+			code="periodRecord.create" /></a>
+		</jstl:if>
 
 		<tr>
 

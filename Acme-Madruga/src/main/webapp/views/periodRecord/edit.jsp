@@ -51,9 +51,13 @@
 			value="<spring:message code="periodRecord.cancel" />"
 			onclick="window.history.back()" />
 
+		&nbsp;
+			<jstl:if test="${periodRecord.id != 0 }">
+		<acme:delete name="delete" confirmation="mr.confirm.delete"
+			code="legalRecord.delete" />&nbsp;
 		<br />
 		<br />
-
+		</jstl:if>
 
 
 	</form:form>

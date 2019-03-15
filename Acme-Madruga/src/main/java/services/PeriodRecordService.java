@@ -85,10 +85,10 @@ public class PeriodRecordService {
 				"not.allowed");
 		
 		Assert.notNull(periodRecord);
-		Assert.isTrue(periodRecord.getId() != 0, "wrong.id");
+		
 		
 		this.periodRecordRepository.delete(periodRecord);
-		Assert.isTrue(periodRecord==null);
+		//Assert.isTrue(periodRecord==null);
 	}
 
 	public Collection<String> getSplitPhotos(final String photos) {

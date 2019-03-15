@@ -37,15 +37,16 @@
 		<br>
 		<br>
 		<acme:submit code="legalRecord.save" name="save" />&nbsp;
+		<input type="button" name="back"
+			value="<spring:message code="legalRecord.cancel" />"
+			onclick="window.history.back()" />
 		
-		<acme:cancel url="legalRecord/list.do?historyId=${historyId}"
-			code="legalRecord.cancel" />
-
+		<jstl:if test="${legalRecord.id != 0 }">
 		<acme:delete name="delete" confirmation="mr.confirm.delete"
 			code="legalRecord.delete" />
 		<br />
 		<br />
-
+		</jstl:if>
 	</form:form>
 
 </security:authorize>

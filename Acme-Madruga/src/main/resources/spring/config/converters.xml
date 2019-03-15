@@ -44,6 +44,9 @@
 		<bean class="converters.ActorToStringConverter"	/>
 		<bean class="converters.StringToActorConverter"	/>
 		
+		<bean class="converters.StringToPeriodRecordConverter"	/>
+		<bean class="converters.PeriodRecordToStringConverter"	/>
+		
 	</util:list>
 
 </beans>

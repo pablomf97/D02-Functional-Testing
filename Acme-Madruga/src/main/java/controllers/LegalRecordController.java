@@ -17,6 +17,7 @@ import domain.Actor;
 import domain.Brotherhood;
 import domain.History;
 import domain.LegalRecord;
+import domain.PeriodRecord;
 
 
 import services.ActorService;
@@ -132,6 +133,28 @@ public class LegalRecordController {
 
 			return result;
 		}
+		//CREATE 
+		
+		@RequestMapping(value="/create", method = RequestMethod.GET)
+		public ModelAndView create(){
+			ModelAndView result;
+			Actor principal;
+			LegalRecord legalRecord;
+
+			try{
+
+				principal = this.actorService.findByPrincipal();
+				Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+				legalRecord = this.legalRecordService.create();
+
+				result = this.createEditModelAndView(legalRecord);
+			}catch(IllegalArgumentException oops){
+				result = new ModelAndView("misc/403");
+			}
+
+			return result;
+		}
+
 	
 		//delete
 		@RequestMapping(value="/edit", method = RequestMethod.POST, params= "delete")

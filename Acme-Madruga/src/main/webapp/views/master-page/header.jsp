@@ -143,7 +143,12 @@
 
 			<li><a class="fNiv" href="march/member,brotherhood/list.do"><spring:message
 						code="master.page.member.march" /></a></li>
-
+				
+				<li><a class="fNiv" href="history/display.do"><spring:message
+						code="master.page.administrator.history" /></a>
+						</li>
+			
+		
 		</security:authorize>
 
 		<security:authorize access="isAnonymous()">
@@ -167,7 +172,8 @@
 						<li><a href="brotherhood/members/list.do"><spring:message
 								code="master.page.brotherhood.members.list" /></a></li>
 					</ul></li>
-
+	
+			
 		</security:authorize>
 
 		<security:authorize access="isAuthenticated()">

@@ -3,7 +3,7 @@ package services;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+
 
 import javax.transaction.Transactional;
 
@@ -32,17 +32,6 @@ public class InceptionRecordService {
 
 	@Autowired
 	private BrotherhoodService brotherhoodService;
-
-	@Autowired
-	private MiscellaneousRecordService miscellaneousRecordService;
-
-	@Autowired
-	private LegalRecordService legalRecordService;
-
-	@Autowired
-	private LinkRecordService linkRecordService;
-	@Autowired
-	private PeriodRecordService periodRecordService;
 
 
 	public InceptionRecord findOne(int id){
@@ -79,9 +68,9 @@ public class InceptionRecordService {
 				"not.allowed");
 		Assert.notNull(inceptionRecord.getTitle(),"not.null");
 		Assert.notNull(inceptionRecord.getDescription(),"not.null");
-		Assert.notNull(inceptionRecord.getPhotos(),"not.null");//falta anotacion @URL?**
+		Assert.notNull(inceptionRecord.getPhotos(),"not.null");
 		res=this.inceptionRecordRepository.save(inceptionRecord);
-		Assert.notNull(res);
+		//Assert.notNull(res);
 		return res;
 	}
 

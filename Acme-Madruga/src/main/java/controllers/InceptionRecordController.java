@@ -130,22 +130,22 @@ public class InceptionRecordController extends AbstractController {
 	public ModelAndView save(@Valid InceptionRecord inceptionRecord, final BindingResult binding) {
 		ModelAndView result;
 		Brotherhood principal;
-		Integer historyId;
-		Collection<String> photos = new ArrayList<>();
-		photos = this.inceptionRecordService.getSplitPhotos(inceptionRecord
-				.getPhotos());
+		
+		//Collection<String> photos = new ArrayList<>();
+		//photos = this.inceptionRecordService.getSplitPhotos(inceptionRecord
+			//	.getPhotos());
 		if(binding.hasErrors()){
 			result=this.createEditModelAndView(inceptionRecord);
 		}
 		else{
 			try{
 				principal = (Brotherhood) this.actorService.findByPrincipal();
-				historyId = principal.getHistory().getId();
+				
 				Assert.isTrue(this.actorService.checkAuthority(principal,
 						"BROTHERHOOD"));
 				this.inceptionRecordService.save(inceptionRecord);
-				result = new ModelAndView("redirect:/inceptionRecord/list.do?historyId="+historyId);
-				result.addObject("photos", photos);
+				result = new ModelAndView("redirect:/inceptionRecord/display.do?inceptionRecordId="+inceptionRecord.getId());
+				//result.addObject("photos", photos);
 			}catch(final Throwable oops){
 				result=this.createEditModelAndView(inceptionRecord,"mr.commit.error");
 			}
