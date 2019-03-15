@@ -1,3 +1,4 @@
+
 package services;
 
 import java.net.MalformedURLException;
@@ -30,25 +31,26 @@ import forms.BrotherhoodForm;
 public class BrotherhoodService {
 
 	@Autowired
-	private UserAccountService userAccountService;
+	private UserAccountService		userAccountService;
 
 	@Autowired
-	private BrotherhoodRepository brotherhoodRepository;
+	private BrotherhoodRepository	brotherhoodRepository;
 
 	@Autowired
-	private Validator validator;
+	private Validator				validator;
 
 	@Autowired
-	private ActorService actorService;
+	private ActorService			actorService;
 
 	@Autowired
-	private EnrolmentService enrolmentService;
+	private EnrolmentService		enrolmentService;
 
 	@Autowired
-	private MessageBoxService messageBoxService;
+	private MessageBoxService		messageBoxService;
 
 	@Autowired
-	private ZoneService zoneService;
+	private ZoneService				zoneService;
+
 
 	/**
 	 * Create a new empty brotherhood
@@ -113,24 +115,18 @@ public class BrotherhoodService {
 			final UserAccount account = brotherhood.getUserAccount();
 			final Authority au = new Authority();
 			au.setAuthority(Authority.BROTHERHOOD);
-			Assert.isTrue(account.getAuthorities().contains(au),
-					"You can not register with this authority");
+			Assert.isTrue(account.getAuthorities().contains(au), "You can not register with this authority");
 			final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-			final String hash = encoder.encodePassword(brotherhood
-					.getUserAccount().getPassword(), null);
+			final String hash = encoder.encodePassword(brotherhood.getUserAccount().getPassword(), null);
 			brotherhood.getUserAccount().setPassword(hash);
-			final UserAccount savedAccount = this.userAccountService
-					.save(account);
+			final UserAccount savedAccount = this.userAccountService.save(account);
 			brotherhood.setUserAccount(savedAccount);
 			result = this.brotherhoodRepository.save(brotherhood);
 			this.messageBoxService.initializeDefaultBoxes(result);
 		} else {
 			final UserAccount userAccount = LoginService.getPrincipal();
-			final Brotherhood brotherhoodBD = this.brotherhoodRepository
-					.findOne(brotherhood.getId());
-			Assert.isTrue(brotherhood.getUserAccount().equals(userAccount)
-					|| brotherhoodBD.getUserAccount().equals(userAccount),
-					"This account does not belong to you");
+			final Brotherhood brotherhoodBD = this.brotherhoodRepository.findOne(brotherhood.getId());
+			Assert.isTrue(brotherhood.getUserAccount().equals(userAccount) || brotherhoodBD.getUserAccount().equals(userAccount), "This account does not belong to you");
 			result = this.brotherhoodRepository.save(brotherhood);
 		}
 		return result;
@@ -144,8 +140,7 @@ public class BrotherhoodService {
 	public void delete(final int id) {
 		final Brotherhood brotherhood = this.brotherhoodRepository.findOne(id);
 		final UserAccount userAccount = LoginService.getPrincipal();
-		Assert.isTrue(brotherhood.getUserAccount().equals(userAccount),
-				"This account does not belong to you");
+		Assert.isTrue(brotherhood.getUserAccount().equals(userAccount), "This account does not belong to you");
 		this.brotherhoodRepository.delete(id);
 	}
 
@@ -156,8 +151,7 @@ public class BrotherhoodService {
 	 * @param binding
 	 * @return brotherhood
 	 */
-	public Brotherhood reconstruct(final BrotherhoodForm brotherhoodForm,
-			final BindingResult binding) {
+	public Brotherhood reconstruct(final BrotherhoodForm brotherhoodForm, final BindingResult binding) {
 		Brotherhood result = this.create();
 
 		if (brotherhoodForm.getId() == 0) {
@@ -178,11 +172,9 @@ public class BrotherhoodService {
 
 		} else {
 
-			final Brotherhood bd = this.brotherhoodRepository
-					.findOne(brotherhoodForm.getId());
+			final Brotherhood bd = this.brotherhoodRepository.findOne(brotherhoodForm.getId());
 			Assert.notNull(bd, "NotIdValid");
-			Assert.isTrue(this.actorService.findByPrincipal().getId() == bd
-					.getId());
+			Assert.isTrue(this.actorService.findByPrincipal().getId() == bd.getId());
 
 			if (this.checkValidation(brotherhoodForm, binding, bd)) {
 
@@ -199,8 +191,7 @@ public class BrotherhoodService {
 				result = bd;
 
 			} else {
-
-				result = this.create();
+				result.setId(brotherhoodForm.getId());
 				result.setAddress(brotherhoodForm.getAddress());
 				result.setEmail(brotherhoodForm.getEmail());
 				result.setMiddleName(brotherhoodForm.getMiddleName());
@@ -211,22 +202,18 @@ public class BrotherhoodService {
 				result.setTitle(brotherhoodForm.getTitle());
 				if (bd.getZone() != null)
 					result.setZone(bd.getZone());
-				else if (bd.getZone() == null
-						&& brotherhoodForm.getZone() != null)
-					result.setZone(bd.getZone());
-
+				else if (brotherhoodForm.getZone() != null)
+					result.setZone(brotherhoodForm.getZone());
 			}
 		}
 		return result;
 	}
 
-	private boolean checkValidation(final BrotherhoodForm brotherhoodForm,
-			final BindingResult binding, final Brotherhood brotherhood) {
+	private boolean checkValidation(final BrotherhoodForm brotherhoodForm, final BindingResult binding, final Brotherhood brotherhood) {
 		boolean check = true;
 		brotherhoodForm.setCheckBox(true);
 		brotherhoodForm.setPassword(brotherhood.getUserAccount().getPassword());
-		brotherhoodForm
-				.setPassword2(brotherhood.getUserAccount().getPassword());
+		brotherhoodForm.setPassword2(brotherhood.getUserAccount().getPassword());
 		brotherhoodForm.setUsername(brotherhood.getUserAccount().getUsername());
 		this.validator.validate(brotherhoodForm, binding);
 		if (binding.hasErrors())
@@ -238,18 +225,19 @@ public class BrotherhoodService {
 		final Collection<String> res = new ArrayList<>();
 		final String[] slice = pictures.split("< >");
 		for (final String p : slice)
-			res.add(p);
+			if (p.trim() != "")
+				res.add(p);
 		return res;
 	}
 
-	public String convetCollectionToString(final Collection<String> pictures)
-			throws MalformedURLException, URISyntaxException {
+	public String convetCollectionToString(final Collection<String> pictures) throws MalformedURLException, URISyntaxException {
 		String result = "";
 		if (pictures != null)
-			for (final String p : pictures) {
-				(new URL(p.trim())).toURI();
-				result = result + p.trim() + "< >";
-			}
+			for (final String p : pictures)
+				if (p.trim() != "") {
+					(new URL(p.trim())).toURI();
+					result = result + p.trim() + "< >";
+				}
 		return result;
 	}
 
@@ -270,14 +258,12 @@ public class BrotherhoodService {
 		brotherhoods = this.findAll();
 
 		for (final Brotherhood b : brotherhoods) {
-			enrolments = this.enrolmentService
-					.findActiveEnrolmentByBrotherhood(b.getId());
+			enrolments = this.enrolmentService.findActiveEnrolmentByBrotherhood(b.getId());
 
 			if (count == 0)
 				result = b;
 
-			if (this.enrolmentService.getEnrollmentsByBrotherhood(
-					result.getId()).size() < enrolments.size())
+			if (this.enrolmentService.getEnrollmentsByBrotherhood(result.getId()).size() < enrolments.size())
 				result = b;
 
 			count++;
@@ -295,14 +281,12 @@ public class BrotherhoodService {
 		brotherhoods = this.findAll();
 
 		for (final Brotherhood b : brotherhoods) {
-			enrolments = this.enrolmentService
-					.findActiveEnrolmentByBrotherhood(b.getId());
+			enrolments = this.enrolmentService.findActiveEnrolmentByBrotherhood(b.getId());
 
 			if (count == 0)
 				result = b;
 
-			if (this.enrolmentService.getEnrollmentsByBrotherhood(
-					result.getId()).size() > enrolments.size())
+			if (this.enrolmentService.getEnrollmentsByBrotherhood(result.getId()).size() > enrolments.size())
 				result = b;
 
 			count++;
@@ -321,10 +305,8 @@ public class BrotherhoodService {
 		zones = this.zoneService.findAll();
 		brotherhoods = this.brotherhoodRepository.findAll();
 
-		for (Zone z : zones) {
+		for (final Zone z : zones)
 			brotherhoodsInZone = this.findBrotherhoodsByZone(z.getId());
-
-		}
 
 		size = (double) brotherhoodsInZone.size();
 
@@ -340,10 +322,8 @@ public class BrotherhoodService {
 
 		zones = this.zoneService.findAll();
 
-		for (Zone z : zones) {
+		for (final Zone z : zones)
 			brotherhoodsInZone = this.findBrotherhoodsByZone(z.getId());
-
-		}
 
 		return (double) brotherhoodsInZone.size();
 
@@ -358,17 +338,14 @@ public class BrotherhoodService {
 		zones = this.zoneService.findAll();
 		Assert.notNull(zones);
 
-		for (Zone z : zones) {
+		for (final Zone z : zones) {
 			brotherhoodsInZone = this.findBrotherhoodsByZone(z.getId());
 
-			if (count == 0) {
+			if (count == 0)
 				result = (double) brotherhoodsInZone.size();
-			}
 
-			if (brotherhoodsInZone.size() > result) {
-
+			if (brotherhoodsInZone.size() > result)
 				result = (double) brotherhoodsInZone.size();
-			}
 
 			count++;
 		}
@@ -385,17 +362,14 @@ public class BrotherhoodService {
 		zones = this.zoneService.findAll();
 		Assert.notNull(zones);
 
-		for (Zone z : zones) {
+		for (final Zone z : zones) {
 			brotherhoodsInZone = this.findBrotherhoodsByZone(z.getId());
 
-			if (count == 0) {
+			if (count == 0)
 				result = (double) brotherhoodsInZone.size();
-			}
 
-			if (brotherhoodsInZone.size() < result) {
-
+			if (brotherhoodsInZone.size() < result)
 				result = (double) brotherhoodsInZone.size();
-			}
 
 			count++;
 		}
@@ -407,34 +381,31 @@ public class BrotherhoodService {
 		return this.brotherhoodRepository.allBros();
 	}
 
-	public Collection<Brotherhood> findBrotherhoodsByZone(int zoneId) {
-		Collection<Brotherhood> result = this.brotherhoodRepository
-				.brotherhoodsByZone(zoneId);
+	public Collection<Brotherhood> findBrotherhoodsByZone(final int zoneId) {
+		final Collection<Brotherhood> result = this.brotherhoodRepository.brotherhoodsByZone(zoneId);
 		return result;
 
 	}
 
 	public Double stdevBrotherhoodPerArea() {
 		Collection<Zone> zones;
-		Collection<Brotherhood> brotherhoods = new ArrayList<Brotherhood>();
+		final Collection<Brotherhood> brotherhoods = new ArrayList<Brotherhood>();
 
 		zones = this.zoneService.findAll();
 
-		for (Zone z : zones) {
+		for (final Zone z : zones)
 			brotherhoods.addAll(this.findBrotherhoodsByZone(z.getId()));
-
-		}
-		Double n = (double) brotherhoods.size();
-		Double average = (double) brotherhoods.size() / zones.size();
-		Double averageTimes = (double) average * n;
-		Double lele = (Math.pow(n - averageTimes, 2));
-		Double lolo = 1 / (n - 1);
-		Double stdev = (double) Math.sqrt(lolo * lele);
+		final Double n = (double) brotherhoods.size();
+		final Double average = (double) brotherhoods.size() / zones.size();
+		final Double averageTimes = average * n;
+		final Double lele = (Math.pow(n - averageTimes, 2));
+		final Double lolo = 1 / (n - 1);
+		final Double stdev = (double) Math.sqrt(lolo * lele);
 
 		return stdev;
 	}
 
-	public Collection<Brotherhood> brotherhoodsByMemberId(int memberId) {
+	public Collection<Brotherhood> brotherhoodsByMemberId(final int memberId) {
 		Collection<Brotherhood> res;
 
 		res = this.brotherhoodRepository.brotherhoodsByMemberId(memberId);
@@ -442,7 +413,7 @@ public class BrotherhoodService {
 		return res;
 	}
 
-	public Collection<Brotherhood> brotherhoodsByMemberInId(int memberId) {
+	public Collection<Brotherhood> brotherhoodsByMemberInId(final int memberId) {
 		Collection<Brotherhood> res;
 
 		res = this.brotherhoodRepository.brotherhoodsByMemberInId(memberId);
@@ -450,7 +421,7 @@ public class BrotherhoodService {
 		return res;
 	}
 
-	public Collection<Brotherhood> allBrotherhoodsByMemberId(int memberId) {
+	public Collection<Brotherhood> allBrotherhoodsByMemberId(final int memberId) {
 		Collection<Brotherhood> res;
 
 		res = this.brotherhoodRepository.allBrotherhoodsByMemberId(memberId);

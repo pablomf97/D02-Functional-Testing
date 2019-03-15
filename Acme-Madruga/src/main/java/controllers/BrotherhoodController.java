@@ -138,7 +138,6 @@ public class BrotherhoodController extends AbstractController {
 				result = new ModelAndView("brotherhood/edit");
 				result.addObject("uri", "brotherhood/edit.do");
 				brotherhood.getUserAccount().setPassword("");
-				brotherhood.setZone(null);
 				result.addObject("brotherhood", brotherhood);
 				result.addObject("emailError", emailError);
 				result.addObject("checkLaw", check);
