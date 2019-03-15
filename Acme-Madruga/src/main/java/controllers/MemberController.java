@@ -44,7 +44,6 @@ public class MemberController extends AbstractController {
 
 		try {
 			m = this.memberService.findOne(id);
-			Assert.isTrue(this.actorService.checkAuthority(m, "MEMBER"));
 			enrolledBrotherhoods = this.brotherhoodService
 					.brotherhoodsByMemberId(m.getId());
 			moreBrotherhoods = this.brotherhoodService

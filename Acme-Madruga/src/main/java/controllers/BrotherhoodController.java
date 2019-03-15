@@ -47,7 +47,6 @@ public class BrotherhoodController extends AbstractController {
 		try {
 			result = new ModelAndView("brotherhood/display");
 			b = this.brotherhoodService.findOne(id);
-			Assert.isTrue(b.equals(this.actorService.findByPrincipal()));
 			final Collection<String> pictures = this.brotherhoodService
 					.getSplitPictures(b.getPictures());
 			result.addObject("brotherhood", b);
