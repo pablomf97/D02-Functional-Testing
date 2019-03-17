@@ -48,7 +48,7 @@ public class SystemConfigurationController extends AbstractController {
 		String[] positiveWords;
 		String[] messagePriority;
 		Map<String, String> welcomeMessage;
-		Map<String,String> breachNotification;
+	//	Map<String,String> breachNotification;
 		Boolean err;
 
 		try {
@@ -64,7 +64,7 @@ public class SystemConfigurationController extends AbstractController {
 			positiveWords = sysConfig.getPossitiveWords().split(",");
 			messagePriority = sysConfig.getMessagePriority().split(",");
 			welcomeMessage = sysConfig.getWelcomeMessage();
-			breachNotification=sysConfig.getBreachNotification();
+//			breachNotification=sysConfig.getBreachNotification();
 			
 			res = new ModelAndView("sysConfig/display");
 			res.addObject("sysConfig", sysConfig);
@@ -73,7 +73,7 @@ public class SystemConfigurationController extends AbstractController {
 			res.addObject("positiveWords", positiveWords);
 			res.addObject("messagePriority", messagePriority);
 			res.addObject("welcomeMessage", welcomeMessage);
-			res.addObject("breachNotification",breachNotification);
+//			res.addObject("breachNotification",breachNotification);
 
 		} catch (IllegalArgumentException oops) {
 			res = new ModelAndView("misc/403");

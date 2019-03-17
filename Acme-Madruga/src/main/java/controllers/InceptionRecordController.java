@@ -2,7 +2,7 @@ package controllers;
 
 
 
-import java.util.ArrayList;
+
 import java.util.Collection;
 
 import javax.validation.Valid;
@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import domain.Actor;
 import domain.Brotherhood;
+import domain.PeriodRecord;
 
 import domain.InceptionRecord;
 
@@ -154,7 +155,28 @@ public class InceptionRecordController extends AbstractController {
 
 
 	}
+	//delete
+		@RequestMapping(value="/edit", method = RequestMethod.POST, params= "delete")
+		public ModelAndView delete(@Valid final InceptionRecord inceptionRecord, final BindingResult binding){
+			ModelAndView result;
+			Brotherhood principal;
+			Integer historyId;
+			principal = (Brotherhood) this.actorService.findByPrincipal();
 
+			historyId = principal.getHistory().getId();
+			if(binding.hasErrors())
+				result = this.createEditModelAndView(inceptionRecord);
+			else
+				try{
+					this.inceptionRecordService.delete(inceptionRecord);
+					result = new ModelAndView("redirect:/inceptionRecord/list.do?historyId="+historyId);
+
+				}catch(final Throwable oops){
+					result = this.createEditModelAndView(inceptionRecord, "mr.commit.error");
+				}
+
+			return result;
+		}
 
 
 

@@ -1,6 +1,6 @@
 package controllers;
 
-import java.util.ArrayList;
+
 import java.util.Collection;
 
 import javax.validation.Valid;
@@ -32,28 +32,28 @@ public class PeriodRecordController extends AbstractController{
 	//Services
 	@Autowired
 	private PeriodRecordService periodRecordService;
-	
+
 	@Autowired
 	private ActorService actorService;
-	
+
 	@Autowired
 	private HistoryService historyService;
 
 	// Constructors
-	
+
 	public PeriodRecordController() {
 		super();
 	}
-	
+
 	// Display
-	
-	
+
+
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam int periodRecordId) {
 		ModelAndView res;
 		Actor principal;
 		PeriodRecord periodRecord;
-		
+
 		try{
 			principal = this.actorService.findByPrincipal();
 			Assert.isTrue(this.actorService.checkAuthority(principal,
@@ -80,22 +80,22 @@ public class PeriodRecordController extends AbstractController{
 		Collection<PeriodRecord> records;
 		History history;
 		Boolean possible;
-		
-		history=this.historyService.findOne(historyId);
-		
-		try{
-		
-		principal = (Brotherhood) this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
-		
-		records=history.getPeriodRecords();
-		possible = true;
 
-		result = new ModelAndView("periodRecord/list");
-		result.addObject("periodRecords",records);
-		result.addObject("possible", possible);
-		result.addObject("historyId", history.getId());
-		
+		history=this.historyService.findOne(historyId);
+
+		try{
+
+			principal = (Brotherhood) this.actorService.findByPrincipal();
+			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+
+			records=history.getPeriodRecords();
+			possible = true;
+
+			result = new ModelAndView("periodRecord/list");
+			result.addObject("periodRecords",records);
+			result.addObject("possible", possible);
+			result.addObject("historyId", history.getId());
+
 		}catch(IllegalArgumentException oops){
 			result = new ModelAndView("misc/403");
 		}catch(Throwable oopsi){
@@ -104,12 +104,12 @@ public class PeriodRecordController extends AbstractController{
 
 			result.addObject("possible", possible);
 		}
-	
-		
-			return result;
+
+
+		return result;
 	}
 	//CREATE 
-	
+
 	@RequestMapping(value="/create", method = RequestMethod.GET)
 	public ModelAndView create(){
 		ModelAndView result;
@@ -143,12 +143,12 @@ public class PeriodRecordController extends AbstractController{
 		periodRecord = this.periodRecordService.findOne(periodRecordId);
 		Assert.notNull(periodRecord);
 
-		final Collection<String> photos = this.periodRecordService
-				.getSplitPhotos(periodRecord.getPhotos());
-		
+		//	final Collection<String> photos = this.periodRecordService
+		//		.getSplitPhotos(periodRecord.getPhotos());
+
 
 		result = this.createEditModelAndView(periodRecord);
-		result.addObject("photos", photos);
+		//result.addObject("photos", photos);
 		return result;
 
 
@@ -160,9 +160,9 @@ public class PeriodRecordController extends AbstractController{
 
 		Brotherhood principal;
 		Integer historyId;
-		Collection<String> photos = new ArrayList<>();
-		photos = this.periodRecordService.getSplitPhotos(periodRecord
-				.getPhotos());
+		//Collection<String> photos = new ArrayList<>();
+		//	photos = this.periodRecordService.getSplitPhotos(periodRecord
+		//	.getPhotos());
 		if(binding.hasErrors()){
 			result=this.createEditModelAndView(periodRecord);
 		}
@@ -174,9 +174,10 @@ public class PeriodRecordController extends AbstractController{
 						"BROTHERHOOD"));
 				this.periodRecordService.save(periodRecord);
 				result = new ModelAndView("redirect:/periodRecord/list.do?historyId="+historyId);
-				result.addObject("photos", photos);
+				//result.addObject("photos", photos);
 			}catch(final Throwable oops){
 				result=this.createEditModelAndView(periodRecord,"mr.commit.error");
+
 			}
 		}
 		return result;
@@ -185,13 +186,17 @@ public class PeriodRecordController extends AbstractController{
 	@RequestMapping(value="/edit", method = RequestMethod.POST, params= "delete")
 	public ModelAndView delete(@Valid final PeriodRecord periodRecord, final BindingResult binding){
 		ModelAndView result;
+		Brotherhood principal;
+		Integer historyId;
+		principal = (Brotherhood) this.actorService.findByPrincipal();
 
+		historyId = principal.getHistory().getId();
 		if(binding.hasErrors())
 			result = this.createEditModelAndView(periodRecord);
 		else
 			try{
 				this.periodRecordService.delete(periodRecord);
-				result = new ModelAndView("redirect:/history/list.do");
+				result = new ModelAndView("redirect:/periodRecord/list.do?historyId="+historyId);
 
 			}catch(final Throwable oops){
 				result = this.createEditModelAndView(periodRecord, "mr.commit.error");
@@ -200,8 +205,8 @@ public class PeriodRecordController extends AbstractController{
 		return result;
 	}
 
-	
-	
+
+
 	// Ancillary methods
 	protected ModelAndView createEditModelAndView(final PeriodRecord periodRecord){
 		ModelAndView result;

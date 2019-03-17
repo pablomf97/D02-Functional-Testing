@@ -138,7 +138,7 @@
 				</table>
 			</div>
 			
-			<div style="width: 20%; float: left; position: static">
+<!-- 			<div style="width: 20%; float: left; position: static">
 				<table class="displayStyle">
 					<tr>
 						<td><display:table pagesize="5" class="displaytag"
@@ -153,7 +153,7 @@
 							</display:table></td>
 				</table>
 			</div>
-
+ -->
 			<input type="button" name="edit"
 				value='<spring:message code="system.edit"/>'
 				onclick="redirect: location.href = 'sysconfig/administrator/edit.do?systemconfigurationID=${sysConfig.id}';" />

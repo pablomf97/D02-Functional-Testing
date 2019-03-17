@@ -46,8 +46,13 @@
 				value="<spring:message code="inceptionRecord.cancel" />"
 				onclick="window.history.back()" />
 
+		&nbsp;
+			<jstl:if test="${inceptionRecord.id != 0 }">
+		<acme:delete name="delete" confirmation="mr.confirm.delete"
+			code="legalRecord.delete" />&nbsp;
 		<br />
 		<br />
+		</jstl:if>
 
 	</form:form>
 	<script>

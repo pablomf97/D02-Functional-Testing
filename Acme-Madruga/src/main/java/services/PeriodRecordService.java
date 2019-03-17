@@ -12,50 +12,55 @@ import org.springframework.util.Assert;
 
 import repositories.PeriodRecordRepository;
 
-
-import domain.Actor;
+import domain.Brotherhood;
+import domain.History;
 
 import domain.PeriodRecord;
 
-@Service
+
 @Transactional
+@Service
 public class PeriodRecordService {
 
 	@Autowired
 	private PeriodRecordRepository periodRecordRepository;
-	
+
 	@Autowired
 	private ActorService actorService;
-	
+
+
+
 	public PeriodRecord findOne(int id){
 		PeriodRecord res;
 		res=this.periodRecordRepository.findOne(id);
 		return res;
-		
+
 	}
-	
-	
+
+
 	public Collection<PeriodRecord> findAll(){
 		return this.periodRecordRepository.findAll();
 	}
-	
+
 
 	public PeriodRecord create(){
-		PeriodRecord res=new PeriodRecord();
-		Actor principal;
-		principal = this.actorService.findByPrincipal();
+
+		Brotherhood principal;
+		principal = (Brotherhood)this.actorService.findByPrincipal();
 		Assert.isTrue(
 				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
 				"not.allowed");
-		
+		PeriodRecord res=new PeriodRecord();
 		return res;
-		
+
 	}
-	
+
 	public PeriodRecord save(PeriodRecord periodRecord){
 		PeriodRecord res;
-		Actor principal;
-		principal = this.actorService.findByPrincipal();
+		Brotherhood principal;
+		History historyBro;
+		Collection<PeriodRecord> periodRecords;
+		principal = (Brotherhood)this.actorService.findByPrincipal();
 		Assert.isTrue(
 				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
 				"not.allowed");
@@ -68,28 +73,43 @@ public class PeriodRecordService {
 				periodRecord.getStartYear()<=(periodRecord.getEndYear()),
 				"not.date");
 		Assert.isTrue(
-				periodRecord.getStartYear()<1500||(periodRecord.getEndYear()>2100),
+				periodRecord.getStartYear()>1500||(periodRecord.getEndYear()>2100),
 				"not.date");
-		
+		historyBro = principal.getHistory();
+		Assert.notNull(historyBro);
+		periodRecords=historyBro.getPeriodRecords();
+
 		res=this.periodRecordRepository.save(periodRecord);
+		if(periodRecord.getId() == 0){
+			periodRecords.add(periodRecord);
+			historyBro.setPeriodRecords(periodRecords);
+		}
 		Assert.notNull(res);
 		return res;
 	}
-	
-	
+
+
 	public void delete(PeriodRecord periodRecord){
-		Actor principal;
-		principal = this.actorService.findByPrincipal();
+		Brotherhood principal;
+		History historyBro;
+		Collection<PeriodRecord>periods;
+		principal = (Brotherhood )this.actorService.findByPrincipal();
 		Assert.isTrue(
 				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
 				"not.allowed");
-		
+
 		Assert.notNull(periodRecord);
-		
-		
+		historyBro = principal.getHistory();
+		Assert.isTrue(historyBro.getPeriodRecords().contains(periodRecord));
+
+		periods=historyBro.getPeriodRecords();
+
 		this.periodRecordRepository.delete(periodRecord);
-		//Assert.isTrue(periodRecord==null);
+		periods.remove(periodRecord);
+		Assert.notNull(historyBro);
+		Assert.isTrue(periodRecord==null);
 	}
+
 
 	public Collection<String> getSplitPhotos(final String photos) {
 		final Collection<String> res = new ArrayList<>();
@@ -105,5 +125,5 @@ public class PeriodRecordService {
 				result = result + p.trim() + "< >";
 		return result;
 	}
-	
+
 }

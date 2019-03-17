@@ -91,7 +91,7 @@
 		<br />
 		<br />
 
-		<!-- BRECHA -->
+	<!-- 	
 		<p>
 			<spring:message code="breachNotification.name.es" />
 		</p>
@@ -110,7 +110,7 @@
 		<form:errors cssClass="error" path="breachNotification" />
 		<br />
 		<br />
-
+ -->
 		<acme:submit code="system.save" name="save" />&nbsp;
 		<acme:cancel code="system.cancel"
 			url="sysconfig/administrator/display.do" />

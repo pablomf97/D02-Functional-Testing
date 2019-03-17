@@ -47,6 +47,18 @@
 		<bean class="converters.StringToPeriodRecordConverter"	/>
 		<bean class="converters.PeriodRecordToStringConverter"	/>
 		
+		<bean class="converters.StringToInceptionRecordConverter"	/>
+		<bean class="converters.InceptionRecordToStringConverter"	/>
+		
+		<bean class="converters.StringToLegalRecordConverter"	/>
+		<bean class="converters.LegalRecordToStringConverter"	/>
+		
+		<bean class="converters.StringToHistoryConverter"	/>
+		<bean class="converters.HistoryToStringConverter"	/>
+		
+		
+		
+		
 	</util:list>
 
 </beans>

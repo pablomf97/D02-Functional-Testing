@@ -34,8 +34,9 @@
 		<br>
 		<br>
 		<spring:message code="periodRecord.photos" />
+		<acme:textbox code="periodRecord.photos" path="photos" />
  		:
-		<button type="button" onClick="addFields()">
+	<!-- 	<button type="button" onClick="addFields()">
 			<spring:message code="brotherhood.pictures.add" />
 		</button>
 		<div id="container"></div>
@@ -43,7 +44,7 @@
 			<input name=photos value="${pic}" />
 		</jstl:forEach>
 		<form:errors path="photos" cssClass="error" />
-
+ -->
 		<br>
 		<br>
 		<acme:submit code="periodRecord.save" name="save" />&nbsp;

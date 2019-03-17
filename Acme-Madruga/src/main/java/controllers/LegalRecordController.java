@@ -17,7 +17,6 @@ import domain.Actor;
 import domain.Brotherhood;
 import domain.History;
 import domain.LegalRecord;
-import domain.PeriodRecord;
 
 
 import services.ActorService;
@@ -32,10 +31,10 @@ public class LegalRecordController {
 	@Autowired
 	private LegalRecordService legalRecordService;
 
-	
+
 	@Autowired
 	private ActorService actorService;
-	
+
 	@Autowired
 	private HistoryService historyService;
 
@@ -45,14 +44,15 @@ public class LegalRecordController {
 	public LegalRecordController() {
 		super();
 	}
-	
+
 	// Display
-	
+
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam int legalRecordId) {
 		ModelAndView res;
 		Actor principal;
 		LegalRecord legalRecord;
+		try{
 		principal = this.actorService.findByPrincipal();
 		Assert.isTrue(this.actorService.checkAuthority(principal,
 				"BROTHERHOOD"));
@@ -60,143 +60,156 @@ public class LegalRecordController {
 
 		res = new ModelAndView("legalRecord/display");
 		res.addObject("legalRecord", legalRecord);
+		}catch(final Throwable opps){
+			res = new ModelAndView("redirect:/welcome/index.do");
+		}
 		return res;
 
 	}
-	
-		//list
-		@RequestMapping(value = "/list", method = RequestMethod.GET)
-		public ModelAndView list(@RequestParam int historyId) {
-			ModelAndView result = null;
-			Brotherhood principal;
-			Collection<LegalRecord> records;
-			History history;
-			Boolean possible;
-			
-			history=this.historyService.findOne(historyId);
-			
-			try{
-			
+
+	//list
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list(@RequestParam int historyId) {
+		ModelAndView result = null;
+		Brotherhood principal;
+		Collection<LegalRecord> records;
+		History history;
+		Boolean possible;
+
+		history=this.historyService.findOne(historyId);
+
+		try{
+
 			principal = (Brotherhood) this.actorService.findByPrincipal();
 			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
-			
+
 			records=history.getLegalRecords();
 			possible = true;
 
 			result = new ModelAndView("legalRecord/list");
 			result.addObject("legalRecords",records);
 			result.addObject("possible", possible);
-			
-			}catch(IllegalArgumentException oops){
-				result = new ModelAndView("misc/403");
-			}catch(Throwable oopsi){
-				result = new ModelAndView("history/display");
-				possible = false;
 
-				result.addObject("possible", possible);
-			}
-		
-			
-				return result;
+		}catch(IllegalArgumentException oops){
+			result = new ModelAndView("misc/403");
+		}catch(Throwable oopsi){
+			result = new ModelAndView("history/display");
+			possible = false;
+
+			result.addObject("possible", possible);
 		}
-	
-		//EDIT 
-		@RequestMapping(value="/edit", method = RequestMethod.GET)
-		public ModelAndView edit(@RequestParam final int legalRecordId){
-			ModelAndView result;
-			LegalRecord legalRecord;
 
-			legalRecord = this.legalRecordService.findOne(legalRecordId);
-			Assert.notNull(legalRecord);
+
+		return result;
+	}
+
+	//EDIT 
+	@RequestMapping(value="/edit", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int legalRecordId){
+		ModelAndView result;
+		LegalRecord legalRecord;
+		
+
+		legalRecord = this.legalRecordService.findOne(legalRecordId);
+		Assert.notNull(legalRecord);
+
+		result = this.createEditModelAndView(legalRecord);
+
+		return result;
+
+	}
+
+	//SAVE
+	@RequestMapping(value="/edit", method = RequestMethod.POST, params= "save")
+	public ModelAndView save(@Valid final LegalRecord legalRecord, final BindingResult binding){
+		ModelAndView result;
+		Integer historyId;
+		Brotherhood principal;
+		if(binding.hasErrors())
+			result = this.createEditModelAndView(legalRecord);
+		else
+			try{
+				
+				principal = (Brotherhood) this.actorService.findByPrincipal();
+				historyId = principal.getHistory().getId();
+				Assert.isTrue(this.actorService.checkAuthority(principal,
+						"BROTHERHOOD"));
+				this.legalRecordService.save(legalRecord);
+				result = new ModelAndView("redirect:/legalRecord/list.do?historyId="+historyId);
+
+			}catch(final Throwable oops){
+				result = this.createEditModelAndView(legalRecord, "mr.commit.error");
+			}
+
+		return result;
+	}
+	//CREATE 
+
+	@RequestMapping(value="/create", method = RequestMethod.GET)
+	public ModelAndView create(){
+		ModelAndView result;
+		Actor principal;
+		LegalRecord legalRecord;
+
+		try{
+
+			principal = this.actorService.findByPrincipal();
+			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+			legalRecord = this.legalRecordService.create();
 
 			result = this.createEditModelAndView(legalRecord);
-
-			return result;
-
+		}catch(IllegalArgumentException oops){
+			result = new ModelAndView("misc/403");
 		}
-	
-		//SAVE
-		@RequestMapping(value="/edit", method = RequestMethod.POST, params= "save")
-		public ModelAndView save(@Valid final LegalRecord legalRecord, final BindingResult binding){
-			ModelAndView result;
 
-			if(binding.hasErrors())
-				result = this.createEditModelAndView(legalRecord);
-			else
-				try{
-					this.legalRecordService.save(legalRecord);
-					result = new ModelAndView("redirect:/history/list.do");
+		return result;
+	}
 
-				}catch(final Throwable oops){
-					result = this.createEditModelAndView(legalRecord, "mr.commit.error");
-				}
 
-			return result;
-		}
-		//CREATE 
-		
-		@RequestMapping(value="/create", method = RequestMethod.GET)
-		public ModelAndView create(){
-			ModelAndView result;
-			Actor principal;
-			LegalRecord legalRecord;
+	//delete
+	@RequestMapping(value="/edit", method = RequestMethod.POST, params= "delete")
+	public ModelAndView delete(@Valid final LegalRecord legalRecord, final BindingResult binding){
+		ModelAndView result;
+		Brotherhood principal;
+		Integer historyId;
+		principal = (Brotherhood) this.actorService.findByPrincipal();
 
+		historyId = principal.getHistory().getId();
+		if(binding.hasErrors())
+			result = this.createEditModelAndView(legalRecord);
+		else
 			try{
-
-				principal = this.actorService.findByPrincipal();
-				Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
-				legalRecord = this.legalRecordService.create();
-
-				result = this.createEditModelAndView(legalRecord);
-			}catch(IllegalArgumentException oops){
-				result = new ModelAndView("misc/403");
+				this.legalRecordService.delete(legalRecord);
+				result = new ModelAndView("redirect:/legalRecord/list.do?historyId="+historyId);
+			}catch(final Throwable oops){
+				result = this.createEditModelAndView(legalRecord, "mr.commit.error");
 			}
 
-			return result;
-		}
+		return result;
+	}
 
-	
-		//delete
-		@RequestMapping(value="/edit", method = RequestMethod.POST, params= "delete")
-		public ModelAndView delete(@Valid final LegalRecord legalRecord, final BindingResult binding){
-			ModelAndView result;
+	// Ancillary methods
+	protected ModelAndView createEditModelAndView(final LegalRecord legalRecord){
+		ModelAndView result;
 
-			if(binding.hasErrors())
-				result = this.createEditModelAndView(legalRecord);
-			else
-				try{
-					this.legalRecordService.delete(legalRecord);
-					result = new ModelAndView("redirect:/history/list.do");
+		result = this.createEditModelAndView(legalRecord,null);
 
-				}catch(final Throwable oops){
-					result = this.createEditModelAndView(legalRecord, "mr.commit.error");
-				}
+		return result;
 
-			return result;
-		}
+	}
 
-		// Ancillary methods
-		protected ModelAndView createEditModelAndView(final LegalRecord legalRecord){
-			ModelAndView result;
-
-			result = this.createEditModelAndView(legalRecord,null);
-
-			return result;
-
-		}
-
-		protected ModelAndView createEditModelAndView(final LegalRecord legalRecord, final String messageError){
-			ModelAndView result;
+	protected ModelAndView createEditModelAndView(final LegalRecord legalRecord, final String messageError){
+		ModelAndView result;
 
 
-			result = new ModelAndView("legalRecord/edit");
-			result.addObject("legalRecord", legalRecord);
-			result.addObject("messageError", messageError);
+		result = new ModelAndView("legalRecord/edit");
+		result.addObject("legalRecord", legalRecord);
+		result.addObject("messageError", messageError);
 
-			return result;
-		}
+		return result;
+	}
 
-	
-	
-	
+
+
+
 }
