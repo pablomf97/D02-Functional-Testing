@@ -159,17 +159,14 @@ public class InceptionRecordController extends AbstractController {
 		@RequestMapping(value="/edit", method = RequestMethod.POST, params= "delete")
 		public ModelAndView delete(@Valid final InceptionRecord inceptionRecord, final BindingResult binding){
 			ModelAndView result;
-			Brotherhood principal;
-			Integer historyId;
-			principal = (Brotherhood) this.actorService.findByPrincipal();
-
-			historyId = principal.getHistory().getId();
+			
+			
 			if(binding.hasErrors())
 				result = this.createEditModelAndView(inceptionRecord);
 			else
 				try{
 					this.inceptionRecordService.delete(inceptionRecord);
-					result = new ModelAndView("redirect:/inceptionRecord/list.do?historyId="+historyId);
+					result = new ModelAndView("redirect:/history/display.do");
 
 				}catch(final Throwable oops){
 					result = this.createEditModelAndView(inceptionRecord, "mr.commit.error");

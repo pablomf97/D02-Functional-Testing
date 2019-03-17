@@ -16,6 +16,7 @@ import domain.Actor;
 import domain.Brotherhood;
 import domain.History;
 import domain.InceptionRecord;
+import domain.PeriodRecord;
 
 
 import repositories.InceptionRecordRepository;
@@ -62,8 +63,12 @@ public class InceptionRecordService {
 
 	public InceptionRecord save(InceptionRecord inceptionRecord){
 		InceptionRecord res;
-		Actor principal;
-		principal = this.actorService.findByPrincipal();
+		
+		Brotherhood principal;
+		History historyBro;
+		
+		principal = (Brotherhood)this.actorService.findByPrincipal();
+		
 		Assert.isTrue(
 				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
 				"not.allowed");
@@ -74,6 +79,10 @@ public class InceptionRecordService {
 		inceptionRecord.setTitle(inceptionRecord.getTitle());
 		inceptionRecord.setPhotos(inceptionRecord.getPhotos());
 		res=this.inceptionRecordRepository.save(inceptionRecord);
+		if(inceptionRecord.getId() == 0){
+			historyBro = principal.getHistory();
+			historyBro.setInceptionRecord(inceptionRecord);
+		}
 		//Assert.notNull(res);
 		return res;
 	}
@@ -93,7 +102,8 @@ public class InceptionRecordService {
 		//Assert.isTrue(inceptionRecord.getId() != 0, "wrong.id");
 
 		this.inceptionRecordRepository.delete(inceptionRecord);
-		Assert.isTrue(inceptionRecord==null);
+		historyBro.setInceptionRecord(null);
+		
 	}
 
 	//ancillary methods
