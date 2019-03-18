@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.validation.Valid;
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
+import services.BrotherhoodService;
 import services.HistoryService;
 import services.LinkRecordService;
 import domain.Actor;
+import domain.Brotherhood;
 import domain.History;
 import domain.LinkRecord;
 
@@ -36,6 +39,9 @@ public class LinkRecordController extends AbstractController{
 	@Autowired
 	private ActorService actorService;
 
+	@Autowired
+	private BrotherhoodService brotherhoodService;
+
 	//Create
 	@RequestMapping(value="/create", method = RequestMethod.GET)
 	public ModelAndView create(){
@@ -49,7 +55,7 @@ public class LinkRecordController extends AbstractController{
 			linkRecord = this.linkRecordService.create();
 
 			result = this.createEditModelAndView(linkRecord);
-			
+
 		}catch(IllegalArgumentException oops){
 			result = new ModelAndView("misc/403");
 		}
@@ -62,13 +68,13 @@ public class LinkRecordController extends AbstractController{
 	@RequestMapping(value="/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int linkRecordId){
 		ModelAndView result;
-		LinkRecord linkRecord;
+		LinkRecord record;
 
-		linkRecord = this.linkRecordService.findOne(linkRecordId);
-		Assert.notNull(linkRecord);
+		record = this.linkRecordService.findOne(linkRecordId);
+		Assert.notNull(record);
 
-		result = new ModelAndView("linkedRecord/display");
-		result.addObject("linkRecord", linkRecord);
+		result = new ModelAndView("linkRecord/display");
+		result.addObject("linkRecord", record);
 
 		return result;
 
@@ -77,7 +83,7 @@ public class LinkRecordController extends AbstractController{
 
 	//List
 
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	@RequestMapping(value="/list" , method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam final int historyId){
 		ModelAndView result;
 		Actor principal;
@@ -99,6 +105,7 @@ public class LinkRecordController extends AbstractController{
 			result = new ModelAndView("linkRecord/list");
 			result.addObject("linkRecords", linkRecords);
 			result.addObject("possible", possible);
+			result.addObject("historyId", historyId);
 		}catch(IllegalArgumentException oops){
 			result = new ModelAndView("misc/403");
 
@@ -129,15 +136,18 @@ public class LinkRecordController extends AbstractController{
 
 	}
 	@RequestMapping(value="/edit", method = RequestMethod.POST, params= "save")
-	public ModelAndView save(@Valid final LinkRecord record, final BindingResult binding){
+	public ModelAndView save(final LinkRecord record, final BindingResult binding){
 		ModelAndView result;
+		LinkRecord linkRecord;
+
+		linkRecord = this.linkRecordService.reconstruct(record, binding);
 
 		if(binding.hasErrors())
-			result = this.createEditModelAndView(record);
+			result = this.createEditModelAndView(linkRecord);
 		else
 			try{
-				this.linkRecordService.save(record);
-				result = new ModelAndView("redirect:/history/list.do");
+				this.linkRecordService.save(linkRecord);
+				result = new ModelAndView("redirect:/history/display.do");
 
 			}catch(final Throwable oops){
 				result = this.createEditModelAndView(record, "lr.commit.error");
@@ -147,18 +157,20 @@ public class LinkRecordController extends AbstractController{
 	}
 
 	@RequestMapping(value="/edit", method = RequestMethod.POST, params= "delete")
-	public ModelAndView delete(@Valid final LinkRecord record, final BindingResult binding){
+	public ModelAndView delete(final LinkRecord record, final BindingResult binding){
 		ModelAndView result;
+		LinkRecord linkRecord;
 
+		linkRecord = this.linkRecordService.reconstruct(record, binding);
 		if(binding.hasErrors())
-			result = this.createEditModelAndView(record);
+			result = this.createEditModelAndView(linkRecord);
 		else
 			try{
-				this.linkRecordService.delete(record);
-				result = new ModelAndView("redirect:/history/list.do");
+				this.linkRecordService.delete(linkRecord);
+				result = new ModelAndView("redirect:/history/display.do");
 
 			}catch(final Throwable oops){
-				result = this.createEditModelAndView(record, "lr.commit.error");
+				result = this.createEditModelAndView(linkRecord, "lr.commit.error");
 			}
 
 		return result;
@@ -177,11 +189,23 @@ public class LinkRecordController extends AbstractController{
 
 	protected ModelAndView createEditModelAndView(final LinkRecord record, final String messageError){
 		ModelAndView result;
+		Brotherhood principal;
+		int historyId;
+		Collection<Brotherhood> brotherhoods = new ArrayList<Brotherhood>();
 
+		brotherhoods = this.linkRecordService.getFreeBrotherhoods();
 
-		result = new ModelAndView("miscellaneousRecord/edit");
+		principal = (Brotherhood) this.actorService.findByPrincipal();
+
+		brotherhoods.remove(principal);
+
+		historyId = principal.getHistory().getId();
+
+		result = new ModelAndView("linkRecord/edit");
 		result.addObject("linkRecord", record);
 		result.addObject("messageError", messageError);
+		result.addObject("historyId", historyId);
+		result.addObject("brotherhoods", brotherhoods);
 
 		return result;
 	}

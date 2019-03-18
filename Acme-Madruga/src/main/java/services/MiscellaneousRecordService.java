@@ -19,75 +19,85 @@ public class MiscellaneousRecordService {
 
 	@Autowired
 	private MiscellaneousRecordRepository miscellaneousRecordRepository;
-	
+
 	@Autowired
 	private ActorService actorService;
-	
+
 	//CRUD Methods --------------------------------------------------------------
-	
+
 	public MiscellaneousRecord create(){
 		MiscellaneousRecord result;
 		Brotherhood principal;
-		
+
 		principal = (Brotherhood) this.actorService.findByPrincipal();
 		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
-		
+
 		result = new MiscellaneousRecord();
-		
+
 		return result;
 	}
-	
+
 	public MiscellaneousRecord save(final MiscellaneousRecord record){
-		MiscellaneousRecord saved;
+		MiscellaneousRecord saved = new MiscellaneousRecord();
 		Brotherhood principal;
 		History historyBro;
-		
+
 		principal = (Brotherhood) this.actorService.findByPrincipal();
 		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
-		
+
 		historyBro = principal.getHistory();
 		Assert.notNull(historyBro);
 		
-		saved = this.miscellaneousRecordRepository.save(record);
 		
-		if(record.getId() == 0){
-			historyBro.getMiscellaneousRecords().add(saved);
+		
+		try{
+			
+			saved = this.miscellaneousRecordRepository.saveAndFlush(record);
+
+			if(record.getId() == 0){
+				historyBro.getMiscellaneousRecords().add(saved);
+			}
+
+		}catch(Throwable oops){
+			System.out.println(oops.getMessage());
 		}
-		
+
+
+
 		return saved;
 	}
-	
+
 	public void delete(final MiscellaneousRecord record){
 		Brotherhood principal;
 		History historyBro;
-		
+
 		principal = (Brotherhood) this.actorService.findByPrincipal();
 		Assert.isTrue(this.actorService.checkAuthority(principal,"BROTHERHOOD"));
-		
+
 		historyBro = principal.getHistory();
 		Assert.notNull(historyBro);
 		Assert.isTrue(historyBro.getMiscellaneousRecords().contains(record));
-		
+
 		historyBro.getMiscellaneousRecords().remove(record);
-		
+
 		this.miscellaneousRecordRepository.delete(record);
-		
-		
+
+
 	}
-	
+
 	public MiscellaneousRecord findOne(int recordId){
 		MiscellaneousRecord result;
-		
+
 		result = this.miscellaneousRecordRepository.findOne(recordId);
-		
+
 		return result;
 	}
-	
+
 	public Collection<MiscellaneousRecord> findAll(){
 		Collection<MiscellaneousRecord> result;
-		
+
 		result = this.miscellaneousRecordRepository.findAll();
-		
+
 		return result;
 	}
 }
