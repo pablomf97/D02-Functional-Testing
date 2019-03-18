@@ -3,6 +3,7 @@ package controllers;
 
 
 
+
 import java.util.Collection;
 
 import javax.validation.Valid;
@@ -18,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import domain.Actor;
 import domain.Brotherhood;
-import domain.PeriodRecord;
+
 
 import domain.InceptionRecord;
 
@@ -60,7 +61,7 @@ public class InceptionRecordController extends AbstractController {
 			inceptionRecord=this.inceptionRecordService.findOne(inceptionRecordId);
 
 			final Collection<String> photos = this.inceptionRecordService
-					.getSplitPhotos(inceptionRecord.getPhotos());
+					.getSplitPictures(inceptionRecord.getPhotos());
 
 			res=new ModelAndView("inceptionRecord/display");
 			res.addObject("photos",photos);
@@ -117,7 +118,7 @@ public class InceptionRecordController extends AbstractController {
 		Assert.notNull(inceptionRecord);
 
 		final Collection<String> photos = this.inceptionRecordService
-				.getSplitPhotos(inceptionRecord.getPhotos());
+				.getSplitPictures(inceptionRecord.getPhotos());
 		
 
 		result = this.createEditModelAndView(inceptionRecord);
@@ -132,21 +133,18 @@ public class InceptionRecordController extends AbstractController {
 		ModelAndView result;
 		Brotherhood principal;
 		
-		//Collection<String> photos = new ArrayList<>();
-		//photos = this.inceptionRecordService.getSplitPhotos(inceptionRecord
-			//	.getPhotos());
 		if(binding.hasErrors()){
 			result=this.createEditModelAndView(inceptionRecord);
 		}
 		else{
 			try{
+				
 				principal = (Brotherhood) this.actorService.findByPrincipal();
 				
 				Assert.isTrue(this.actorService.checkAuthority(principal,
 						"BROTHERHOOD"));
 				this.inceptionRecordService.save(inceptionRecord);
 				result = new ModelAndView("redirect:/inceptionRecord/display.do?inceptionRecordId="+inceptionRecord.getId());
-				//result.addObject("photos", photos);
 			}catch(final Throwable oops){
 				result=this.createEditModelAndView(inceptionRecord,"mr.commit.error");
 			}

@@ -27,24 +27,24 @@
 		<form:errors path="description" cssClass="error" />
 		<br>
 		<br>
-		<acme:textbox code="periodRecord.startYear" path="startYear" />
+		<acme:textbox code="periodRecord.startYear" path="startYear"  placeholder="2015" />
 		<br>
 		<br>
-		<acme:textbox code="periodRecord.endYear" path="endYear" />
+		<acme:textbox code="periodRecord.endYear" path="endYear"  placeholder="2020" />
 		<br>
 		<br>
 		<spring:message code="periodRecord.photos" />
-		<acme:textbox code="periodRecord.photos" path="photos" />
+		
  		:
-	<!-- 	<button type="button" onClick="addFields()">
-			<spring:message code="brotherhood.pictures.add" />
+		<button type="button" onClick="addFields()">
+			<spring:message code="add" />
 		</button>
 		<div id="container"></div>
 		<jstl:forEach items="${photos}" var="pic">
-			<input name=photos value="${pic}" />
+			<input name=photos value="${pic}" placeholder="https://www.imgur.com/f3odiyg"/>
 		</jstl:forEach>
 		<form:errors path="photos" cssClass="error" />
- -->
+
 		<br>
 		<br>
 		<acme:submit code="periodRecord.save" name="save" />&nbsp;

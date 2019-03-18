@@ -1,5 +1,8 @@
 package services;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -7,16 +10,18 @@ import java.util.Collections;
 
 import javax.transaction.Transactional;
 
+import org.apache.tiles.util.URLUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.ResourceUtils;
 
 
 import domain.Actor;
 import domain.Brotherhood;
 import domain.History;
 import domain.InceptionRecord;
-import domain.PeriodRecord;
+
 
 
 import repositories.InceptionRecordRepository;
@@ -63,12 +68,12 @@ public class InceptionRecordService {
 
 	public InceptionRecord save(InceptionRecord inceptionRecord){
 		InceptionRecord res;
-		
+
 		Brotherhood principal;
 		History historyBro;
-		
+
 		principal = (Brotherhood)this.actorService.findByPrincipal();
-		
+
 		Assert.isTrue(
 				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
 				"not.allowed");
@@ -103,25 +108,25 @@ public class InceptionRecordService {
 
 		this.inceptionRecordRepository.delete(inceptionRecord);
 		historyBro.setInceptionRecord(null);
-		
+
 	}
 
 	//ancillary methods
 
 
-	public Collection<String> getSplitPhotos(final String photos) {
+	public Collection<String> getSplitPictures(final String pictures) {
 		final Collection<String> res = new ArrayList<>();
-		final String[] slice = photos.split("< >");
-		for (final String p : slice)
-			res.add(p);
+		final String[] slice = pictures.split(",");
+		
+		for (final String p : slice){
+			if (p.trim() != ""){
+				Assert.isTrue(ResourceUtils.isUrl(p),"error.url");
+				res.add(p);
+
+			}
+		}
+	
 		return res;
-	}
-	public String checkURLPhotos(final Collection<String> photos) {
-		String result = "";
-		if (!photos.isEmpty())
-			for (final String p : photos)
-				result = result + p.trim() + "< >";
-		return result;
 	}
 
 
@@ -144,7 +149,7 @@ public class InceptionRecordService {
 	//The average
 
 	public Double avgRecordsPerHistory(){
-		
+
 		Double misc;
 		Double legals;
 		Double links;
@@ -159,12 +164,12 @@ public class InceptionRecordService {
 		periods=this.inceptionRecordRepository.statsPeriod()[2];
 		legals=this.inceptionRecordRepository.statsLegal()[2];
 		links=this.inceptionRecordRepository.statsLink()[2];
-		
+
 		res=misc+periods+legals+links+inception;
 
 
 		return res;
-		
+
 
 	}
 
@@ -186,19 +191,19 @@ public class InceptionRecordService {
 		periods=this.inceptionRecordRepository.statsPeriod()[1];
 		legals=this.inceptionRecordRepository.statsLegal()[1];
 		links=this.inceptionRecordRepository.statsLink()[1];
-		
+
 		res=misc+periods+legals+links+inception;
 
 
 		return res;
-		
+
 	}
 
 
 
 	//the maximum
 	public Double maxRecordsPerHistory(){
-		
+
 		Double misc;
 		Double legals;
 		Double links;
@@ -213,7 +218,7 @@ public class InceptionRecordService {
 		periods=this.inceptionRecordRepository.statsPeriod()[0];
 		legals=this.inceptionRecordRepository.statsLegal()[0];
 		links=this.inceptionRecordRepository.statsLink()[0];
-		
+
 		res=misc+periods+legals+links+inception;
 
 
@@ -241,7 +246,7 @@ public class InceptionRecordService {
 		periods=this.inceptionRecordRepository.statsPeriod()[3];
 		legals=this.inceptionRecordRepository.statsLegal()[3];
 		links=this.inceptionRecordRepository.statsLink()[3];
-		
+
 		res=(misc+periods+legals+links+inception)/5;
 
 
@@ -257,7 +262,7 @@ public class InceptionRecordService {
 		Double records;
 		Double inception=0.;
 		bros=this.brotherhoodService.findAll();
-		
+
 		for(Brotherhood b:bros){
 			if(b.getHistory().getInceptionRecord()!=null){
 				inception=1.;
@@ -281,7 +286,7 @@ public class InceptionRecordService {
 		String bro = "";
 		Double inception=0.;
 		bros=this.brotherhoodService.findAll();
-		
+
 		for(Brotherhood b:bros){
 			if(b.getHistory().getInceptionRecord()==null){
 				inception=1.;

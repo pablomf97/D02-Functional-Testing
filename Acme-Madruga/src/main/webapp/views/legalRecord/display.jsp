@@ -14,8 +14,8 @@
 	<table class="displayStyle">
 		<tr>
 
-			<td><strong><spring:message
-						code="legalRecord.title" /> : </strong></td>
+			<td><strong><spring:message code="legalRecord.title" />
+					: </strong></td>
 			<td><jstl:out value="${legalRecord.title}">
 
 				</jstl:out></td>
@@ -33,32 +33,35 @@
 				</jstl:out></td>
 
 		</tr>
-			<tr>
+		<tr>
 
-			<td><strong><spring:message
-						code="legalRecord.name" /> : </strong></td>
+			<td><strong><spring:message code="legalRecord.name" />
+					: </strong></td>
 			<td><jstl:out value="${legalRecord.name}">
 
 				</jstl:out></td>
 
 		</tr>
-				<tr>
+		<tr>
 
-			<td><strong><spring:message
-						code="legalRecord.VAT" /> : </strong></td>
+			<td><strong><spring:message code="legalRecord.VAT" />
+					: </strong></td>
 			<td><jstl:out value="${legalRecord.VAT}">
 
 				</jstl:out></td>
 
 		</tr>
-			<tr>
+		<tr>
 
-			<td><strong><spring:message
-						code="legalRecord.laws" /> : </strong></td>
-			<td><jstl:out value="${legalRecord.laws}">
+			<td><strong><spring:message code="legalRecord.laws" />:</strong></td>
 
-				</jstl:out></td>
-
+			<td>
+			<ul>
+			<jstl:forEach var="laws" items="${legalRecord.laws}">
+					<li><jstl:out value="${laws }" /></li>
+				</jstl:forEach>
+				</ul>
+				</td>
 		</tr>
 
 
@@ -71,7 +74,7 @@
 			</td>
 
 		</tr>
-		
+
 
 		<tr>
 
@@ -81,8 +84,8 @@
 
 		</tr>
 	</table>
-		
-	
+
+
 
 
 

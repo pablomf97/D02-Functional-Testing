@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.ResourceUtils;
 
 
 import repositories.PeriodRecordRepository;
@@ -59,7 +60,7 @@ public class PeriodRecordService {
 		PeriodRecord res;
 		Brotherhood principal;
 		History historyBro;
-		Collection<PeriodRecord> periodRecords;
+		//Collection<PeriodRecord> periodRecords;
 		principal = (Brotherhood)this.actorService.findByPrincipal();
 		Assert.isTrue(
 				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
@@ -73,16 +74,21 @@ public class PeriodRecordService {
 				periodRecord.getStartYear()<=(periodRecord.getEndYear()),
 				"not.date");
 		Assert.isTrue(
-				periodRecord.getStartYear()>1500||(periodRecord.getEndYear()>2100),
+				periodRecord.getStartYear()>1500&&(periodRecord.getEndYear()<2100),
 				"not.date");
 		historyBro = principal.getHistory();
 		Assert.notNull(historyBro);
-		periodRecords=historyBro.getPeriodRecords();
-
+		//periodRecords=historyBro.getPeriodRecords();
+		//periodRecord.setTitle(periodRecord.getTitle());
+		//periodRecord.setDescription(periodRecord.getDescription());
+		//periodRecord.setStartYear(periodRecord.getStartYear());
+		//periodRecord.setEndYear(periodRecord.getEndYear());
+		//periodRecord.setPhotos(periodRecord.getPhotos());
 		res=this.periodRecordRepository.save(periodRecord);
 		if(periodRecord.getId() == 0){
-			periodRecords.add(periodRecord);
-			historyBro.setPeriodRecords(periodRecords);
+			historyBro.getPeriodRecords().add(periodRecord);
+			
+			//historyBro.setPeriodRecords(periodRecords);
 		}
 		Assert.notNull(res);
 		return res;
@@ -107,23 +113,28 @@ public class PeriodRecordService {
 		this.periodRecordRepository.delete(periodRecord);
 		periods.remove(periodRecord);
 		Assert.notNull(historyBro);
-		Assert.isTrue(periodRecord==null);
+		
 	}
 
-
-	public Collection<String> getSplitPhotos(final String photos) {
+	public Collection<String> getSplitPictures(final String pictures) {
 		final Collection<String> res = new ArrayList<>();
-		final String[] slice = photos.split("< >");
-		for (final String p : slice)
-			res.add(p);
+		final String[] slice = pictures.split(",");
+		
+		for (final String p : slice){
+			if (p.trim() != ""){
+				Assert.isTrue(ResourceUtils.isUrl(p),"error.url");
+				res.add(p);
+
+			}
+		}
+
+
+
 		return res;
-	}
-	public String checkURLPhotos(final Collection<String> photos) {
-		String result = "";
-		if (!photos.isEmpty())
-			for (final String p : photos)
-				result = result + p.trim() + "< >";
-		return result;
+
+
+
+
 	}
 
 }
