@@ -94,16 +94,13 @@ public class SystemConfigurationService {
 	public SystemConfiguration save(SystemConfiguration systemConfiguration) {
 		Assert.notNull(systemConfiguration, "null.system.configuration");
 		Actor principal;
+		SystemConfiguration result;
 
 		principal = this.actorService.findByPrincipal();
 		Assert.isTrue(
 				this.actorService.checkAuthority(principal, "ADMINISTRATOR"),
 				"not.allowed");
 
-		systemConfiguration.setId(this.systemConfigurationRepository.findAll()
-				.get(0).getId());
-
-		SystemConfiguration result;
 		result = this.systemConfigurationRepository.save(systemConfiguration);
 
 		return result;
@@ -167,6 +164,8 @@ public class SystemConfigurationService {
 
 		Assert.isTrue(systemConfiguration.getId() == this
 				.findMySystemConfiguration().getId());
+		Assert.isTrue(this.actorService.checkAuthority(
+				this.actorService.findByPrincipal(), "ADMINISTRATOR"));
 
 		if (systemConfiguration.getId() == 0) {
 			systemConfiguration
@@ -192,22 +191,21 @@ public class SystemConfigurationService {
 			systemConfiguration.getBreachNotification().put("Español", nEs);
 			systemConfiguration.getBreachNotification().put("English", nEn);
 
-			res.setWelcomeMessage(systemConfiguration.getWelcomeMessage());
-			res.setBreachNotification(systemConfiguration
+			bd.setWelcomeMessage(systemConfiguration.getWelcomeMessage());
+			bd.setBreachNotification(systemConfiguration
 					.getBreachNotification());
-			res.setSystemName(systemConfiguration.getSystemName());
-			res.setBanner(systemConfiguration.getBanner());
-			res.setCountryCode(systemConfiguration.getCountryCode());
-			res.setTimeResultsCached(systemConfiguration.getTimeResultsCached());
-			res.setMaxResults(systemConfiguration.getMaxResults());
-			res.setMessagePriority(systemConfiguration.getMessagePriority());
-			res.setSpamWords(systemConfiguration.getSpamWords());
-			res.setPossitiveWords(systemConfiguration.getPossitiveWords());
-			res.setNegativeWords(systemConfiguration.getNegativeWords());
+			bd.setSystemName(systemConfiguration.getSystemName());
+			bd.setBanner(systemConfiguration.getBanner());
+			bd.setCountryCode(systemConfiguration.getCountryCode());
+			bd.setTimeResultsCached(systemConfiguration.getTimeResultsCached());
+			bd.setMaxResults(systemConfiguration.getMaxResults());
+			bd.setMessagePriority(systemConfiguration.getMessagePriority());
+			bd.setSpamWords(systemConfiguration.getSpamWords());
+			bd.setPossitiveWords(systemConfiguration.getPossitiveWords());
+			bd.setNegativeWords(systemConfiguration.getNegativeWords());
 			this.validator.validate(res, binding);
-			if (!binding.hasErrors()) {
-				res.setId(bd.getId());
-			}
+
+			res = bd;
 		}
 
 		return res;

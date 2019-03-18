@@ -33,9 +33,8 @@
 	<jstl:out value="${member.middleName }" />
 </p>
 <p>
-<b><spring:message code="profile.email" /></b>
-:
-<jstl:out value="${member.email }" />
+	<b><spring:message code="profile.email" /></b> :
+	<jstl:out value="${member.email }" />
 </p>
 <p>
 	<b><spring:message code="profile.phone" /></b>:
@@ -45,6 +44,18 @@
 	<b><spring:message code="profile.address" /></b>:
 	<jstl:out value="${member.address }" />
 </p>
+
+<table class="displayStyle">
+	<tr>
+		<td><display:table pagesize="5" class="displaytag"
+				name="brotherhoods" requestURI="member/display.do" id="brotherhoods">
+
+				<display:column titleKey="actor.brotherhoods" sortable="true">
+					<jstl:out value="${brotherhoods.title}" />
+				</display:column>
+
+			</display:table></td>
+</table>
 
 <security:authorize access="hasRole('ADMINISTRATOR')">
 	<p>

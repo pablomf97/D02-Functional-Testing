@@ -17,6 +17,8 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+
 
 <h2>
 	<spring:message code="profile.seeing" />
@@ -47,9 +49,10 @@
 
 <security:authorize access="hasRole('ADMINISTRATOR')">
 	<b><spring:message code="profile.score" /></b>:
-			<p>
+
 		<jstl:if test="${administrator.score != null}">
-			<jstl:out value="${administrator.score }" />
+			<fmt:formatNumber type = "number" maxFractionDigits = "2" value = "${administrator.score}" var= "ok"/>
+			<jstl:out value="${ok} "/>
 		</jstl:if>
 	<p>
 		<jstl:if test="${administrator.score == null}">
@@ -59,23 +62,28 @@
 
 	<p>
 		<b><spring:message code="profile.spammer" /></b>:
+		<jstl:choose>
+			<jstl:when test="${administrator.spammer == null}">
+				<jstl:out value="N/A" />	
+			</jstl:when>
+			<jstl:when test="${administrator.spammer == true}">
+				<spring:message code="spammer.true" />
+			</jstl:when>
+			<jstl:otherwise>
+				<spring:message code="spammer.false" />
+			</jstl:otherwise>
+		
+		</jstl:choose>
 	<p>
-		<jstl:if test="${administrator.score != null}">
-			<jstl:out value="${administrator.spammer }" />
-		</jstl:if>
-	<p>
-		<jstl:if test="${administrator.spammer == null}">
-			<jstl:out value="N/A" />
-		</jstl:if>
-	</p>
 	
 	<jstl:if test="${isPrincipal}">
 	<input type="button" name="flagSpammers"
 		value="<spring:message code="admin.flag.spammers" />"
 		onclick="redirect: location.href = 'administrator/flag-spammers.do';" />
 		
-		<input type="button" name="flagSpammers"
+		<input type="button" name="computeSpammers"
 		value="<spring:message code="admin.compute.score" />"
 		onclick="redirect: location.href = 'administrator/compute-scores.do';" />		
 	</jstl:if>
 </security:authorize>
+

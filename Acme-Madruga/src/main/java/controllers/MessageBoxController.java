@@ -92,7 +92,7 @@ public class MessageBoxController extends AbstractController {
 			boxes.remove(box);
 			final Collection<MessageBox> childBoxes = this.messageBoxService.findByParent(box.getId());
 			boxes.removeAll(childBoxes);
-			if (!this.messageBoxService.checkUniqueBox(box))
+			if (box.getId() == 0 && !this.messageBoxService.checkUniqueBox(box))
 				messageBoxName = "messagebox.name.unique";
 			if (binding.hasErrors() || !messageBoxName.isEmpty()) {
 				result = new ModelAndView("messagebox/edit");

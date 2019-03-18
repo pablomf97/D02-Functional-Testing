@@ -32,7 +32,7 @@ public class BrotherhoodController extends AbstractController {
 	private ActorService actorService;
 	@Autowired
 	private ZoneService zoneService;
-	
+
 	@Autowired
 	private MemberService memberService;
 
@@ -47,7 +47,6 @@ public class BrotherhoodController extends AbstractController {
 		try {
 			result = new ModelAndView("brotherhood/display");
 			b = this.brotherhoodService.findOne(id);
-			Assert.isTrue(b.equals(this.actorService.findByPrincipal()));
 			final Collection<String> pictures = this.brotherhoodService
 					.getSplitPictures(b.getPictures());
 			result.addObject("brotherhood", b);
@@ -101,6 +100,7 @@ public class BrotherhoodController extends AbstractController {
 		Collection<String> pictures = new ArrayList<>();
 		Brotherhood brotherhood;
 		String pictureString = "";
+
 		try {
 			brotherhood = this.brotherhoodService.reconstruct(brotherhoodForm,
 					binding);
@@ -127,9 +127,9 @@ public class BrotherhoodController extends AbstractController {
 				pictures = brotherhoodForm.getPictures();
 			final Collection<Zone> zones = this.zoneService.findAll();
 			brotherhood.setEmail(brotherhood.getEmail().toLowerCase());
-			// emailError = this.actorService.checkEmail(brotherhood.getEmail(),
-			// brotherhood.getUserAccount().getAuthorities().iterator()
-			//	.next().getAuthority());
+			emailError = this.actorService.checkEmail(brotherhood.getEmail(),
+					brotherhood.getUserAccount().getAuthorities().iterator()
+							.next().getAuthority());
 			if (binding.hasErrors() || !emailError.isEmpty()
 					|| !check.isEmpty() || !passW.isEmpty()
 					|| !uniqueUsername.isEmpty() || !pictureError.isEmpty()) {
@@ -138,7 +138,6 @@ public class BrotherhoodController extends AbstractController {
 				result = new ModelAndView("brotherhood/edit");
 				result.addObject("uri", "brotherhood/edit.do");
 				brotherhood.getUserAccount().setPassword("");
-				brotherhood.setZone(null);
 				result.addObject("brotherhood", brotherhood);
 				result.addObject("emailError", emailError);
 				result.addObject("checkLaw", check);
@@ -207,19 +206,20 @@ public class BrotherhoodController extends AbstractController {
 
 		return res;
 	}
-	
-	@RequestMapping(value="/members/list", method = RequestMethod.GET)
-	public ModelAndView listMembers(@RequestParam int brotherhoodId){
+
+	@RequestMapping(value = "/members/list", method = RequestMethod.GET)
+	public ModelAndView listMembers(@RequestParam int brotherhoodId) {
 		ModelAndView result;
 		Collection<Member> members = new ArrayList<Member>();
-			
-		members.addAll(this.memberService.findAllMembersByBrotherhood(brotherhoodId));
-		
+
+		members.addAll(this.memberService
+				.findAllMembersByBrotherhood(brotherhoodId));
+
 		result = new ModelAndView("brotherhood/listMembers");
 		result.addObject("members", members);
-		
+
 		return result;
-			
+
 	}
-	
+
 }

@@ -37,17 +37,25 @@
 	<display:column titleKey="brotherhood.zone">
 		<jstl:out value="${brotherhood.zone.name}" />
 	</display:column>
-	
+
 	<display:column>
-	<a href="brotherhood/members/list.do?brotherhoodId=${brotherhood.id}">
-		<spring:message code="brotherhood.members" />
-	</a>
+		<a href="brotherhood/members/list.do?brotherhoodId=${brotherhood.id}">
+			<spring:message code="brotherhood.members" />
+		</a>
 	</display:column>
-	
+
 	<display:column>
-	<a href="platform/list.do?brotherhoodId=${brotherhood.id}">
-		<spring:message code="brotherhood.floats" />
-	</a>
+		<a href="platform/list.do?brotherhoodId=${brotherhood.id}"> <spring:message
+				code="brotherhood.floats" />
+		</a>
 	</display:column>
+
+	<display:column>
+		<a
+			href="procession/member,brotherhood/list.do?brotherhoodId=${brotherhood.id}">
+			<spring:message code="brotherhood.processions" />
+		</a>
+	</display:column>
+
 </display:table>
 

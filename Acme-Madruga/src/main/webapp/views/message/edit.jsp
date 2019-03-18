@@ -17,7 +17,6 @@
 				<spring:message code="message.recipient.userAccount" />:
 	</form:label>
 			<form:select path="recipient">
-				<form:option label="-----" value="0" />
 				<form:options items="${recipients}" itemLabel="userAccount.username"
 					itemValue="id" />
 			</form:select>
@@ -26,16 +25,21 @@
 			<br />
 
 
-			<acme:textbox code="message.subject" path="subject"/><br><br>
-			
-			<spring:message code="message.body" /><br />
-			<form:textarea code="message.body" path="body"/><br><br>
+			<acme:textbox code="message.subject" path="subject" />
+			<br>
+			<br>
+
+			<spring:message code="message.body" />
+			<br />
+			<form:textarea code="message.body" path="body" />
+			<br>
+			<br>
 
 
 			<form:label path="priority">
 				<spring:message code="message.priority" />:
 	</form:label>
-			<form:select path="priority" >
+			<form:select path="priority">
 				<form:options items="${priorities}" />
 			</form:select>
 			<form:errors cssClass="error" path="priority" />
@@ -46,10 +50,6 @@
 			<jstl:if test="${mensaje.id == 0}">
 				<acme:submit code="message.send" name="save" />&nbsp;
   			</jstl:if>
-
-			<jstl:if test="${(mensaje.id == 0) && (broadcast)}">
-				<acme:submit code="message.broadcast" name="save" />&nbsp;
-			</jstl:if>
 
 			<acme:cancel code="message.cancel" url="messagebox/list.do" />
 			<br />

@@ -1,5 +1,6 @@
-
 package controllers;
+
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
+import services.BrotherhoodService;
 import services.MemberService;
+import domain.Brotherhood;
 import domain.Member;
 import forms.MemberForm;
 
@@ -20,10 +23,12 @@ import forms.MemberForm;
 public class MemberController extends AbstractController {
 
 	@Autowired
-	private MemberService	memberService;
+	private MemberService memberService;
 	@Autowired
-	private ActorService	actorService;
+	private ActorService actorService;
 
+	@Autowired
+	private BrotherhoodService brotherhoodService;
 
 	public MemberController() {
 		super();
@@ -33,15 +38,32 @@ public class MemberController extends AbstractController {
 	public ModelAndView displayGET(@RequestParam final int id) {
 		ModelAndView result;
 		Member m;
+
+		Collection<Brotherhood> enrolledBrotherhoods;
+		Collection<Brotherhood> moreBrotherhoods;
+
 		try {
-			result = new ModelAndView("member/display");
 			m = this.memberService.findOne(id);
+			enrolledBrotherhoods = this.brotherhoodService
+					.brotherhoodsByMemberId(m.getId());
+			moreBrotherhoods = this.brotherhoodService
+					.allBrotherhoodsByMemberId(m.getId());
+			for (Brotherhood b : moreBrotherhoods) {
+				if (!enrolledBrotherhoods.contains(b))
+					enrolledBrotherhoods.add(b);
+			}
+
+			result = new ModelAndView("member/display");
+
 			result.addObject("member", m);
+			result.addObject("brotherhoods", enrolledBrotherhoods);
+
 		} catch (final Throwable opps) {
 			opps.printStackTrace();
-			//TODO: ver la posibilidada de una pantalla de error
+			// TODO: ver la posibilidada de una pantalla de error
 			result = new ModelAndView("redirect:/welcome/index.do");
 		}
+
 		return result;
 	}
 
@@ -64,14 +86,15 @@ public class MemberController extends AbstractController {
 				result.addObject("member", m);
 				result.addObject("uri", "member/edit.do");
 			} catch (final Throwable opps) {
-				//TODO: ver la posibilidada de una pantalla de error
+				// TODO: ver la posibilidada de una pantalla de error
 				result = new ModelAndView("redirect:/welcome/index.do");
 			}
 		return result;
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
-	public ModelAndView editPOST(final MemberForm memberForm, final BindingResult binding) {
+	public ModelAndView editPOST(final MemberForm memberForm,
+			final BindingResult binding) {
 		ModelAndView result;
 		String emailError = "";
 		String check = "";
@@ -81,14 +104,20 @@ public class MemberController extends AbstractController {
 		try {
 			member = this.memberService.reconstruct(memberForm, binding);
 			if (member.getId() == 0) {
-				passW = this.actorService.checkPass(memberForm.getPassword(), memberForm.getPassword2());
-				uniqueUsername = this.actorService.checkUniqueUser(memberForm.getUsername());
+				passW = this.actorService.checkPass(memberForm.getPassword(),
+						memberForm.getPassword2());
+				uniqueUsername = this.actorService.checkUniqueUser(memberForm
+						.getUsername());
 				check = this.actorService.checkLaw(memberForm.getCheckBox());
 			}
 
 			member.setEmail(member.getEmail().toLowerCase());
-			emailError = this.actorService.checkEmail(member.getEmail(), member.getUserAccount().getAuthorities().iterator().next().getAuthority());
-			if (binding.hasErrors() || !emailError.isEmpty() || !check.isEmpty() || !passW.isEmpty() || !uniqueUsername.isEmpty()) {
+			emailError = this.actorService.checkEmail(member.getEmail(), member
+					.getUserAccount().getAuthorities().iterator().next()
+					.getAuthority());
+			if (binding.hasErrors() || !emailError.isEmpty()
+					|| !check.isEmpty() || !passW.isEmpty()
+					|| !uniqueUsername.isEmpty()) {
 				result = new ModelAndView("member/edit");
 				result.addObject("uri", "member/edit.do");
 				member.getUserAccount().setPassword("");
@@ -99,7 +128,8 @@ public class MemberController extends AbstractController {
 				result.addObject("uniqueUsername", uniqueUsername);
 			} else
 				try {
-					member.setPhoneNumber(this.actorService.checkSetPhoneCC(member.getPhoneNumber()));
+					member.setPhoneNumber(this.actorService
+							.checkSetPhoneCC(member.getPhoneNumber()));
 					this.memberService.save(member);
 					result = new ModelAndView("redirect:/welcome/index.do");
 				} catch (final Throwable opps) {
@@ -111,7 +141,7 @@ public class MemberController extends AbstractController {
 					result.addObject("member", member);
 				}
 		} catch (final Throwable opps) {
-			//TODO: pantalla de error
+			// TODO: pantalla de error
 			result = new ModelAndView("redirect:/welcome/index.do");
 		}
 		return result;
