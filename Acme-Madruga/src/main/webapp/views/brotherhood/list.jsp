@@ -49,5 +49,11 @@
 		<spring:message code="brotherhood.floats" />
 	</a>
 	</display:column>
+	
+	<display:column>
+	<a href="history/display.do?brotherhoodId=${brotherhood.id}">
+		<spring:message code="brotherhood.history" />
+	</a>
+	</display:column>
 </display:table>
 

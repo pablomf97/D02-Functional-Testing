@@ -12,7 +12,7 @@
 	">
 
 	<!-- User accounts -->
-	
+
 	<!-- ACTORS -->
 
 
@@ -63,6 +63,24 @@
 
 
 	</bean>
+	
+		<bean id="brotherhood3" class="domain.Brotherhood">
+		<property name="name" value="pepito" />
+		<property name="middleName" value="Viyuelaaa" />
+		<property name="surname" value="gdsas" />
+		<property name="photo" value="https://ih1.redbubble.net/image.ioasdoi.jpg" />
+		<property name="email" value="pepethebest@mail.com" />
+		<property name="phoneNumber" value="+34699987854" />
+		<property name="address" value="Av. España" />
+		<property name="userAccount" ref="userBrotherhood3" />
+		<property name="title" value="nasareno" />
+		<property name="establishmentDate" value="02/03/2016" />
+		<property name="pictures" value="https://imgur/ima7saS.png" />
+		<property name="zone" ref="zone1" />
+		<property name="history" ref="history3" />
+
+
+	</bean>
 
 
 	<bean id="brotherhood2" class="domain.Brotherhood">
@@ -109,7 +127,7 @@
 		<property name="userAccount" ref="userMember2" />
 		<property name="finder" ref="finder2" />
 	</bean>
-	
+
 	<!-- ADMINISTRATORS -->
 	<bean id="userAdmin1" class="security.UserAccount">
 		<property name="username" value="admin" />
@@ -168,6 +186,18 @@
 	<bean id="userBrotherhood1" class="security.UserAccount">
 		<property name="username" value="brotherhood1" />
 		<property name="password" value="479e3180a45b21ea8e88beb0c45aa8ed" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="BROTHERHOOD" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="userBrotherhood3" class="security.UserAccount">
+		<property name="username" value="brotherhood3" />
+		<property name="password" value="cb8f36c7d5bbbc6aa5798a0e5796ebd5" />
 		<property name="authorities">
 			<list>
 				<bean class="security.Authority">
@@ -1149,7 +1179,7 @@ your processions." />
 			<ref bean="brotherhood2" />
 		</property>
 	</bean>
-	
+
 
 	<!-- PARADE -->
 
@@ -1356,8 +1386,16 @@ your processions." />
 		<property name="photos" value="https://www.google.com/img=217puha9" />
 
 	</bean>
+	
+	<bean id="inceptionRecord3" class="domain.InceptionRecord">
+		<property name="title" value="lloololo" />
+		<property name="description"
+			value="Primer registro oficial de la cofradía en las escrituras" />
+		<property name="photos" value="https://www.google.com/img=217puha9" />
 
-	<!-- domain.LinkRecord -->
+	</bean>
+
+	
 	<bean id="linkRecord1" class="domain.LinkRecord">
 		<property name="title" value="Enlace bueno" />
 		<property name="description" value="Enlace al Brotherhood con mayor cargo" />
@@ -1365,7 +1403,7 @@ your processions." />
 			<ref bean="brotherhood1" />
 		</property>
 
-	</bean>
+	</bean> 
 
 	<bean id="linkRecord2" class="domain.LinkRecord">
 		<property name="title" value="Enlace2" />
@@ -1446,8 +1484,8 @@ your processions." />
 
 		<property name="linkRecords">
 			<list>
-				
-			
+
+
 			</list>
 		</property>
 
@@ -1458,7 +1496,45 @@ your processions." />
 			</list>
 		</property>
 
+	
 	</bean>
+	
+	<bean id="history3" class="domain.History">
+
+
+		<property name="inceptionRecord">
+			<ref bean="inceptionRecord3" />
+		</property>
+		<property name="periodRecords">
+			<list>
+
+
+			</list>
+		</property>
+		<property name="legalRecords">
+			<list>
+
+
+			</list>
+		</property>
+
+		<property name="linkRecords">
+			<list>
+
+
+			</list>
+		</property>
+
+		<property name="miscellaneousRecords">
+			<list>
+
+
+			</list>
+		</property>
+
+	
+	</bean>
+	
 	<bean id="history2" class="domain.History">
 
 
@@ -1481,7 +1557,7 @@ your processions." />
 		<property name="linkRecords">
 			<list>
 				<ref bean="linkRecord2" />
-				
+
 			</list>
 		</property>
 

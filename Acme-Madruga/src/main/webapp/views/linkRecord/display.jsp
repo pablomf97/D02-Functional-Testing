@@ -14,9 +14,9 @@
 	<table class="displayStyle">
 		<tr>
 
-			<td><strong><spring:message
-						code="miscellaneousRecord.title" /> : </strong></td>
-			<td><jstl:out value="${record.title}">
+			<td><strong><spring:message code="linkRecord.title" />
+					: </strong></td>
+			<td><jstl:out value="${linkRecord.title}">
 
 				</jstl:out></td>
 
@@ -27,21 +27,32 @@
 		<tr>
 
 			<td><strong><spring:message
-						code="miscellaneousRecord.description" /> : </strong></td>
-			<td><jstl:out value="${record.description}">
+						code="linkRecord.description" /> : </strong></td>
+			<td><jstl:out value="${linkRecord.description}">
 
 				</jstl:out></td>
 
 		</tr>
 
+		<tr>
+
+			<td><strong><spring:message
+						code="linkRecord.brotherhood" /> : </strong></td>
+			<td><a
+				href="brotherhood/display.do?id=${linkRecord.linkedBrotherhood.id}">
+					<jstl:out value="${linkRecord.linkedBrotherhood.title}">
+
+					</jstl:out>
+			</a></td>
+
+		</tr>
 	</table>
 
 	<input type="button" name="edit"
-		value="<spring:message code="miscellaneousRecord.edit"	/>"
-		onclick="redirect: location.href = 'miscellaneousRecord/edit.do?miscellaneousRecordId=${record.id}';" />
-
+		value="<spring:message code="linkRecord.edit"	/>"
+		onclick="redirect: location.href = 'linkRecord/edit.do?linkRecordId=${linkRecord.id}';" />
 
 	<input type="button" name="back"
-		value="<spring:message code="miscellaneousRecord.cancel" />"
-		onclick="window.history.back()" />
+				value="<spring:message code="linkRecord.cancel" />"
+				onclick="window.history.back()" />
 </security:authorize>

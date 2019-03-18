@@ -48,6 +48,7 @@
 		
 		<value>/views/miscellaneousRecord/messages</value>
 		
+		<value>/views/linkRecord/messages</value>
 
 	</util:list>
 

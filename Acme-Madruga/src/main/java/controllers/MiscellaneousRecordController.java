@@ -91,6 +91,7 @@ public class MiscellaneousRecordController extends AbstractController{
 		return result;
 
 	}
+	
 
 	//Edition
 
@@ -116,11 +117,11 @@ public class MiscellaneousRecordController extends AbstractController{
 		ModelAndView result;
 		Brotherhood principal;
 		Integer historyId;
-		
+
 		principal = (Brotherhood) this.actorService.findByPrincipal();
-		
+
 		historyId = principal.getHistory().getId();
-		
+
 		if(binding.hasErrors())
 			result = this.createEditModelAndView(record);
 		else
@@ -140,11 +141,11 @@ public class MiscellaneousRecordController extends AbstractController{
 		ModelAndView result;
 		Brotherhood principal;
 		Integer historyId;
-		
+
 		principal = (Brotherhood) this.actorService.findByPrincipal();
-		
+
 		historyId = principal.getHistory().getId();
-		
+
 		if(binding.hasErrors())
 			result = this.createEditModelAndView(record);
 		else
@@ -198,16 +199,16 @@ public class MiscellaneousRecordController extends AbstractController{
 		ModelAndView result;
 		Brotherhood principal;
 		int historyId;
-		
+
 		principal = (Brotherhood) this.actorService.findByPrincipal();
-		
+
 		historyId = principal.getHistory().getId();
 
 		result = new ModelAndView("miscellaneousRecord/edit");
 		result.addObject("miscellaneousRecord", record);
 		result.addObject("messageError", messageError);
 		result.addObject("historyId", historyId);
-		
+
 		return result;
 	}
 
