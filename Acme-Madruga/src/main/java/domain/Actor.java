@@ -16,6 +16,7 @@ import security.UserAccount;
 
 @Entity
 @Access(AccessType.PROPERTY)
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 public abstract class Actor extends DomainEntity {
 
 	/* Attributes */
@@ -70,7 +71,7 @@ public abstract class Actor extends DomainEntity {
 
 	@NotBlank
 	// @Email|@Pattern -- Creo que al tener varios patrones distintos para el
-	// email, es mejor hacer la comprobación en vistas, controladores y/o
+	// email, es mejor hacer la comprobaciï¿½n en vistas, controladores y/o
 	// servicios.
 	public String getEmail() {
 		return this.email;
