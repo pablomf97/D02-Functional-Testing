@@ -26,11 +26,22 @@
 		<tr>
 			<td><strong><spring:message
 						code="history.inceptionRecord" />: </strong></td>
-			<td><jstl:out value="${inceptionRecord.title}"></jstl:out></td>
-			<td><a
-				href="inceptionRecord/display.do?inceptionRecordId=${inceptionRecord.id}">
-					<spring:message code="history.inceptionRecord.display" />
-			</a></td>
+			<jstl:if test="${isInceptionRecord}">
+			
+				<td><jstl:out value="${inceptionRecord.title}"></jstl:out></td>
+				<td><a
+					href="inceptionRecord/display.do?inceptionRecordId=${inceptionRecord.id}">
+						<spring:message code="history.inceptionRecord.display" />
+				</a></td>
+
+			</jstl:if>
+			
+			<jstl:if test="${!isInceptionRecord}">
+				<td><spring:message code="history.empty.record" /></td>
+				<td><a href="inceptionRecord/create.do"> <spring:message
+							code="history.inceptionRecord.create" />
+				</a></td>
+			</jstl:if>
 		</tr>
 
 		<tr>
@@ -46,8 +57,8 @@
 			</jstl:if>
 			<jstl:if test="${miscellaneousRecords.isEmpty()}">
 				<td><spring:message code="history.empty.record" /></td>
-				<td><a href="miscellaneousRecord/create.do">
-						<spring:message code="history.miscellaneousRecord.create" />
+				<td><a href="miscellaneousRecord/create.do"> <spring:message
+							code="history.miscellaneousRecord.create" />
 				</a></td>
 			</jstl:if>
 		</tr>
@@ -64,8 +75,8 @@
 			</jstl:if>
 			<jstl:if test="${periodRecords.isEmpty()}">
 				<td><spring:message code="history.empty.record" /></td>
-				<td><a href="periodRecord/create.do">
-						<spring:message code="history.periodRecord.create" />
+				<td><a href="periodRecord/create.do"> <spring:message
+							code="history.periodRecord.create" />
 				</a></td>
 			</jstl:if>
 		</tr>
@@ -83,8 +94,8 @@
 
 			<jstl:if test="${legalRecords.isEmpty()}">
 				<td><spring:message code="history.empty.record" /></td>
-				<td><a href="legalRecord/create.do">
-						<spring:message code="history.legalRecord.create" />
+				<td><a href="legalRecord/create.do"> <spring:message
+							code="history.legalRecord.create" />
 				</a></td>
 			</jstl:if>
 		</tr>
@@ -102,8 +113,8 @@
 
 			<jstl:if test="${linkRecords.isEmpty()}">
 				<td><spring:message code="history.empty.record" /></td>
-				<td><a href="linkRecord/create.do">
-						<spring:message code="history.linkRecord.create" />
+				<td><a href="linkRecord/create.do"> <spring:message
+							code="history.linkRecord.create" />
 				</a></td>
 			</jstl:if>
 

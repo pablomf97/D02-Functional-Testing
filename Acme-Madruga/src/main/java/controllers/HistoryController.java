@@ -48,7 +48,8 @@ public class HistoryController extends AbstractController{
 		Collection<PeriodRecord> periodRecords;
 		Collection<LegalRecord> legalRecords;
 		Collection<MiscellaneousRecord> miscellaneousRecords = new ArrayList<MiscellaneousRecord>();
-
+		boolean isInceptionRecord = false;
+		
 		if(brotherhoodId != null){
 
 			principal = this.brotherhoodService.findOne(brotherhoodId);
@@ -69,7 +70,10 @@ public class HistoryController extends AbstractController{
 		miscellaneousRecords = history.getMiscellaneousRecords();
 
 		result = new ModelAndView("history/display");
-
+		
+		if(inceptionRecord != null){
+			isInceptionRecord = true;
+		}
 		if(!(linkRecords.isEmpty())){
 			result.addObject("linkRecord", linkRecords.iterator().next());
 		}
@@ -99,6 +103,8 @@ public class HistoryController extends AbstractController{
 		result.addObject("periodRecords", periodRecords);
 		result.addObject("miscellaneousRecords", miscellaneousRecords);
 		result.addObject("linkRecords", linkRecords);
+		result.addObject("isInceptionRecord", isInceptionRecord);
+		
 		
 		return result;
 	}

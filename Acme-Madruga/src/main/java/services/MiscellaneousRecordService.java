@@ -23,69 +23,86 @@ public class MiscellaneousRecordService {
 	@Autowired
 	private ActorService actorService;
 
-	//CRUD Methods --------------------------------------------------------------
+	// CRUD Methods
+	// --------------------------------------------------------------
 
-	public MiscellaneousRecord create(){
+	public MiscellaneousRecord create() {
 		MiscellaneousRecord result;
 		Brotherhood principal;
 
 		principal = (Brotherhood) this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+		Assert.isTrue(this.actorService
+				.checkAuthority(principal, "BROTHERHOOD"));
 
 		result = new MiscellaneousRecord();
 
 		return result;
 	}
 
-	public MiscellaneousRecord save(final MiscellaneousRecord record){
-		MiscellaneousRecord saved = new MiscellaneousRecord();
+
+	public MiscellaneousRecord save(final MiscellaneousRecord recordParam) {
 		Brotherhood principal;
+		MiscellaneousRecord recordBD = new MiscellaneousRecord();
 		History historyBro;
 
 		principal = (Brotherhood) this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
 
 		historyBro = principal.getHistory();
-		Assert.notNull(historyBro);
-		
-		
-		
-		try{
+
+		if (recordParam.getId() != 0) {
+
+			Assert.isTrue(this.actorService.checkAuthority(principal,
+					"BROTHERHOOD"));
+			Assert.isTrue(historyBro.getMiscellaneousRecords().contains(
+					recordParam));
+
+			recordBD = this.miscellaneousRecordRepository.findOne(recordParam
+					.getId());
+
+			recordBD.setTitle(recordParam.getTitle());
+			recordBD.setDescription(recordParam.getDescription());
+
+			this.miscellaneousRecordRepository.save(recordBD);
 			
-			saved = this.miscellaneousRecordRepository.saveAndFlush(record);
+		} else {
+			Assert.isTrue(this.actorService.checkAuthority(principal,
+					"BROTHERHOOD"));
 
-			if(record.getId() == 0){
-				historyBro.getMiscellaneousRecords().add(saved);
-			}
+			recordBD.setTitle(recordParam.getTitle());
+			recordBD.setDescription(recordParam.getDescription());
 
-		}catch(Throwable oops){
-			System.out.println(oops.getMessage());
+			this.miscellaneousRecordRepository.save(recordBD);
+
+			historyBro.getMiscellaneousRecords().add(recordBD);
 		}
 
-
-
-		return saved;
+		return recordBD;
 	}
 
-	public void delete(final MiscellaneousRecord record){
+	public void delete(final MiscellaneousRecord recordParam) {
 		Brotherhood principal;
 		History historyBro;
-
+		MiscellaneousRecord recordBD = new MiscellaneousRecord();
+		
+		Assert.isTrue(recordParam.getId() != 0);
+		
 		principal = (Brotherhood) this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal,"BROTHERHOOD"));
-
+		Assert.isTrue(this.actorService
+				.checkAuthority(principal, "BROTHERHOOD"));
+		
+		recordBD = this.miscellaneousRecordRepository.findOne(recordParam.getId());
+		
 		historyBro = principal.getHistory();
 		Assert.notNull(historyBro);
-		Assert.isTrue(historyBro.getMiscellaneousRecords().contains(record));
+		Assert.isTrue(historyBro.getMiscellaneousRecords().contains(recordBD));
 
-		historyBro.getMiscellaneousRecords().remove(record);
+		historyBro.getMiscellaneousRecords().remove(recordBD);
 
-		this.miscellaneousRecordRepository.delete(record);
-
+		this.miscellaneousRecordRepository.delete(recordBD);
 
 	}
 
-	public MiscellaneousRecord findOne(int recordId){
+	public MiscellaneousRecord findOne(int recordId) {
 		MiscellaneousRecord result;
 
 		result = this.miscellaneousRecordRepository.findOne(recordId);
@@ -93,7 +110,7 @@ public class MiscellaneousRecordService {
 		return result;
 	}
 
-	public Collection<MiscellaneousRecord> findAll(){
+	public Collection<MiscellaneousRecord> findAll() {
 		Collection<MiscellaneousRecord> result;
 
 		result = this.miscellaneousRecordRepository.findAll();
