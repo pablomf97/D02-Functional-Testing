@@ -24,63 +24,58 @@
 
 	<table class="displayStyle">
 		<tr>
-			<td><strong> <spring:message
-						code="march.procession" /> :
+			<td><strong> <spring:message code="march.parade" /> :
 			</strong></td>
-			<td><jstl:out value="${march.procession.title}">
-				</jstl:out></td>
-		</tr>
-		
-		<tr>
-			<td><strong> <spring:message
-						code="march.brotherhood" /> :
-			</strong></td>
-			<td><jstl:out value="${march.procession.brotherhood.title}">
+			<td><jstl:out value="${march.parade.title}">
 				</jstl:out></td>
 		</tr>
 
 		<tr>
-			<td><strong> <spring:message code="march.status" />
+			<td><strong> <spring:message code="march.brotherhood" />
 					:
+			</strong></td>
+			<td><jstl:out value="${march.parade.brotherhood.title}">
+				</jstl:out></td>
+		</tr>
+
+		<tr>
+			<td><strong> <spring:message code="march.status" /> :
 			</strong></td>
 			<td><jstl:out value="${march.status}">
 				</jstl:out></td>
 		</tr>
-		
+
 		<jstl:if test="${march.status == 'APPROVED'}">
-		<tr>
-			<td><strong> <spring:message code="march.row" />
-					:
-			</strong></td>
-			<td><jstl:out value="${march.row}">
-				</jstl:out></td>
-		</tr>
+			<tr>
+				<td><strong> <spring:message code="march.row" /> :
+				</strong></td>
+				<td><jstl:out value="${march.row}">
+					</jstl:out></td>
+			</tr>
 
-		<tr>
-			<td><strong> <spring:message
-						code="march.column" /> :
-			</strong></td>
-			<td><jstl:out value="${march.col}">
-				</jstl:out></td>
+			<tr>
+				<td><strong> <spring:message code="march.column" /> :
+				</strong></td>
+				<td><jstl:out value="${march.col}">
+					</jstl:out></td>
 
-		</tr>
+			</tr>
 		</jstl:if>
-		
+
 		<jstl:if test="${march.status == 'REJECTED'}">
-		<tr>
-			<td><strong> <spring:message
-						code="march.reason" /> :
-			</strong></td>
-			<td><jstl:out value="${march.reason}">
-				</jstl:out></td>
+			<tr>
+				<td><strong> <spring:message code="march.reason" /> :
+				</strong></td>
+				<td><jstl:out value="${march.reason}">
+					</jstl:out></td>
 
-		</tr>
+			</tr>
 		</jstl:if>
-		
+
 	</table>
 	<div></div>
-	
-		<input type="button" name="back"
+
+	<input type="button" name="back"
 		value="<spring:message code="march.back" />"
 		onclick="window.history.back()" />
 

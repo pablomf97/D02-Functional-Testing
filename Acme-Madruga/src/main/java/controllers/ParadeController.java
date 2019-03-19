@@ -48,11 +48,15 @@ public class ParadeController extends AbstractController {
 		boolean isPrincipal = false;
 		Actor principal;
 
-		principal = this.actorService.findByPrincipal();
 		procession = this.processionService.findOne(processionId);
 
-		if (procession.getBrotherhood().getId() == principal.getId())
-			isPrincipal = true;
+		try {
+			principal = this.actorService.findByPrincipal();
+
+			if (procession.getBrotherhood().getId() == principal.getId())
+				isPrincipal = true;
+		} catch (Throwable oops) {
+		}
 
 		result = new ModelAndView("procession/display");
 		result.addObject("procession", procession);
@@ -168,8 +172,7 @@ public class ParadeController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "saveFinal")
-	public ModelAndView saveFinal(Parade procession,
-			final BindingResult binding) {
+	public ModelAndView saveFinal(Parade procession, final BindingResult binding) {
 		ModelAndView result;
 
 		if (binding.hasErrors())
@@ -213,8 +216,7 @@ public class ParadeController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(Parade procession,
-			final BindingResult binding) {
+	public ModelAndView delete(Parade procession, final BindingResult binding) {
 		ModelAndView result;
 
 		procession.setIsDraft(false);

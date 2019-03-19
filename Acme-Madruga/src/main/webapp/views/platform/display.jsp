@@ -20,81 +20,82 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 
-<security:authorize access="hasRole('BROTHERHOOD')">
+<jstl:choose>
+	<jstl:when test="${isPrincipal}">
 
-	<table class="displayStyle">
-		<tr>
-			<td><strong> <spring:message
-						code="platform.title" /> :
-			</strong></td>
-			<td><jstl:out value="${platform.title}">
-				</jstl:out></td>
-		</tr>
+		<table class="displayStyle">
+			<tr>
+				<td><strong> <spring:message code="platform.title" />
+						:
+				</strong></td>
+				<td><jstl:out value="${platform.title}">
+					</jstl:out></td>
+			</tr>
 
-		<tr>
-			<td><strong> <spring:message code="platform.pictures" />
-					:
-			</strong></td>
-			<td><jstl:out value="${platform.pictures}">
-				</jstl:out></td>
-		</tr>
-		
-		<tr>
-			<td><strong> <spring:message code="platform.description" />
-					:
-			</strong></td>
-			<td><jstl:out value="${platform.description}">
-				</jstl:out></td>
-		</tr>
-		
-	</table>
-	<div></div>
-	
+			<tr>
+				<td><strong> <spring:message code="platform.pictures" />
+						:
+				</strong></td>
+				<td><jstl:out value="${platform.pictures}">
+					</jstl:out></td>
+			</tr>
+
+			<tr>
+				<td><strong> <spring:message
+							code="platform.description" /> :
+				</strong></td>
+				<td><jstl:out value="${platform.description}">
+					</jstl:out></td>
+			</tr>
+
+		</table>
+		<div></div>
+
 		<jstl:if test="${isPrincipal}">
 			<input type="button" name="edit"
-			value="<spring:message code="platform.edit" />"
-			onclick="redirect: location.href = 'platform/edit.do?platformId=${platform.id}';" />
+				value="<spring:message code="platform.edit" />"
+				onclick="redirect: location.href = 'platform/edit.do?platformId=${platform.id}';" />
 		</jstl:if>
-	
+
 		<input type="button" name="back"
-		value="<spring:message code="platform.back" />"
-		onclick="window.history.back()" />
-		
+			value="<spring:message code="platform.back" />"
+			onclick="window.history.back()" />
 
 
-</security:authorize>
 
-<security:authorize access="isAnonymous()">
-	<table class="displayStyle">
-		<tr>
-			<td><strong> <spring:message
-						code="platform.title" /> :
-			</strong></td>
-			<td><jstl:out value="${platform.title}">
-				</jstl:out></td>
-		</tr>
+	</jstl:when>
+	<jstl:otherwise>
+		<table class="displayStyle">
+			<tr>
+				<td><strong> <spring:message code="platform.title" />
+						:
+				</strong></td>
+				<td><jstl:out value="${platform.title}">
+					</jstl:out></td>
+			</tr>
 
-		<tr>
-			<td><strong> <spring:message code="platform.pictures" />
-					:
-			</strong></td>
-			<td><jstl:out value="${platform.pictures}">
-				</jstl:out></td>
-		</tr>
-		
-		<tr>
-			<td><strong> <spring:message code="platform.description" />
-					:
-			</strong></td>
-			<td><jstl:out value="${platform.description}">
-				</jstl:out></td>
-		</tr>
-		
-	</table>
-	
-	<div></div>
-	
+			<tr>
+				<td><strong> <spring:message code="platform.pictures" />
+						:
+				</strong></td>
+				<td><jstl:out value="${platform.pictures}">
+					</jstl:out></td>
+			</tr>
+
+			<tr>
+				<td><strong> <spring:message
+							code="platform.description" /> :
+				</strong></td>
+				<td><jstl:out value="${platform.description}">
+					</jstl:out></td>
+			</tr>
+
+		</table>
+
+		<div></div>
+
 		<input type="button" name="back"
-		value="<spring:message code="platform.back" />"
-		onclick="window.history.back()" />
-</security:authorize>
+			value="<spring:message code="platform.back" />"
+			onclick="window.history.back()" />
+	</jstl:otherwise>
+</jstl:choose>

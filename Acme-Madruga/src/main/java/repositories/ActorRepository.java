@@ -1,4 +1,3 @@
-
 package repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,5 +14,8 @@ public interface ActorRepository extends JpaRepository<Actor, Integer> {
 
 	@Query("select a from SocialProfile s join s.actor a where s.id= ?1")
 	Actor findBySocialProfileId(int socialProfileId);
+
+	@Query("select a from Actor a where a.id = ?1")
+	Actor findOne(int id);
 
 }

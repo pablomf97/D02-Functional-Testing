@@ -55,7 +55,8 @@ public class AdministratorController extends AbstractController {
 
 		try {
 			principal = this.actorService.findByPrincipal();
-			Assert.isTrue(this.actorService.checkAuthority(principal, "ADMINISTRATOR"));
+			Assert.isTrue(this.actorService.checkAuthority(principal,
+					"ADMINISTRATOR"));
 			if (principal.getId() == id) {
 				isPrincipal = true;
 			}
@@ -173,10 +174,7 @@ public class AdministratorController extends AbstractController {
 				try {
 					admin.setPhoneNumber(this.actorService
 							.checkSetPhoneCC(admin.getPhoneNumber()));
-					final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-					final String hash = encoder.encodePassword(admin
-							.getUserAccount().getPassword(), null);
-					admin.getUserAccount().setPassword(hash);
+
 					this.administratorService.save(admin);
 					result = new ModelAndView("redirect:/welcome/index.do");
 				} catch (final Throwable opps) {
