@@ -85,7 +85,7 @@ public class ActorService {
 				.compile("(^(([a-z]|[0-9]){1,}[@]{1}([a-z]|[0-9]){1,}([.]{1}([a-z]|[0-9]){1,}){1,})$)|(^((([a-z]|[0-9]){1,}[ ]{1}){1,}<(([a-z]|[0-9]){1,}[@]{1}([a-z]|[0-9]){1,}([.]{1}([a-z]|[0-9]){1,}){1,})>)$)");
 		final Matcher matcher = pattern.matcher(email);
 		if (authority.equals("ADMININISTRATOR") && matcher.matches()) {
-			// TODO: faltaría comprobar si se intenta insertar un admin y que
+			// TODO: faltarï¿½a comprobar si se intenta insertar un admin y que
 			// compruebe su correo para su caso
 			final Pattern patternAdmin = Pattern
 					.compile("(^((([a-z]|[0-9]){1,}[@])$)|(^(([a-z]|[0-9]){1,}[ ]{1}){1,}<(([a-z]|[0-9]){1,}[@]>))$)");

@@ -64,12 +64,12 @@ public class SystemConfigurationService {
 				"not.allowed");
 		Map<String, String> breachNotification = new HashMap<>();
 		Map<String, String> wellMap = new HashMap<>();
-		wellMap.put("Español",
-				"¡Bienvenidos a Acme Madrugá! Tu sitio para organizar procesiones.");
+		wellMap.put("Espaï¿½ol",
+				"ï¿½Bienvenidos a Acme Madrugï¿½! Tu sitio para organizar procesiones.");
 		wellMap.put("English",
-				"Welcome to Acme Madrugá, the site to organise your processions.");
+				"Welcome to Acme Madrugï¿½, the site to organise your processions.");
 
-		breachNotification.put("Español", "");
+		breachNotification.put("Espaï¿½ol", "");
 		breachNotification.put("English", "");
 		SystemConfiguration systemConfiguration = new SystemConfiguration();
 		systemConfiguration.setSystemName("Acme-MadrugÃ¡");
@@ -81,10 +81,10 @@ public class SystemConfigurationService {
 		systemConfiguration.setTimeResultsCached(1);
 		systemConfiguration.setMaxResults(10);
 		systemConfiguration
-				.setSpamWords("sex,viagra,cialis,one million,you've been selected,nigeria,sexo,un millon,un millón,ha sido seleccionado");
+				.setSpamWords("sex,viagra,cialis,one million,you've been selected,nigeria,sexo,un millon,un millï¿½n,ha sido seleccionado");
 		systemConfiguration
-				.setPossitiveWords("good,fantastic,excellent,great,amazing,terrific,beautiful,bueno,fantastico,fantástico,excelente,genial,"
-						+ "increíble,increible,asombroso,bonito");
+				.setPossitiveWords("good,fantastic,excellent,great,amazing,terrific,beautiful,bueno,fantastico,fantï¿½stico,excelente,genial,"
+						+ "increï¿½ble,increible,asombroso,bonito");
 		systemConfiguration
 				.setNegativeWords("not,bad,horrible,average,disaster,no,malo,mediocre,desastre,desastroso");
 		return systemConfiguration;
@@ -172,9 +172,9 @@ public class SystemConfigurationService {
 					.setWelcomeMessage(new HashMap<String, String>());
 			systemConfiguration
 					.setBreachNotification(new HashMap<String, String>());
-			systemConfiguration.getWelcomeMessage().put("Español", nameES);
+			systemConfiguration.getWelcomeMessage().put("Espaï¿½ol", nameES);
 			systemConfiguration.getWelcomeMessage().put("English", nameEN);
-			systemConfiguration.getBreachNotification().put("Español", nEs);
+			systemConfiguration.getBreachNotification().put("Espaï¿½ol", nEs);
 			systemConfiguration.getBreachNotification().put("English", nEn);
 			res = systemConfiguration;
 		} else {
@@ -184,11 +184,11 @@ public class SystemConfigurationService {
 			systemConfiguration
 					.setWelcomeMessage(new HashMap<String, String>());
 
-			systemConfiguration.getWelcomeMessage().put("Español", nameES);
+			systemConfiguration.getWelcomeMessage().put("Espaï¿½ol", nameES);
 			systemConfiguration.getWelcomeMessage().put("English", nameEN);
 			systemConfiguration
 					.setBreachNotification(new HashMap<String, String>());
-			systemConfiguration.getBreachNotification().put("Español", nEs);
+			systemConfiguration.getBreachNotification().put("Espaï¿½ol", nEs);
 			systemConfiguration.getBreachNotification().put("English", nEn);
 
 			bd.setWelcomeMessage(systemConfiguration.getWelcomeMessage());

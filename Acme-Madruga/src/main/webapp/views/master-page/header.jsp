@@ -17,7 +17,7 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-<%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <div style="float: right">
 	<a href="?language=es" id="es"><img src="images/sp.png"
@@ -41,6 +41,7 @@
 								code="master.page.administrator.register" /></a></li>
 
 				</ul></li>
+
 
 			<li><a class="fNiv"
 				href="actor/administrator/list-suspicious-actors.do"><spring:message
@@ -148,6 +149,9 @@
 			<li><a class="fNiv" href="march/member,brotherhood/list.do"><spring:message
 						code="master.page.member.march" /></a></li>
 
+			<li><a class="fNiv" href="history/display.do"><spring:message
+						code="master.page.administrator.history" /></a></li>
+
 		</security:authorize>
 
 		<security:authorize access="isAnonymous()">
@@ -162,10 +166,14 @@
 								code="master.page.register.member" /></a></li>
 					<li><a href="brotherhood/edit.do?id=0"><spring:message
 								code="master.page.register.brotherhood" /></a></li>
+					<li><a href="chapter/edit.do?id=0"><spring:message
+								code="master.page.register.chapter" /></a></li>
+
 				</ul></li>
 
 			<li><a class="fNiv" href="brotherhood/list.do"><spring:message
-						code="master.page.administrator.brotherhoods" /></a>
+						code="master.page.administrator.brotherhoods" /></a></li>
+
 		</security:authorize>
 
 		<security:authorize access="isAuthenticated()">
@@ -215,3 +223,4 @@
 		</h2>
 	</jstl:if>
 </security:authorize>
+

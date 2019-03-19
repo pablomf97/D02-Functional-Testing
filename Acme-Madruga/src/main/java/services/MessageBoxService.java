@@ -99,7 +99,7 @@ public class MessageBoxService {
 				this.delete(b);
 		if (messageBox.getMessages() != null)
 			for (final Message m : messageBox.getMessages())
-				//TODO: cuando esté mensajes hecho
+				//TODO: cuando estï¿½ mensajes hecho
 				this.messageService.deleteMessages(m, messageBox);
 		this.messageBoxRepository.delete(messageBox);
 	}

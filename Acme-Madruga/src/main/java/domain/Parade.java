@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -40,10 +41,13 @@ public class Parade extends DomainEntity {
 	// a ser Platform.
 	private Collection<Platform>	platforms;
 	private Brotherhood				brotherhood;
+	//new atributte
+	private String					status;
+	private String					reason;
+	private Path					path;
 
 
 	/* Getters&Setters */
-
 	@NotBlank
 	@Pattern(regexp = "\\d{6}-[A-Z]{5}")
 	public String getTicker() {
@@ -122,62 +126,32 @@ public class Parade extends DomainEntity {
 		this.brotherhood = brotherhood;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((this.brotherhood == null) ? 0 : this.brotherhood.hashCode());
-		result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
-		result = prime * result + (this.isDraft ? 1231 : 1237);
-		result = prime * result + ((this.organisedMoment == null) ? 0 : this.organisedMoment.hashCode());
-		result = prime * result + ((this.platforms == null) ? 0 : this.platforms.hashCode());
-		result = prime * result + ((this.ticker == null) ? 0 : this.ticker.hashCode());
-		result = prime * result + ((this.title == null) ? 0 : this.title.hashCode());
-		return result;
+	//new get and set
+	@NotBlank
+	@Pattern(regexp = "\\b(SUBMITTED|ACCEPTED|REJECTED)\\b")
+	public String getStatus() {
+		return this.status;
 	}
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (this.getClass() != obj.getClass())
-			return false;
-		final Procession other = (Procession) obj;
-		if (this.brotherhood == null) {
-			if (other.brotherhood != null)
-				return false;
-		} else if (!this.brotherhood.equals(other.brotherhood))
-			return false;
-		if (this.description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!this.description.equals(other.description))
-			return false;
-		if (this.isDraft != other.isDraft)
-			return false;
-		if (this.organisedMoment == null) {
-			if (other.organisedMoment != null)
-				return false;
-		} else if (!this.organisedMoment.equals(other.organisedMoment))
-			return false;
-		if (this.platforms == null) {
-			if (other.platforms != null)
-				return false;
-		} else if (!this.platforms.equals(other.platforms))
-			return false;
-		if (this.ticker == null) {
-			if (other.ticker != null)
-				return false;
-		} else if (!this.ticker.equals(other.ticker))
-			return false;
-		if (this.title == null) {
-			if (other.title != null)
-				return false;
-		} else if (!this.title.equals(other.title))
-			return false;
-		return true;
+	public void setStatus(final String status) {
+		this.status = status;
 	}
 
+	public String getReason() {
+		return this.reason;
+	}
+
+	public void setReason(final String reason) {
+		this.reason = reason;
+	}
+
+	@Valid
+	@OneToOne(optional = true)
+	public Path getPath() {
+		return this.path;
+	}
+
+	public void setPath(final Path path) {
+		this.path = path;
+	}
 }

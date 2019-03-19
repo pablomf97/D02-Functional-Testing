@@ -28,15 +28,15 @@
 
 		<bean class="converters.ZoneToStringConverter" />
 		<bean class="converters.StringToZoneConverter" />
-		<bean class="converters.MarchToStringConverter" />
 
+		<bean class="converters.MarchToStringConverter" />
 		<bean class="converters.StringToMarchConverter" />
 
 		<bean class="converters.PlatformToStringConverter" />
 		<bean class="converters.StringToPlatformConverter" />
 
-		<bean class="converters.ProcessionToStringConverter" />
-		<bean class="converters.StringToProcessionConverter" />
+		<bean class="converters.ParadeToStringConverter" />
+		<bean class="converters.StringToParadeConverter" />
 
 		<bean class="converters.MessageBoxToStringConverter" />
 		<bean class="converters.StringToMessageBoxConverter" />
@@ -44,9 +44,20 @@
 		<bean class="converters.ActorToStringConverter" />
 		<bean class="converters.StringToActorConverter" />
 
+		<bean class="converters.StringToPeriodRecordConverter" />
+		<bean class="converters.PeriodRecordToStringConverter" />
 
-		<bean class="converters.StringToMessageConverter" />
-		<bean class="converters.MessageToStringConverter" />
+		<bean class="converters.StringToInceptionRecordConverter" />
+		<bean class="converters.InceptionRecordToStringConverter" />
+
+		<bean class="converters.StringToLegalRecordConverter" />
+		<bean class="converters.LegalRecordToStringConverter" />
+
+		<bean class="converters.StringToHistoryConverter" />
+		<bean class="converters.HistoryToStringConverter" />
+
+		<bean class="converters.StringToChapterConverter" />
+		<bean class="converters.ChapterToStringConverter" />
 
 	</util:list>
 

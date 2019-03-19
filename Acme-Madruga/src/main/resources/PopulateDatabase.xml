@@ -13,6 +13,121 @@
 
 	<!-- User accounts -->
 
+	<!-- ACTORS -->
+
+
+	<!-- ADMINISTRATOR -->
+
+
+
+	<bean id="administrator1" class="domain.Administrator">
+		<property name="name" value="José" />
+		<property name="middleName" value="Carlos" />
+		<property name="surname" value="Gamiz Redondo" />
+		<property name="photo"
+			value="https://ih1.redbubble.net/image.376305132.3400/flat,550x550,075,f.u1.jpg" />
+		<property name="email" value="josgamred@mail.com" />
+		<property name="phoneNumber" value="+34611987654" />
+		<property name="address" value="C/ Atlántica, 1 (Málaga)" />
+		<property name="userAccount" ref="userAdmin1" />
+	</bean>
+
+
+	<bean id="administrator2" class="domain.Administrator">
+		<property name="name" value="Carlos" />
+		<property name="middleName" value="Carl" />
+		<property name="surname" value="Albalat Heredia" />
+		<property name="photo"
+			value="https://ih1.redbubble.net/ima76305daddfsj132.340aaaa0/flat,5.u1.jpg" />
+		<property name="email" value="carlo12@mail.com" />
+		<property name="phoneNumber" value="+34611987622" />
+		<property name="address" value="C/ Rota" />
+		<property name="userAccount" ref="userAdmin2" />
+	</bean>
+	<!-- BROTHERHOOD -->
+
+	<bean id="brotherhood1" class="domain.Brotherhood">
+		<property name="name" value="Francisco" />
+		<property name="middleName" value="Paco" />
+		<property name="surname" value="Rico" />
+		<property name="photo" value="https://ih1.redbubble.net/image.ioasdoi.jpg" />
+		<property name="email" value="pacop@mail.com" />
+		<property name="phoneNumber" value="+34699987654" />
+		<property name="address" value="Av. España" />
+		<property name="userAccount" ref="userBrotherhood1" />
+		<property name="title" value="Cigarreras" />
+		<property name="establishmentDate" value="02/03/2016" />
+		<property name="pictures" value="https://imgur/ima7saS.png" />
+		<property name="zone" ref="zone1" />
+		<property name="history" ref="history2" />
+
+
+	</bean>
+	
+		<bean id="brotherhood3" class="domain.Brotherhood">
+		<property name="name" value="pepito" />
+		<property name="middleName" value="Viyuelaaa" />
+		<property name="surname" value="gdsas" />
+		<property name="photo" value="https://ih1.redbubble.net/image.ioasdoi.jpg" />
+		<property name="email" value="pepethebest@mail.com" />
+		<property name="phoneNumber" value="+34699987854" />
+		<property name="address" value="Av. España" />
+		<property name="userAccount" ref="userBrotherhood3" />
+		<property name="title" value="nasareno" />
+		<property name="establishmentDate" value="02/03/2016" />
+		<property name="pictures" value="https://imgur/ima7saS.png" />
+		<property name="zone" ref="zone1" />
+		<property name="history" ref="history3" />
+
+
+	</bean>
+
+
+	<bean id="brotherhood2" class="domain.Brotherhood">
+		<property name="name" value="Rosa Maria" />
+		<property name="middleName" value="Rosi" />
+		<property name="surname" value="Río Hernández" />
+		<property name="photo" value="https://ih1.redbubble.net/ima7.png" />
+		<property name="email" value="rosi12@mail.com" />
+		<property name="phoneNumber" value="+34611987112" />
+		<property name="address" value="C/ Manantial" />
+		<property name="userAccount" ref="userBrotherhood2" />
+		<property name="title" value="Silencio" />
+		<property name="establishmentDate" value="06/01/2016" />
+		<property name="pictures" value="https://imgur/ima7saS.png" />
+		<property name="zone" ref="zone2" />
+		<property name="history" ref="history1" />
+
+	</bean>
+
+	<!-- MEMBER -->
+
+
+	<bean id="member1" class="domain.Member">
+		<property name="name" value="Francisco" />
+		<property name="middleName" value="Paco" />
+		<property name="surname" value="Rico" />
+		<property name="photo" value="https://ih1.redbubble.net/image.ioasdoi.jpg" />
+		<property name="email" value="pacop@mail.com" />
+		<property name="phoneNumber" value="+34699987654" />
+		<property name="address" value="Av. España" />
+		<property name="userAccount" ref="userMember1" />
+		<property name="finder" ref="finder1" />
+	</bean>
+
+
+	<bean id="member2" class="domain.Member">
+		<property name="name" value="Rosa Maria" />
+		<property name="middleName" value="Rosi" />
+		<property name="surname" value="Río Hernández" />
+		<property name="photo" value="https://ih1.redbubble.net/ima7.png" />
+		<property name="email" value="rosi12@mail.com" />
+		<property name="phoneNumber" value="+34611987112" />
+		<property name="address" value="C/ Manantial" />
+		<property name="userAccount" ref="userMember2" />
+		<property name="finder" ref="finder2" />
+	</bean>
+
 	<!-- ADMINISTRATORS -->
 	<bean id="userAdmin1" class="security.UserAccount">
 		<property name="username" value="admin" />
@@ -79,6 +194,18 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="userBrotherhood3" class="security.UserAccount">
+		<property name="username" value="brotherhood3" />
+		<property name="password" value="cb8f36c7d5bbbc6aa5798a0e5796ebd5" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="BROTHERHOOD" />
+				</bean>
+			</list>
+		</property>
+	</bean>
 
 	<bean id="userBrotherhood2" class="security.UserAccount">
 		<property name="username" value="brotherhood2" />
@@ -107,15 +234,13 @@ Madrugá! Tu sitio para organizar procesiones." />
 your processions." />
 			</util:map>
 		</property>
-			<property name="breachNotification">
-		<util:map id="utilmap10" map-class="java.util.HashMap"
+		<property name="breachNotification">
+			<util:map id="utilmap10" map-class="java.util.HashMap"
 				key-type="java.lang.String" value-type="java.lang.String">
-				<entry key="Español"
-					value="" />
-				<entry key="English"
-					value="" />
+				<entry key="Español" value="" />
+				<entry key="English" value="" />
 			</util:map>
-			</property>
+		</property>
 		<property name="banner" value="https://image.ibb.co/iuaDgV/Untitled.png" />
 
 
@@ -129,7 +254,9 @@ your processions." />
 			value="good,fantastic,excellent,great,amazing,terrific,beautiful,bueno,fantástico,excelente,genial,increíble,terrorífico,bonita" />
 		<property name="negativeWords"
 			value="not,bad,horrible,average,disaster,no,malo,horroroso,regular,desastre" />
-
+		<property name="makers" value="VISA, MCARD, AMEX, DINNERS, FLY"></property>
+		<property name="fare" value="0.21"></property>
+		<property name="VAT" value="0.89"></property>
 	</bean>
 
 
@@ -163,7 +290,8 @@ your processions." />
 	<bean id="message2" class="domain.Message">
 		<property name="sentMoment" value="07/08/2016 14:10:53" />
 		<property name="subject" value="Message 2" />
-		<property name="body" value="Message bad good from admin1 to brotherhood 1" />
+		<property name="body"
+			value="Message bad good from admin1 to brotherhood 1" />
 		<property name="priority" value="LOW" />
 		<property name="tags" value="good" />
 		<property name="messageBoxes">
@@ -207,7 +335,8 @@ your processions." />
 	<bean id="message4" class="domain.Message">
 		<property name="sentMoment" value="09/05/2016 17:32:14" />
 		<property name="subject" value="Message 4" />
-		<property name="body" value="Message from good bad admin2 to brotherhood 2" />
+		<property name="body"
+			value="Message from good bad admin2 to brotherhood 2" />
 		<property name="priority" value="LOW" />
 		<property name="tags" value="good" />
 		<property name="messageBoxes">
@@ -1050,105 +1179,11 @@ your processions." />
 			<ref bean="brotherhood2" />
 		</property>
 	</bean>
-	<!-- ACTORS -->
 
 
-	<!-- ADMINISTRATOR -->
+	<!-- PARADE -->
 
-
-
-	<bean id="administrator1" class="domain.Administrator">
-		<property name="name" value="José" />
-		<property name="middleName" value="Carlos" />
-		<property name="surname" value="Gamiz Redondo" />
-		<property name="photo"
-			value="https://ih1.redbubble.net/image.376305132.3400/flat,550x550,075,f.u1.jpg" />
-		<property name="email" value="josgamred@mail.com" />
-		<property name="phoneNumber" value="+34611987654" />
-		<property name="address" value="C/ Atlántica, 1 (Málaga)" />
-		<property name="userAccount" ref="userAdmin1" />
-	</bean>
-
-
-	<bean id="administrator2" class="domain.Administrator">
-		<property name="name" value="Carlos" />
-		<property name="middleName" value="Carl" />
-		<property name="surname" value="Albalat Heredia" />
-		<property name="photo"
-			value="https://ih1.redbubble.net/ima76305daddfsj132.340aaaa0/flat,5.u1.jpg" />
-		<property name="email" value="carlo12@mail.com" />
-		<property name="phoneNumber" value="+34611987622" />
-		<property name="address" value="C/ Rota" />
-		<property name="userAccount" ref="userAdmin2" />
-	</bean>
-	<!-- BROTHERHOOD -->
-
-	<bean id="brotherhood1" class="domain.Brotherhood">
-		<property name="name" value="Francisco" />
-		<property name="middleName" value="Paco" />
-		<property name="surname" value="Rico" />
-		<property name="photo" value="https://ih1.redbubble.net/image.ioasdoi.jpg" />
-		<property name="email" value="pacop@mail.com" />
-		<property name="phoneNumber" value="+34699987654" />
-		<property name="address" value="Av. España" />
-		<property name="userAccount" ref="userBrotherhood1" />
-		<property name="title" value="Cigarreras" />
-		<property name="establishmentDate" value="02/03/2016" />
-		<property name="pictures" value="https://imgur/ima7saS.png" />
-		<property name="zone" ref="zone1" />
-
-
-	</bean>
-
-
-	<bean id="brotherhood2" class="domain.Brotherhood">
-		<property name="name" value="Rosa Maria" />
-		<property name="middleName" value="Rosi" />
-		<property name="surname" value="Río Hernández" />
-		<property name="photo" value="https://ih1.redbubble.net/ima7.png" />
-		<property name="email" value="rosi12@mail.com" />
-		<property name="phoneNumber" value="+34611987112" />
-		<property name="address" value="C/ Manantial" />
-		<property name="userAccount" ref="userBrotherhood2" />
-		<property name="title" value="Silencio" />
-		<property name="establishmentDate" value="06/01/2016" />
-		<property name="pictures" value="https://imgur/ima7saS.png" />
-		<property name="zone" ref="zone2" />
-
-	</bean>
-
-	<!-- MEMBER -->
-
-
-	<bean id="member1" class="domain.Member">
-		<property name="name" value="Francisco" />
-		<property name="middleName" value="Paco" />
-		<property name="surname" value="Rico" />
-		<property name="photo" value="https://ih1.redbubble.net/image.ioasdoi.jpg" />
-		<property name="email" value="pacop@mail.com" />
-		<property name="phoneNumber" value="+34699987654" />
-		<property name="address" value="Av. España" />
-		<property name="userAccount" ref="userMember1" />
-		<property name="finder" ref="finder1" />
-	</bean>
-
-
-	<bean id="member2" class="domain.Member">
-		<property name="name" value="Rosa Maria" />
-		<property name="middleName" value="Rosi" />
-		<property name="surname" value="Río Hernández" />
-		<property name="photo" value="https://ih1.redbubble.net/ima7.png" />
-		<property name="email" value="rosi12@mail.com" />
-		<property name="phoneNumber" value="+34611987112" />
-		<property name="address" value="C/ Manantial" />
-		<property name="userAccount" ref="userMember2" />
-		<property name="finder" ref="finder2" />
-	</bean>
-
-
-	<!-- PROCESSION -->
-
-	<bean id="procession1" class="domain.Procession">
+	<bean id="parade1" class="domain.Parade">
 		<property name="ticker" value="190518-AUJRG" />
 		<property name="title" value="Jueves santo" />
 		<property name="description"
@@ -1167,10 +1202,17 @@ your processions." />
 
 			<ref bean="brotherhood1" />
 		</property>
+		<property name="status" value="ACCEPTED"></property>
+		<property name="reason" value=""></property>
+		<property name="path">
+
+			<null />
+
+		</property>
 	</bean>
 
 
-	<bean id="procession2" class="domain.Procession">
+	<bean id="parade2" class="domain.Parade">
 		<property name="ticker" value="190519-XZRTY" />
 		<property name="title" value="Viernes Santo" />
 		<property name="description"
@@ -1188,6 +1230,14 @@ your processions." />
 		<property name="brotherhood">
 
 			<ref bean="brotherhood2" />
+		</property>
+
+		<property name="status" value="REJECTED"></property>
+		<property name="reason" value="Bad guy"></property>
+		<property name="path">
+
+			<null />
+
 		</property>
 	</bean>
 
@@ -1288,8 +1338,8 @@ your processions." />
 		<property name="member">
 			<ref bean="member1" />
 		</property>
-		<property name="procession">
-			<ref bean="procession1" />
+		<property name="parade">
+			<ref bean="parade1" />
 		</property>
 	</bean>
 
@@ -1301,8 +1351,8 @@ your processions." />
 		<property name="member">
 			<ref bean="member1" />
 		</property>
-		<property name="procession">
-			<ref bean="procession2" />
+		<property name="parade">
+			<ref bean="parade2" />
 		</property>
 	</bean>
 
@@ -1315,13 +1365,204 @@ your processions." />
 		<property name="member">
 			<ref bean="member2" />
 		</property>
-		<property name="procession">
-			<ref bean="procession2" />
+		<property name="parade">
+			<ref bean="parade2" />
 		</property>
 	</bean>
 
+
+	<!-- LEVEL C ACME-PARADE -->
+	<!-- domain.InceptionRecord -->
+	<bean id="inceptionRecord1" class="domain.InceptionRecord">
+		<property name="title" value="Creación" />
+		<property name="description" value="Primer registro de la Cofradía" />
+		<property name="photos" value="https://www.google.com/img=219" />
+
+	</bean>
+	<bean id="inceptionRecord2" class="domain.InceptionRecord">
+		<property name="title" value="Inicio oficial" />
+		<property name="description"
+			value="Primer registro oficial de la cofradía en las escrituras" />
+		<property name="photos" value="https://www.google.com/img=217puha9" />
+
+	</bean>
+	
+	<bean id="inceptionRecord3" class="domain.InceptionRecord">
+		<property name="title" value="lloololo" />
+		<property name="description"
+			value="Primer registro oficial de la cofradía en las escrituras" />
+		<property name="photos" value="https://www.google.com/img=217puha9" />
+
+	</bean>
+
+	
+
+
+	<bean id="linkRecord2" class="domain.LinkRecord">
+		<property name="title" value="Enlace2" />
+		<property name="description" value="Enlace backup del Brotherhood" />
+		<property name="linkedBrotherhood">
+			<ref bean="brotherhood2" />
+		</property>
+
+	</bean>
+	<!-- domain.MiscellaneousRecord -->
+	<bean id="miscellaneousRecord1" class="domain.MiscellaneousRecord">
+		<property name="title" value="Incendio en la Inglesia" />
+		<property name="description" value="No se conoce la causa de este." />
+
+
+	</bean>
+	<bean id="miscellaneousRecord2" class="domain.MiscellaneousRecord">
+		<property name="title" value="Caída de un paso" />
+		<property name="description" value="Sobrepeso en la parte trasera del paso" />
+
+
+	</bean>
+	<bean id="miscellaneousRecord3" class="domain.MiscellaneousRecord">
+		<property name="title" value="Multa" />
+		<property name="description"
+			value="Irregularidades en la inspección de la seguridad de los pasos" />
+
+
+	</bean>
+
+	<!-- domain.LegalRecord -->
+	<bean id="legalRecord1" class="domain.LegalRecord">
+		<property name="title" value="Registro de las leyes anteriores a los 90" />
+		<property name="description" value="Registro oficial" />
+		<property name="name" value="Registro oficial" />
+		<property name="VAT" value="0.21" />
+		<property name="laws"
+			value="GDPR de la Cofradía. Ley protección de datos de la Cofradía" />
+	</bean>
+	<!-- domain.PeriodRecord -->
+	<bean id="periodRecord1" class="domain.PeriodRecord">
+		<property name="title" value="Periodo de transición" />
+		<property name="description" value="Transición en el traslado de la Cofradía" />
+		<property name="startYear" value="1996" />
+		<property name="endYear" value="1998" />
+		<property name="photos" value="https://www.google.com/search?q=cofradia123" />
+
+	</bean>
+	<bean id="periodRecord2" class="domain.PeriodRecord">
+		<property name="title" value="Periodo que estuvimos sin capilla" />
+		<property name="description" value="Ciertos problemas económicos" />
+		<property name="startYear" value="1877" />
+		<property name="endYear" value="1880" />
+		<property name="photos"
+			value="https://www.google.com/search?q=cofrad123odiyg" />
+
+	</bean>
+	<!-- HISTORY -->
+
+	<bean id="history1" class="domain.History">
+
+
+		<property name="inceptionRecord">
+			<ref bean="inceptionRecord1" />
+		</property>
+		<property name="periodRecords">
+			<list>
+				<ref bean="periodRecord1" />
+
+			</list>
+		</property>
+		<property name="legalRecords">
+			<list>
+				<ref bean="legalRecord1" />
+
+			</list>
+		</property>
+
+		<property name="linkRecords">
+			<list>
+
+
+			</list>
+		</property>
+
+		<property name="miscellaneousRecords">
+			<list>
+				<ref bean="miscellaneousRecord1" />
+
+			</list>
+		</property>
+
+	
+	</bean>
+	
+	<bean id="history3" class="domain.History">
+
+
+		<property name="inceptionRecord">
+			<ref bean="inceptionRecord3" />
+		</property>
+		<property name="periodRecords">
+			<list>
+
+
+			</list>
+		</property>
+		<property name="legalRecords">
+			<list>
+
+
+			</list>
+		</property>
+
+		<property name="linkRecords">
+			<list>
+
+
+			</list>
+		</property>
+
+		<property name="miscellaneousRecords">
+			<list>
+
+
+			</list>
+		</property>
+
+	
+	</bean>
+	
+	<bean id="history2" class="domain.History">
+
+
+		<property name="inceptionRecord">
+			<ref bean="inceptionRecord2" />
+		</property>
+		<property name="periodRecords">
+			<list>
+				<ref bean="periodRecord2" />
+
+			</list>
+		</property>
+		<property name="legalRecords">
+			<list>
+
+
+			</list>
+		</property>
+
+		<property name="linkRecords">
+			<list>
+				<ref bean="linkRecord2" />
+
+			</list>
+		</property>
+
+		<property name="miscellaneousRecords">
+			<list>
+				<ref bean="miscellaneousRecord2" />
+				<ref bean="miscellaneousRecord3" />
+			</list>
+		</property>
+
+	</bean>
+
+
+
 </beans>
-
-
-	
-	

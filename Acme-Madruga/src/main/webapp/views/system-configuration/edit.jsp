@@ -72,7 +72,7 @@
 			<spring:message code="wel.name.es" />
 		</p>
 		<input type="text" name="nameES" id="nameES" size="100%"
-			value="${sysConfig.welcomeMessage.get('Español')}"
+			value="${sysConfig.welcomeMessage.get('Espaï¿½ol')}"
 			placeholder="<spring:message code='sysconfig.edit.welcome.message.es' />"
 			required>
 
@@ -96,7 +96,7 @@
 			<spring:message code="breachNotification.name.es" />
 		</p>
 		<input type="text" name="nEs" id="nEs" size="100%"
-			value="${sysConfig.breachNotification.get('Español')}">
+			value="${sysConfig.breachNotification.get('Espaï¿½ol')}">
 
 		<form:errors cssClass="error" path="breachNotification" />
 		<br />
