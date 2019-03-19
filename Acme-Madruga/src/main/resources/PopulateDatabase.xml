@@ -1396,14 +1396,7 @@ your processions." />
 	</bean>
 
 	
-	<bean id="linkRecord1" class="domain.LinkRecord">
-		<property name="title" value="Enlace bueno" />
-		<property name="description" value="Enlace al Brotherhood con mayor cargo" />
-		<property name="linkedBrotherhood">
-			<ref bean="brotherhood1" />
-		</property>
 
-	</bean> 
 
 	<bean id="linkRecord2" class="domain.LinkRecord">
 		<property name="title" value="Enlace2" />
