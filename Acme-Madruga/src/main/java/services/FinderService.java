@@ -20,7 +20,7 @@ import security.UserAccount;
 import domain.Actor;
 import domain.Finder;
 import domain.Member;
-import domain.Procession;
+import domain.Parade;
 
 @Service
 @Transactional
@@ -50,7 +50,7 @@ public class FinderService {
 		Finder result;
 
 		result = new Finder();
-		result.setSearchResults(new ArrayList<Procession>());
+		result.setSearchResults(new ArrayList<Parade>());
 
 		return result;
 	}
@@ -170,17 +170,17 @@ public class FinderService {
 
 	}
 
-	public Collection<Procession> search(Finder finder) {
+	public Collection<Parade> search(Finder finder) {
 		UserAccount userAccount;
 		String keyWord;
 		String area;
 		Date maximumDate;
 		Date minimumDate;
-		Collection<Procession> results = new ArrayList<Procession>();
+		Collection<Parade> results = new ArrayList<Parade>();
 
 		int nResults;
 
-		Collection<Procession> resultsPageables = new ArrayList<Procession>();
+		Collection<Parade> resultsPageables = new ArrayList<Parade>();
 
 		nResults = this.systemConfigurationService.findMySystemConfiguration()
 				.getMaxResults();
@@ -209,13 +209,13 @@ public class FinderService {
 		if (finder.getMinimumMoment() == null
 				&& finder.getMaximumMoment() == null
 				&& finder.getKeyWord().isEmpty() && finder.getArea().isEmpty()) {
-			results = this.finderRepository.searchAllProcession();
+			results = this.finderRepository.searchAllParade();
 		} else {
 			results = this.finderRepository.findByFilter(keyWord, area,
 					minimumDate, maximumDate);
 		}
 		int count=0;
-		for(Procession p : results){
+		for(Parade p : results){
 			resultsPageables.add(p);
 			count++;
 			if(count>=nResults){

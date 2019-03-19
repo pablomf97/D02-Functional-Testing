@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import domain.Actor;
 import domain.Message;
-import domain.Procession;
+import domain.Parade;
 
 @Service
 @Transactional
@@ -23,7 +23,7 @@ public class UtilityService {
 	// Supporting Services ------------------------------------
 
 	@Autowired
-	private ProcessionService processionService;
+	private ParadeService processionService;
 
 	@Autowired
 	private MessageService messageService;
@@ -59,7 +59,7 @@ public class UtilityService {
 			alphaNum = this.randomString();
 			todayDate = year + month + day;
 			uniqueTicker = todayDate + "-" + alphaNum;
-			for (final Procession procession : this.processionService.findAll())
+			for (final Parade procession : this.processionService.findAll())
 				if (procession.getTicker().equals(uniqueTicker))
 					continue;
 			unique = true;

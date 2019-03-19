@@ -15,22 +15,22 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
-import repositories.ProcessionRepository;
+import repositories.ParadeRepository;
 import domain.Actor;
 import domain.Brotherhood;
 import domain.Enrolment;
 import domain.March;
+import domain.Parade;
 import domain.Platform;
-import domain.Procession;
 
 @Service
 @Transactional
-public class ProcessionService {
+public class ParadeService {
 
 	// Managed repository ------------------------------------
 
 	@Autowired
-	private ProcessionRepository processionRepository;
+	private ParadeRepository paradeRepository;
 
 	// Supporting services -----------------------------------
 
@@ -48,111 +48,109 @@ public class ProcessionService {
 
 	@Autowired
 	private Validator validator;
-	
+
 	@Autowired
 	private BrotherhoodService brotherhoodService;
 
 	// Simple CRUD methods -----------------------------------
 
-	public Procession create() {
+	public Parade create() {
 		Actor principal;
-		Procession result;
+		Parade result;
 
 		principal = this.actorService.findByPrincipal();
 		Assert.isTrue(
 				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
 				"not.allowed");
 
-		result = new Procession();
+		result = new Parade();
 
 		return result;
 	}
 
-	public Collection<Procession> findAll() {
-		Collection<Procession> result;
-		result = this.processionRepository.findAll();
+	public Collection<Parade> findAll() {
+		Collection<Parade> result;
+		result = this.paradeRepository.findAll();
 
 		return result;
 	}
 
-	public Procession findOne(final int processionId) {
-		Procession result;
-		result = this.processionRepository.findOne(processionId);
+	public Parade findOne(final int paradeId) {
+		Parade result;
+		result = this.paradeRepository.findOne(paradeId);
 
 		return result;
 	}
 
-	public Procession save(final Procession procession) {
+	public Parade save(final Parade parade) {
 		Actor principal;
 		Brotherhood brotherhood;
-		Procession result;
+		Parade result;
 
 		principal = this.actorService.findByPrincipal();
 		Assert.isTrue(
 				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
 				"not.allowed");
 
-		Assert.isTrue(procession.getBrotherhood().equals(principal),
-				"not.allowed");
+		Assert.isTrue(parade.getBrotherhood().equals(principal), "not.allowed");
 
-		Assert.notNull(procession);
-		Assert.notNull(procession.getDescription());
-		Assert.notNull(procession.getMaxCols());
-		Assert.notNull(procession.getTitle());
-		Assert.notNull(procession.getOrganisedMoment());
+		Assert.notNull(parade);
+		Assert.notNull(parade.getDescription());
+		Assert.notNull(parade.getMaxCols());
+		Assert.notNull(parade.getTitle());
+		Assert.notNull(parade.getOrganisedMoment());
 
 		brotherhood = (Brotherhood) principal;
 
-		if (procession.getId() == 0) {
+		if (parade.getId() == 0) {
 			Assert.notNull(brotherhood.getZone());
 		}
 
-		result = this.processionRepository.save(procession);
+		result = this.paradeRepository.save(parade);
 		Assert.notNull(result);
 
 		return result;
 	}
 
-	public void delete(final Procession procession) {
+	public void delete(final Parade parade) {
 		Actor principal;
 
-		Assert.notNull(procession);
-		Assert.isTrue(procession.getId() != 0, "wrong.id");
+		Assert.notNull(parade);
+		Assert.isTrue(parade.getId() != 0, "wrong.id");
 
 		principal = this.actorService.findByPrincipal();
 		Assert.isTrue(
 				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
 				"not.allowed");
 
-		Assert.isTrue(procession.getBrotherhood().equals(principal),
-				"not.allowed");
+		Assert.isTrue(parade.getBrotherhood().equals(principal), "not.allowed");
 
-		this.processionRepository.delete(procession.getId());
+		this.paradeRepository.delete(parade.getId());
 
 	}
 
 	// Other business methods -------------------------------
 
-	public Procession reconstruct(Procession procession, BindingResult binding) {
-		Procession result;
+	public Parade reconstruct(Parade parade, BindingResult binding) {
+		Parade result;
 		Actor principal = this.actorService.findByPrincipal();
 
-		if (procession.getId() == 0) {
+		if (parade.getId() == 0) {
 
-			result = procession;
+			result = parade;
 			result.setTicker(this.utilityService.generateTicker());
 			result.setPlatforms(new ArrayList<Platform>());
 			result.setBrotherhood((Brotherhood) principal);
 
 		} else {
-			result = this.findOne(procession.getId());
+			result = this.findOne(parade.getId());
 			Assert.notNull(result);
 			Assert.isTrue(result.getBrotherhood().getId() == principal.getId());
-			
-			result.setTitle(procession.getTitle());
-			result.setDescription(procession.getDescription());
-			result.setPlatforms(procession.getPlatforms());
-			result.setIsDraft(procession.getIsDraft());
+
+			result.setTitle(parade.getTitle());
+			result.setDescription(parade.getDescription());
+			result.setPlatforms(parade.getPlatforms());
+			result.setIsDraft(parade.getIsDraft());
 		}
 
 		validator.validate(result, binding);
@@ -160,46 +158,43 @@ public class ProcessionService {
 		return result;
 	}
 
-	public Collection<Procession> findProcessionsByBrotherhoodId(
-			int brotherhoodId) {
-		Collection<Procession> result;
+	public Collection<Parade> findParadesByBrotherhoodId(int brotherhoodId) {
+		Collection<Parade> result;
 
-		result = this.processionRepository
-				.findProcessionsByBrotherhoodId(brotherhoodId);
-
-		return result;
-	}
-
-	public Collection<Procession> findAcceptedProcessionsByMemberId(int memberId) {
-		Collection<Procession> result;
-
-		result = this.processionRepository
-				.findAcceptedProcessionsByMemberId(memberId);
+		result = this.paradeRepository
+				.findParadesByBrotherhoodId(brotherhoodId);
 
 		return result;
 	}
 
-	private Collection<Procession> findProcessionsAlreadyApplied(int memberId) {
-		Collection<Procession> result;
+	public Collection<Parade> findAcceptedParadesByMemberId(int memberId) {
+		Collection<Parade> result;
 
-		result = this.processionRepository
-				.findProcessionsAlreadyApplied(memberId);
+		result = this.paradeRepository.findAcceptedParadesByMemberId(memberId);
 
 		return result;
 	}
 
-	public Collection<Procession> processionsToApply(int memberId) {
-		Collection<Procession> toApply;
+	private Collection<Parade> findParadesAlreadyApplied(int memberId) {
+		Collection<Parade> result;
+
+		result = this.paradeRepository.findParadesAlreadyApplied(memberId);
+
+		return result;
+	}
+
+	public Collection<Parade> paradesToApply(int memberId) {
+		Collection<Parade> toApply;
 		Collection<Enrolment> memberEnrolments;
 		Collection<Integer> brotherhoodIds = new ArrayList<>();
 
-		Collection<Procession> notToApply = this
-				.findProcessionsAlreadyApplied(memberId);
+		Collection<Parade> notToApply = this
+				.findParadesAlreadyApplied(memberId);
 
-		toApply = this.findFinalProcessions();
+		toApply = this.findFinalParades();
 		toApply.removeAll(notToApply);
 
-		Collection<Procession> result = new ArrayList<Procession>(toApply);
+		Collection<Parade> result = new ArrayList<Parade>(toApply);
 
 		memberEnrolments = this.enrolmentService
 				.findActiveEnrolmentsByMember(memberId);
@@ -207,7 +202,7 @@ public class ProcessionService {
 			brotherhoodIds.add(enrolment.getBrotherhood().getId());
 		}
 
-		for (Procession procesion : toApply) {
+		for (Parade procesion : toApply) {
 			for (Integer brotherhoodId : brotherhoodIds) {
 				if (procesion.getBrotherhood().getId() != brotherhoodId) {
 					result.remove(procesion);
@@ -218,30 +213,30 @@ public class ProcessionService {
 		return result;
 	}
 
-	private Collection<Procession> findFinalProcessions() {
-		Collection<Procession> result;
+	private Collection<Parade> findFinalParades() {
+		Collection<Parade> result;
 
-		result = this.processionRepository.findFinalProcessions();
+		result = this.paradeRepository.findFinalParades();
 
 		return result;
 	}
 
-	public Collection<Procession> findEarlyProcessions() {
-		Collection<Procession> result;
+	public Collection<Parade> findEarlyParades() {
+		Collection<Parade> result;
 		Calendar c = new GregorianCalendar();
 		c.add(Calendar.DATE, 30);
 		Date maxDate = c.getTime();
 
-		result = this.processionRepository.findEarlyProcessions(maxDate);
+		result = this.paradeRepository.findEarlyParades(maxDate);
 		Assert.notNull(result);
 
 		return result;
 	}
 
-	public Boolean checkPos(Integer row, Integer column, Procession procession,
+	public Boolean checkPos(Integer row, Integer column, Parade parade,
 			Collection<March> marchs) {
 		Boolean validPos = true;
-		Integer maxCols = procession.getMaxCols();
+		Integer maxCols = parade.getMaxCols();
 
 		if (column > maxCols)
 			validPos = false;
@@ -257,46 +252,64 @@ public class ProcessionService {
 		return validPos;
 	}
 
-	public List<Integer> recommendedPos(Procession procession) {
+	public List<Integer> recommendedPos(Parade parade) {
 		List<Integer> rowColumn = new ArrayList<>();
 		Boolean validPos = false;
 		Collection<March> marchs;
 
-		marchs = this.marchService.findMarchByProcession(procession.getId());
-		
-		for(Integer auxRow = 1 ; auxRow < 20000 ; auxRow++) {
-			for(Integer auxCol = 1 ; auxCol <= procession.getMaxCols() ; auxCol++) {
-				validPos = this.checkPos(auxRow, auxCol, procession, marchs);
+		marchs = this.marchService.findMarchByParade(parade.getId());
+
+		for (Integer auxRow = 1; auxRow < 20000; auxRow++) {
+			for (Integer auxCol = 1; auxCol <= parade.getMaxCols(); auxCol++) {
+				validPos = this.checkPos(auxRow, auxCol, parade, marchs);
 				if (validPos) {
 					rowColumn.add(auxRow);
 					rowColumn.add(auxCol);
 					break;
 				}
 			}
-			if(validPos)
+			if (validPos)
 				break;
 		}
 		return rowColumn;
 	}
-	
-	private Collection<Procession> findFinalProcessionByBrotherhood(int brotherhoodId) {
-		Collection<Procession> result;
 
-		result = this.processionRepository.findFinalProcessionByBrotherhood(brotherhoodId);
+	private Collection<Parade> findFinalParadeByBrotherhood(int brotherhoodId) {
+		Collection<Parade> result;
+
+		result = this.paradeRepository
+				.findFinalParadeByBrotherhood(brotherhoodId);
 
 		return result;
 	}
-	
-	public Collection<Procession> findPossibleProcessionsToMarchByMember(int memberId){
-		Collection<Procession> result = new ArrayList<>();
-		Collection<Brotherhood> brotherhoods = this.brotherhoodService.brotherhoodsByMemberInId(memberId);
-		
-		for(Brotherhood brotherhood : brotherhoods) {
-			Collection<Procession> aux1 = this.findFinalProcessionByBrotherhood(brotherhood.getId());
-			Collection<Procession> aux2 = this.findProcessionsAlreadyApplied(memberId);
+
+	public Collection<Parade> findPossibleParadesToMarchByMember(int memberId) {
+		Collection<Parade> result = new ArrayList<>();
+		Collection<Brotherhood> brotherhoods = this.brotherhoodService
+				.brotherhoodsByMemberInId(memberId);
+
+		for (Brotherhood brotherhood : brotherhoods) {
+			Collection<Parade> aux1 = this
+					.findFinalParadeByBrotherhood(brotherhood.getId());
+			Collection<Parade> aux2 = this.findParadesAlreadyApplied(memberId);
 			aux1.removeAll(aux2);
 			result.addAll(aux1);
 		}
+		return result;
+	}
+	
+	public Double ratioDraftVsFinal(){
+		Double result;
+		
+		result = this.paradeRepository.ratioDraftVsFinal();
+		
+		return result;
+	}
+	public Double[] ratioFinalModeGroupedByStatus(){
+		Double[] result;
+		
+		result = this.paradeRepository.ratioFinalModeGroupedByStatus();
+		
 		return result;
 	}
 }

@@ -25,7 +25,7 @@ public class Finder extends DomainEntity {
 	private Date minimumMoment;
 	private Date maximumMoment;
 	private Date searchMoment;
-	private Collection<Procession> searchResults;
+	private Collection<Parade> searchResults;
 
 	/* Getters&Setters */
 
@@ -76,11 +76,11 @@ public class Finder extends DomainEntity {
 
 	@Valid
 	@ManyToMany
-	public Collection<Procession> getSearchResults() {
+	public Collection<Parade> getSearchResults() {
 		return searchResults;
 	}
 
-	public void setSearchResults(Collection<Procession> searchResults) {
+	public void setSearchResults(Collection<Parade> searchResults) {
 		this.searchResults = searchResults;
 	}
 

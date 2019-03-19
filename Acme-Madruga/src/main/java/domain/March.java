@@ -21,7 +21,7 @@ public class March extends DomainEntity {
 	private Integer col;
 	private String reason;
 	private Member member;
-	private Procession procession;
+	private Parade procession;
 
 	/* Getters&Setters */
 
@@ -74,11 +74,11 @@ public class March extends DomainEntity {
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Procession getProcession() {
+	public Parade getParade() {
 		return procession;
 	}
 
-	public void setProcession(Procession procession) {
+	public void setParade(Parade procession) {
 		this.procession = procession;
 	}
 

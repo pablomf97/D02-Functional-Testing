@@ -19,7 +19,7 @@ import domain.Enrolment;
 import domain.March;
 import domain.Message;
 import domain.MessageBox;
-import domain.Procession;
+import domain.Parade;
 
 @Service
 @Transactional
@@ -467,7 +467,7 @@ public class MessageService {
 
 	}
 
-	public Message notificationPublishProcession(Procession p) {
+	public Message notificationPublishProcession(Parade p) {
 		Message result = new Message();
 		Actor principal;
 		Collection<Actor> recipients;
