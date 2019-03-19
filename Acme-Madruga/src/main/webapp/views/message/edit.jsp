@@ -26,16 +26,21 @@
 			<br />
 
 
-			<acme:textbox code="message.subject" path="subject"/><br><br>
-			
-			<spring:message code="message.body" /><br />
-			<form:textarea code="message.body" path="body"/><br><br>
+			<acme:textbox code="message.subject" path="subject" />
+			<br>
+			<br>
+
+			<spring:message code="message.body" />
+			<br />
+			<form:textarea code="message.body" path="body" />
+			<br>
+			<br>
 
 
 			<form:label path="priority">
 				<spring:message code="message.priority" />:
 	</form:label>
-			<form:select path="priority" >
+			<form:select path="priority">
 				<form:options items="${priorities}" />
 			</form:select>
 			<form:errors cssClass="error" path="priority" />
