@@ -25,7 +25,7 @@ import services.LegalRecordService;
 
 @Controller
 @RequestMapping("/legalRecord")
-public class LegalRecordController {
+public class LegalRecordController extends AbstractController{
 
 	//Services
 	@Autowired
@@ -57,9 +57,12 @@ public class LegalRecordController {
 		Assert.isTrue(this.actorService.checkAuthority(principal,
 				"BROTHERHOOD"));
 		legalRecord=this.legalRecordService.findOne(legalRecordId);
-
+		
+		final Collection<String> laws = this.legalRecordService.getSplitLaws(legalRecord.getLaws());
+		
 		res = new ModelAndView("legalRecord/display");
 		res.addObject("legalRecord", legalRecord);
+		res.addObject("laws",laws);
 		}catch(final Throwable opps){
 			res = new ModelAndView("redirect:/welcome/index.do");
 		}
@@ -108,13 +111,16 @@ public class LegalRecordController {
 	public ModelAndView edit(@RequestParam final int legalRecordId){
 		ModelAndView result;
 		LegalRecord legalRecord;
+		Brotherhood principal;
+		principal = (Brotherhood) this.actorService.findByPrincipal();
 		
 
 		legalRecord = this.legalRecordService.findOne(legalRecordId);
 		Assert.notNull(legalRecord);
-
+		Assert.isTrue(principal.getHistory().getLegalRecords().contains(legalRecord),"not.allowed");
+		Collection<String> laws =this.legalRecordService.getSplitLaws(legalRecord.getLaws());
 		result = this.createEditModelAndView(legalRecord);
-
+		result.addObject("laws",laws);
 		return result;
 
 	}

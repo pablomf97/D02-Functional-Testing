@@ -1,6 +1,7 @@
 package controllers;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.validation.Valid;
@@ -8,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
+import org.springframework.util.ResourceUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -61,7 +63,7 @@ public class PeriodRecordController extends AbstractController{
 			periodRecord=this.periodRecordService.findOne(periodRecordId);
 
 			final Collection<String> photos = this.periodRecordService
-					.getSplitPhotos(periodRecord.getPhotos());
+					.getSplitPictures(periodRecord.getPhotos());
 
 			res=new ModelAndView("periodRecord/display");
 			res.addObject("photos",photos);
@@ -137,18 +139,17 @@ public class PeriodRecordController extends AbstractController{
 		PeriodRecord periodRecord;
 		Brotherhood principal;
 		principal = (Brotherhood) this.actorService.findByPrincipal();
-		//Assert.isTrue(principal.getHistory().getInceptionRecord().getId()==periodRecordId,"not.allowed");
+		
 
 
 		periodRecord = this.periodRecordService.findOne(periodRecordId);
 		Assert.notNull(periodRecord);
-
-		//	final Collection<String> photos = this.periodRecordService
-		//		.getSplitPhotos(periodRecord.getPhotos());
+		Assert.isTrue(principal.getHistory().getPeriodRecords().contains(periodRecord),"not.allowed");
+			final Collection<String> photos = this.periodRecordService.getSplitPictures(periodRecord.getPhotos());
 
 
 		result = this.createEditModelAndView(periodRecord);
-		//result.addObject("photos", photos);
+		result.addObject("photos", photos);
 		return result;
 
 
@@ -160,21 +161,20 @@ public class PeriodRecordController extends AbstractController{
 
 		Brotherhood principal;
 		Integer historyId;
-		//Collection<String> photos = new ArrayList<>();
-		//	photos = this.periodRecordService.getSplitPhotos(periodRecord
-		//	.getPhotos());
+		
 		if(binding.hasErrors()){
 			result=this.createEditModelAndView(periodRecord);
 		}
 		else{
 			try{
+			
 				principal = (Brotherhood) this.actorService.findByPrincipal();
 				historyId = principal.getHistory().getId();
 				Assert.isTrue(this.actorService.checkAuthority(principal,
 						"BROTHERHOOD"));
 				this.periodRecordService.save(periodRecord);
 				result = new ModelAndView("redirect:/periodRecord/list.do?historyId="+historyId);
-				//result.addObject("photos", photos);
+				
 			}catch(final Throwable oops){
 				result=this.createEditModelAndView(periodRecord,"mr.commit.error");
 

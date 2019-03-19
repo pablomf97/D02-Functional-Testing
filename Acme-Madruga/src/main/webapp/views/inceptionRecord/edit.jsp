@@ -31,11 +31,11 @@
 	<spring:message code="inceptionRecord.photos" />
  		:
 		<button type="button" onClick="addFields()">
-		<spring:message code="brotherhood.pictures.add" />
+		<spring:message code="add" />
 	</button>
 	<div id="container"></div>
 	<jstl:forEach items="${photos}" var="pic">
-		<input name=photos value="${pic}" />
+		<input name=photos value="${pic}" placeholder="https://www.imgur.com/f3odiyg"/>
 	</jstl:forEach>
 	<form:errors path="photos" cssClass="error" />
 

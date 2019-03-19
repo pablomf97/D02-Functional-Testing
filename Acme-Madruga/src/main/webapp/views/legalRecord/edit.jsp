@@ -30,10 +30,20 @@
 		<acme:textbox code="legalRecord.name" path="name" />
 		<br>
 		<br>
-		<acme:textbox code="legalRecord.VAT" path="VAT" />
+		<acme:textbox code="legalRecord.VAT" path="VAT"  placeholder="0.21" />
 		<br>
 		<br>
-		<acme:textbox code="legalRecord.laws" path="laws" />
+		<spring:message code="legalRecord.laws" />
+ 		:
+		<button type="button" onClick="addFields()">
+		<spring:message code="add" />
+	</button>
+	<div id="container"></div>
+	<jstl:forEach items="${laws}" var="law">
+		<input name=laws value="${law}" />
+	</jstl:forEach>
+	<form:errors path="laws" cssClass="error" />
+	
 		<br>
 		<br>
 		<acme:submit code="legalRecord.save" name="save" />&nbsp;
@@ -48,5 +58,18 @@
 		<br />
 		</jstl:if>
 	</form:form>
+		<script>
+	
+	function addFields() {
+		// Container <div> where dynamic content will be placed
+		var container = document.getElementById("container");
+		// Create an <input> element, set its type and name attributes
+		var input = document.createElement("input");
+		input.type = "text";
+		input.name = "laws";
+		container.appendChild(input);
+	}
+	
+	</script>
 
 </security:authorize>

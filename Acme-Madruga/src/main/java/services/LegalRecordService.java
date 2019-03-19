@@ -1,5 +1,6 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.transaction.Transactional;
@@ -104,6 +105,17 @@ public class LegalRecordService {
 		Assert.notNull(historyBro);
 	
 	}
+	public Collection<String> getSplitLaws(final String laws) {
+		final Collection<String> res = new ArrayList<>();
+		final String[] slice = laws.split(",");
+		
+		for (final String p : slice){
+			if (p.trim() != ""){
+				res.add(p);
 
+			}
+		}
+		return res;
+	}
 
 }

@@ -1,4 +1,3 @@
-
 package controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import services.ActorService;
 import domain.Actor;
 import domain.Administrator;
 import domain.Brotherhood;
+import domain.Chapter;
 import domain.Member;
 
 @Controller
@@ -18,8 +18,7 @@ import domain.Member;
 public class ActorController extends AbstractController {
 
 	@Autowired
-	private ActorService	actorService;
-
+	private ActorService actorService;
 
 	public ActorController() {
 		super();
@@ -29,22 +28,31 @@ public class ActorController extends AbstractController {
 	public ModelAndView displayGET() {
 		ModelAndView result;
 		final Actor actor = this.actorService.findByPrincipal();
-		final String role = actor.getUserAccount().getAuthorities().iterator().next().toString();
+		final String role = actor.getUserAccount().getAuthorities().iterator()
+				.next().toString();
 		switch (role) {
 		case "ADMINISTRATOR":
 			final Administrator a = (Administrator) actor;
-			result = new ModelAndView("redirect:/administrator/display.do?id=" + a.getId());
+			result = new ModelAndView("redirect:/administrator/display.do?id="
+					+ a.getId());
 			break;
 		case "BROTHERHOOD":
 			final Brotherhood b = (Brotherhood) actor;
-			result = new ModelAndView("redirect:/brotherhood/display.do?id=" + b.getId());
+			result = new ModelAndView("redirect:/brotherhood/display.do?id="
+					+ b.getId());
 			break;
 		case "MEMBER":
 			final Member m = (Member) actor;
-			result = new ModelAndView("redirect:/member/display.do?id=" + m.getId());
+			result = new ModelAndView("redirect:/member/display.do?id="
+					+ m.getId());
+			break;
+		case "CHAPTER":
+			final Chapter chapter = (Chapter) actor;
+			result = new ModelAndView("redirect:/chapter/display.do?id="
+					+ chapter.getId());
 			break;
 		default:
-			//TODO: ver la posibilidad de pagina de error
+			// TODO: ver la posibilidad de pagina de error
 			result = new ModelAndView("redirect:/welcome/index.do");
 		}
 		return result;
@@ -54,22 +62,31 @@ public class ActorController extends AbstractController {
 	public ModelAndView editGET() {
 		ModelAndView result;
 		final Actor actor = this.actorService.findByPrincipal();
-		final String role = actor.getUserAccount().getAuthorities().iterator().next().toString();
+		final String role = actor.getUserAccount().getAuthorities().iterator()
+				.next().toString();
 		switch (role) {
 		case "ADMINISTRATOR":
 			final Administrator a = (Administrator) actor;
-			result = new ModelAndView("redirect:/administrator/edit.do?id=" + a.getId());
+			result = new ModelAndView("redirect:/administrator/edit.do?id="
+					+ a.getId());
 			break;
 		case "BROTHERHOOD":
 			final Brotherhood b = (Brotherhood) actor;
-			result = new ModelAndView("redirect:/brotherhood/edit.do?id=" + b.getId());
+			result = new ModelAndView("redirect:/brotherhood/edit.do?id="
+					+ b.getId());
 			break;
 		case "MEMBER":
 			final Member m = (Member) actor;
-			result = new ModelAndView("redirect:/member/edit.do?id=" + m.getId());
+			result = new ModelAndView("redirect:/member/edit.do?id="
+					+ m.getId());
+			break;
+		case "CHAPTER":
+			final Chapter chapter = (Chapter) actor;
+			result = new ModelAndView("redirect:/chapter/edit.do?id="
+					+ chapter.getId());
 			break;
 		default:
-			//TODO: ver la posibilidad de pagina de error
+			// TODO: ver la posibilidad de pagina de error
 			result = new ModelAndView("redirect:/welcome/index.do");
 		}
 		return result;
