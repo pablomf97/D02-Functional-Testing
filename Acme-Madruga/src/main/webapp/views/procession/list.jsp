@@ -13,35 +13,34 @@
 <display:table pagesize="5" class="displaytag" name="processions"
 	requestURI="procession/member,brotherhood/list.do" id="row">
 
-
-
-	<!-- Attributes-->
-
-	<display:column titleKey="procession.title" sortable="true">
-		<jstl:out value="${row.title }"></jstl:out>
-	</display:column>
-
-	<display:column titleKey="procession.ticker" sortable="true">
-		<jstl:out value="${row.ticker }"></jstl:out>
-	</display:column>
-
-	<display:column titleKey="procession.description">
-		<jstl:out value="${row.description }"></jstl:out>
-	</display:column>
-
-	<display:column titleKey="procession.organisedMoment" sortable="true">
-		<jstl:out value="${row.organisedMoment }"></jstl:out>
-	</display:column>
-
-	<!-- Action links -->
-
-	<display:column>
-		<a href="procession/display.do?processionId=${row.id}"> <spring:message
-				code="procession.display" />
-		</a>
-	</display:column>
-
 	<security:authorize access="hasRole('BROTHERHOOD')">
+
+		<!-- Attributes-->
+
+		<display:column titleKey="procession.title" sortable="true">
+			<jstl:out value="${row.title }"></jstl:out>
+		</display:column>
+
+		<display:column titleKey="procession.ticker" sortable="true">
+			<jstl:out value="${row.ticker }"></jstl:out>
+		</display:column>
+
+		<display:column titleKey="procession.description">
+			<jstl:out value="${row.description }"></jstl:out>
+		</display:column>
+
+		<display:column titleKey="procession.organisedMoment" sortable="true">
+			<jstl:out value="${row.organisedMoment }"></jstl:out>
+		</display:column>
+
+		<!-- Action links -->
+
+		<display:column>
+			<a href="procession/display.do?processionId=${row.id}"> <spring:message
+					code="procession.display" />
+			</a>
+		</display:column>
+
 		<display:column>
 			<jstl:if test="${row.isDraft == true}">
 				<a href="procession/edit.do?processionId=${row.id}"> <spring:message
@@ -50,8 +49,65 @@
 			</jstl:if>
 
 		</display:column>
+
 	</security:authorize>
 
+	<security:authorize access="hasRole('MEMBER')">
+
+		<jstl:choose>
+
+			<jstl:when test="${row.isDraft == false}">
+
+				<!-- Attributes-->
+
+				<display:column titleKey="procession.title" sortable="true">
+					<jstl:out value="${row.title }"></jstl:out>
+				</display:column>
+
+				<display:column titleKey="procession.ticker" sortable="true">
+					<jstl:out value="${row.ticker }"></jstl:out>
+				</display:column>
+
+				<display:column titleKey="procession.status" sortable="true">
+					<jstl:if test="${row.status == 'SUBMITTED' }">
+						<span class="SUBMITTED"> <jstl:out value="${ row.status }" /></span>
+					</jstl:if>
+					<jstl:if test="${row.status == 'ACCEPTED' }">
+						<span class="ACCEPTED"> <jstl:out value="${ row.status }" /></span>
+					</jstl:if>
+					<jstl:if test="${row.status == 'REJECTED' }">
+						<span class="REJECTED"> <jstl:out value="${ row.status }" /></span>
+					</jstl:if>
+					<br />
+				</display:column>
+
+				<display:column titleKey="procession.description">
+					<jstl:out value="${row.description }"></jstl:out>
+				</display:column>
+
+				<display:column titleKey="procession.organisedMoment"
+					sortable="true">
+					<jstl:out value="${row.organisedMoment }"></jstl:out>
+				</display:column>
+
+				<!-- Action links -->
+
+				<display:column>
+					<a href="procession/display.do?processionId=${row.id}"> <spring:message
+							code="procession.display" />
+					</a>
+				</display:column>
+
+			</jstl:when>
+			<jstl:otherwise>
+				<p>
+					<spring:message code="march.create" />
+				</p>
+			</jstl:otherwise>
+
+		</jstl:choose>
+
+	</security:authorize>
 </display:table>
 <security:authorize access="hasRole('BROTHERHOOD')">
 	<p>
