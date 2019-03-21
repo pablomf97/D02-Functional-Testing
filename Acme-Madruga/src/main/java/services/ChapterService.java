@@ -1,6 +1,9 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -15,6 +18,7 @@ import repositories.ChapterRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
+import domain.Brotherhood;
 import domain.Chapter;
 import forms.ChapterForm;
 
@@ -38,11 +42,14 @@ public class ChapterService {
 	@Autowired
 	private Validator validator;
 
-	// @Autowired
-	// private ZoneService zoneService;
+	@Autowired
+	private BrotherhoodService brotherhoodService;
 
 	@Autowired
 	private MessageBoxService messageBoxService;
+
+	@Autowired
+	private ParadeService paradeService;
 
 	/* Basic CRUD methods */
 
@@ -222,6 +229,7 @@ public class ChapterService {
 		return result;
 	}
 
+	// Other business methods
 	private boolean checkValidation(final ChapterForm chapterForm,
 			final BindingResult binding, final Chapter chapter) {
 		boolean check = true;
@@ -233,6 +241,145 @@ public class ChapterService {
 		if (binding.hasErrors())
 			check = false;
 		return check;
+	}
+
+	public Double ratioAreasNotManaged() {
+		return this.chapterRepository.ratioAreasNotManaged();
+	}
+
+	/**
+	 * The average, the minimum, the maximum, and the standard deviation of the
+	 * number of parades coordinated by the chapters.
+	 * 
+	 * @return Double[]
+	 */
+	public Double[] paradeChapterStatistics() {
+		Collection<Chapter> chapters;
+		Collection<Brotherhood> brotherhoods;
+		List<Double> values = new ArrayList<>();
+		Double[] res = new Double[4];
+
+		chapters = this.findAll();
+		brotherhoods = this.brotherhoodService.findAll();
+
+		/* Getting the values of the parades */
+
+		if (!brotherhoods.isEmpty() && !chapters.isEmpty()) {
+			for (Brotherhood brotherhood : brotherhoods) {
+				for (Chapter chapter : chapters) {
+					if (chapter.getZone() != null) {
+
+						if (chapter.getZone().getId() == brotherhood.getZone()
+								.getId()) {
+							values.add((double) (this.paradeService
+									.findParadeByBrotherhoodId(
+											brotherhood.getId()).size() - 1));
+							break;
+						}
+					}
+				}
+			}
+
+			if (!values.isEmpty() && values != null) {
+				/* Average */
+				Double avg = this.getAvg(values);
+
+				res[0] = (avg >= 0. || avg != null) ? avg : 0.;
+
+				/* Minimum */
+				Double min = Collections.min(values);
+
+				res[1] = (min >= 0. || min != null) ? min : 0.;
+
+				/* Maximum */
+				Double max = Collections.max(values);
+
+				res[2] = (max >= 0. || max != null) ? max : 0.;
+
+				/* Standard deviation */
+				Double SD = this.getSD(values);
+
+				res[3] = (SD >= 0. || SD != null) ? SD : 0.;
+			} else {
+				res = new Double[] { 0., 0., 0., 0. };
+			}
+		} else {
+			res = new Double[] { 0., 0., 0., 0. };
+		}
+		return res;
+	}
+
+	/**
+	 * The chapters that coordinate at least 10% more parades than the average
+	 * 
+	 * @return Collection<Chapter>
+	 * 
+	 * 
+	 * */
+	public Collection<Chapter> chapter10percentMore() {
+		Collection<Chapter> chapters;
+		Collection<Brotherhood> brotherhoods;
+		Collection<Chapter> luckyOnes = new ArrayList<>();
+		List<Double> values = new ArrayList<>();
+
+		chapters = this.findAll();
+		brotherhoods = this.brotherhoodService.findAll();
+
+		/* Getting the values of the parades */
+
+		if (!chapters.isEmpty() && !brotherhoods.isEmpty()) {
+			for (Brotherhood brotherhood : brotherhoods) {
+				for (Chapter chapter : chapters) {
+					if (chapter.getZone() != null) {
+						if (chapter.getZone().getId() == brotherhood.getZone()
+								.getId()) {
+							values.add((double) (this.paradeService
+									.findParadeByBrotherhoodId(
+											brotherhood.getId()).size() - 1));
+							break;
+						}
+					}
+				}
+			}
+
+			if (!values.isEmpty() && values != null) {
+				Double avgtenpercent = this.getAvg(values) * 1.1;
+
+				for (Chapter chapter : chapters) {
+					if (this.chapterRepository.getParadesPerArea(
+							chapter.getId()).size() > avgtenpercent) {
+						luckyOnes.add(chapter);
+					}
+				}
+			}
+		}
+		return luckyOnes;
+	}
+
+	/* Auxiliary method to get the average of a list of values */
+	private Double getAvg(List<Double> values) {
+		Double res = 0.;
+
+		for (Double value : values) {
+			res += value;
+		}
+
+		res = res / values.size();
+
+		return res;
+	}
+
+	/* Auxiiary method to get the SD of a list of values */
+	private Double getSD(List<Double> values) {
+		Double standardDeviation = 0.;
+		Double average = this.getAvg(values);
+
+		for (double value : values) {
+			standardDeviation += Math.pow(value - average, 2);
+		}
+
+		return Math.sqrt(standardDeviation / values.size());
+
 	}
 
 }

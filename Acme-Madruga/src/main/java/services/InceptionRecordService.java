@@ -1,8 +1,6 @@
 package services;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -10,7 +8,7 @@ import java.util.Collections;
 
 import javax.transaction.Transactional;
 
-import org.apache.tiles.util.URLUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -68,7 +66,7 @@ public class InceptionRecordService {
 
 	public InceptionRecord save(InceptionRecord inceptionRecord){
 		InceptionRecord res;
-
+		InceptionRecord copy;
 		Brotherhood principal;
 		History historyBro;
 
@@ -79,14 +77,20 @@ public class InceptionRecordService {
 				"not.allowed");
 		Assert.notNull(inceptionRecord.getTitle(),"not.null");
 		Assert.notNull(inceptionRecord.getDescription(),"not.null");
-		Assert.notNull(inceptionRecord.getPhotos(),"not.null");
-		inceptionRecord.setDescription(inceptionRecord.getDescription());
-		inceptionRecord.setTitle(inceptionRecord.getTitle());
-		inceptionRecord.setPhotos(inceptionRecord.getPhotos());
-		res=this.inceptionRecordRepository.save(inceptionRecord);
-		if(inceptionRecord.getId() == 0){
+		Assert.notNull(inceptionRecord.getPhotos(),"not.null");	
+		if(inceptionRecord.getId() != 0){
+			copy=this.findOne(inceptionRecord.getId());
+			copy.setTitle(inceptionRecord.getTitle());
+			copy.setDescription(inceptionRecord.getDescription());
+			copy.setPhotos(inceptionRecord.getPhotos());
+			res=this.inceptionRecordRepository.save(copy);
+		}else{
 			historyBro = principal.getHistory();
-			historyBro.setInceptionRecord(inceptionRecord);
+			
+			res=this.inceptionRecordRepository.save(inceptionRecord);
+			
+			historyBro.setInceptionRecord(res);
+			
 		}
 		//Assert.notNull(res);
 		return res;
@@ -106,7 +110,7 @@ public class InceptionRecordService {
 		Assert.notNull(inceptionRecord);
 		//Assert.isTrue(inceptionRecord.getId() != 0, "wrong.id");
 
-		this.inceptionRecordRepository.delete(inceptionRecord);
+		this.inceptionRecordRepository.delete(this.findOne(inceptionRecord.getId()));
 		historyBro.setInceptionRecord(null);
 
 	}

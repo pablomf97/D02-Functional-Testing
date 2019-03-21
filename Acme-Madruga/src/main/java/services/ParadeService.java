@@ -48,7 +48,7 @@ public class ParadeService {
 
 	@Autowired
 	private Validator validator;
-	
+
 	@Autowired
 	private BrotherhoodService brotherhoodService;
 
@@ -148,7 +148,7 @@ public class ParadeService {
 			result = this.findOne(procession.getId());
 			Assert.notNull(result);
 			Assert.isTrue(result.getBrotherhood().getId() == principal.getId());
-			
+
 			result.setTitle(procession.getTitle());
 			result.setDescription(procession.getDescription());
 			result.setPlatforms(procession.getPlatforms());
@@ -160,8 +160,11 @@ public class ParadeService {
 		return result;
 	}
 
-	public Collection<Parade> findProcessionsByBrotherhoodId(
-			int brotherhoodId) {
+	public Collection<Parade> findParadeByBrotherhoodId(int id) {
+		return this.processionRepository.findParadesByBrotherhoodId(id);
+	}
+
+	public Collection<Parade> findProcessionsByBrotherhoodId(int brotherhoodId) {
 		Collection<Parade> result;
 
 		result = this.processionRepository
@@ -182,8 +185,7 @@ public class ParadeService {
 	private Collection<Parade> findProcessionsAlreadyApplied(int memberId) {
 		Collection<Parade> result;
 
-		result = this.processionRepository
-				.findParadesAlreadyApplied(memberId);
+		result = this.processionRepository.findParadesAlreadyApplied(memberId);
 
 		return result;
 	}
@@ -263,9 +265,9 @@ public class ParadeService {
 		Collection<March> marchs;
 
 		marchs = this.marchService.findMarchByProcession(procession.getId());
-		
-		for(Integer auxRow = 1 ; auxRow < 20000 ; auxRow++) {
-			for(Integer auxCol = 1 ; auxCol <= procession.getMaxCols() ; auxCol++) {
+
+		for (Integer auxRow = 1; auxRow < 20000; auxRow++) {
+			for (Integer auxCol = 1; auxCol <= procession.getMaxCols(); auxCol++) {
 				validPos = this.checkPos(auxRow, auxCol, procession, marchs);
 				if (validPos) {
 					rowColumn.add(auxRow);
@@ -273,30 +275,46 @@ public class ParadeService {
 					break;
 				}
 			}
-			if(validPos)
+			if (validPos)
 				break;
 		}
 		return rowColumn;
 	}
-	
-	private Collection<Parade> findFinalProcessionByBrotherhood(int brotherhoodId) {
+
+	private Collection<Parade> findFinalProcessionByBrotherhood(
+			int brotherhoodId) {
 		Collection<Parade> result;
 
-		result = this.processionRepository.findFinalParadeByBrotherhood(brotherhoodId);
+		result = this.processionRepository
+				.findFinalParadeByBrotherhood(brotherhoodId);
 
 		return result;
 	}
-	
-	public Collection<Parade> findPossibleProcessionsToMarchByMember(int memberId){
+
+	public Collection<Parade> findPossibleProcessionsToMarchByMember(
+			int memberId) {
 		Collection<Parade> result = new ArrayList<>();
-		Collection<Brotherhood> brotherhoods = this.brotherhoodService.brotherhoodsByMemberInId(memberId);
-		
-		for(Brotherhood brotherhood : brotherhoods) {
-			Collection<Parade> aux1 = this.findFinalProcessionByBrotherhood(brotherhood.getId());
-			Collection<Parade> aux2 = this.findProcessionsAlreadyApplied(memberId);
+		Collection<Brotherhood> brotherhoods = this.brotherhoodService
+				.brotherhoodsByMemberInId(memberId);
+
+		for (Brotherhood brotherhood : brotherhoods) {
+			Collection<Parade> aux1 = this
+					.findFinalProcessionByBrotherhood(brotherhood.getId());
+			Collection<Parade> aux2 = this
+					.findProcessionsAlreadyApplied(memberId);
 			aux1.removeAll(aux2);
 			result.addAll(aux1);
 		}
 		return result;
+	}
+
+	public Double ratioDraftVsFinal() {
+		return this.processionRepository.ratioDraftVsFinal();
+	}
+
+	public Double[] ratioFinalModeGroupedByStatus() {
+		Double[] res = this.processionRepository
+				.ratioFinalModeGroupedByStatus();
+		return (res.length > 0) ? res : new Double[] { 0., 0., 0. };
 	}
 }

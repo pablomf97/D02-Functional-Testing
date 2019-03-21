@@ -58,6 +58,7 @@ public class PeriodRecordService {
 
 	public PeriodRecord save(PeriodRecord periodRecord){
 		PeriodRecord res;
+		PeriodRecord copy;
 		Brotherhood principal;
 		History historyBro;
 		//Collection<PeriodRecord> periodRecords;
@@ -84,11 +85,27 @@ public class PeriodRecordService {
 		//periodRecord.setStartYear(periodRecord.getStartYear());
 		//periodRecord.setEndYear(periodRecord.getEndYear());
 		//periodRecord.setPhotos(periodRecord.getPhotos());
-		res=this.periodRecordRepository.save(periodRecord);
-		if(periodRecord.getId() == 0){
-			historyBro.getPeriodRecords().add(periodRecord);
+		
+		
+		if(periodRecord.getId()!=0){
+			copy=this.findOne(periodRecord.getId());
+			copy.setTitle(periodRecord.getTitle());
+			copy.setDescription(periodRecord.getDescription());
+			copy.setStartYear(periodRecord.getStartYear());
+			copy.setEndYear(periodRecord.getEndYear());
+			copy.setPhotos(periodRecord.getPhotos());
+			copy.setVersion(periodRecord.getVersion());
+			copy.setId(periodRecord.getId());
 			
-			//historyBro.setPeriodRecords(periodRecords);
+			res=this.periodRecordRepository.save(copy);
+		}
+		
+		else{
+			
+			res=this.periodRecordRepository.save(periodRecord);
+			
+			historyBro.getPeriodRecords().add(res);
+			
 		}
 		Assert.notNull(res);
 		return res;
@@ -109,9 +126,9 @@ public class PeriodRecordService {
 		Assert.isTrue(historyBro.getPeriodRecords().contains(periodRecord));
 
 		periods=historyBro.getPeriodRecords();
-
-		this.periodRecordRepository.delete(periodRecord);
-		periods.remove(periodRecord);
+		periods.remove(this.findOne(periodRecord.getId()));
+		this.periodRecordRepository.delete(this.findOne(periodRecord.getId()));
+		
 		Assert.notNull(historyBro);
 		
 	}

@@ -234,6 +234,42 @@
 			</tr>
 		</table>
 	</jstl:if>
+	<jstl:if test="${not empty paradeChapterStatistics}">
+		<table class="displayStyle" style="width: 50%">
+			<tr>
+				<th colspan="2"><spring:message
+						code="administrator.finder.statistics" /></th>
+			</tr>
+			<tr>
+				<td><spring:message
+						code="administrator.paradeChapterStatistics.avg" /></td>
+				<td style="text-align: right">${paradeChapterStatistics[0]}</td>
+			</tr>
+			<tr>
+				<td><spring:message
+						code="administrator.paradeChapterStatistics.min" /></td>
+				<td style="text-align: right">${paradeChapterStatistics[1]}</td>
+			</tr>
+			<tr>
+				<td><spring:message
+						code="administrator.paradeChapterStatistics.max" /></td>
+				<td style="text-align: right">${paradeChapterStatistics[2]}</td>
+			</tr>
+			<tr>
+				<td><spring:message
+						code="administrator.paradeChapterStatistics.stdev" /></td>
+				<td style="text-align: right">${paradeChapterStatistics[3]}</td>
+			</tr>
+			<tr>
+				<td><spring:message code="administrator.ratioDraftVsFinal" /></td>
+				<td style="text-align: right">${ratioDraftVsFinal}</td>
+			</tr>
+			<tr>
+				<td><spring:message code="administrator.ratioAreasNotManaged" /></td>
+				<td style="text-align: right">${ratioAreasNotManaged}</td>
+			</tr>
+		</table>
+	</jstl:if>
 	<table class="displayStyle" style="width: 50%">
 		<tr>
 			<th colspan="2" style="text-align: center"><spring:message
