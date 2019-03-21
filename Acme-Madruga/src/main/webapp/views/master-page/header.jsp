@@ -17,7 +17,7 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-<%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <div style="float: right">
 	<a href="?language=es" id="es"><img src="images/sp.png"
@@ -174,6 +174,8 @@
 								code="master.page.brotherhood.members.list" /></a></li>
 				</ul></li>
 
+			<li><a class="fNiv" href="chapter/list.do"><spring:message
+						code="master.page.chapters" /></a></li>
 
 		</security:authorize>
 

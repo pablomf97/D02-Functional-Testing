@@ -14,6 +14,7 @@ public interface ZoneRepository extends JpaRepository<Zone, Integer> {
 	@Query("select b.zone from Brotherhood b")
 	public Collection<Zone> findSelectedZones();
 
-
+	@Query("select c.zone from Chapter c where c.id = ?1")
+	public Zone getZoneByChapter(int chapterId);
 
 }

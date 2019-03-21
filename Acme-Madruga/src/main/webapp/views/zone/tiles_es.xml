@@ -26,4 +26,8 @@
 		<put-attribute name="body" value="/views/zone/edit.jsp" />
 	</definition>
 	
+	<definition name="zone/display" extends="master.page">	
+		<put-attribute name="title" value="Mostrar area" />
+		<put-attribute name="body" value="/views/zone/display.jsp" />
+	</definition>
 </tiles-definitions>

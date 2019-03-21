@@ -19,5 +19,10 @@
 		<put-attribute name="title" value="Chapter: ver perfil" />
 		<put-attribute name="body" value="/views/chapter/display.jsp" />
 	</definition>
+	
+	<definition name="chapter/list" extends="master.page">
+		<put-attribute name="title" value="Listado de divisiones" />
+		<put-attribute name="body" value="/views/chapter/list.jsp" />
+	</definition>
 
 </tiles-definitions>

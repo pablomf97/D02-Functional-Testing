@@ -143,5 +143,19 @@ public class ChapterController extends AbstractController {
 		}
 		return result;
 	}
+	
+	@RequestMapping(value="/list", method = RequestMethod.GET)
+	public ModelAndView list(){
+		ModelAndView result;
+		Collection<Chapter> chapters;
+		
+		chapters = this.chapterService.findAll();
+		
+		result = new ModelAndView("chapter/list");
+		result.addObject("chapters", chapters);
+		
+		return result;
+		
+	}
 
 }

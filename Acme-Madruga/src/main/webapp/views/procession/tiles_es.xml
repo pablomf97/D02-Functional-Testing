@@ -31,4 +31,10 @@
 		<put-attribute name="body" value="/views/procession/edit.jsp" />
 	</definition>
 	
+	<definition name="procession/listSimple" extends="master.page">	
+		<put-attribute name="title" value="Desfiles organizados por el cabildo" />
+		<put-attribute name="body" value="/views/procession/listSimple.jsp" />
+	</definition>
+	
+	
 </tiles-definitions>

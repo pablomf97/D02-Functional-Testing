@@ -31,4 +31,9 @@
 		<put-attribute name="body" value="/views/procession/edit.jsp" />
 	</definition>
 	
+	<definition name="procession/listSimple" extends="master.page">	
+		<put-attribute name="title" value="Parades organized by chapter" />
+		<put-attribute name="body" value="/views/procession/listSimple.jsp" />
+	</definition>
+	
 </tiles-definitions>
