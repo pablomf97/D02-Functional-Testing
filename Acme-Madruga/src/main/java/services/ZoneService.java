@@ -116,4 +116,14 @@ public class ZoneService {
 		return result;
 	}
 	
+	public Zone getZoneByChapter(int chapterId){
+		Zone result;
+		
+		result = this.zoneRepository.getZoneByChapter(chapterId);
+		
+		return result;
+		
+		
+	}
+	
 }

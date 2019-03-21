@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
+import services.BrotherhoodService;
+import services.ChapterService;
 import services.MessageService;
 import services.ParadeService;
 import services.PlatformService;
+import services.ZoneService;
 import domain.Actor;
 import domain.Brotherhood;
+import domain.Chapter;
 import domain.Parade;
 import domain.Platform;
+import domain.Zone;
 
 @Controller
 @RequestMapping("/procession")
@@ -37,6 +43,15 @@ public class ParadeController extends AbstractController {
 	
 	@Autowired
 	private MessageService messageService;
+	
+	@Autowired
+	private ChapterService chapterService;
+	
+	@Autowired
+	private ZoneService zoneService;
+	
+	@Autowired
+	private BrotherhoodService brotherhoodService;
 
 	// Display
 
@@ -284,6 +299,26 @@ public class ParadeController extends AbstractController {
 		result.addObject("actorBrother", actorBrother);
 
 		return result;
+	}
+	
+	@RequestMapping(value="/listSimple" , method = RequestMethod.GET)
+	public ModelAndView listSimple(@RequestParam final int chapterId){
+		ModelAndView result;
+		Chapter chapter = this.chapterService.findOne(chapterId);
+		Zone zone = this.zoneService.getZoneByChapter(chapterId);
+		Collection<Parade> parades = new ArrayList<Parade>();
+		Collection<Brotherhood> brotherhoods = this.brotherhoodService.findBrotherhoodsByZone(zone.getId());
+		
+		for(Brotherhood b: brotherhoods){
+			parades.addAll(this.processionService.findProcessionsByBrotherhoodId(b.getId()));
+		}
+		
+		result = new ModelAndView("procession/listSimple");
+		
+		result.addObject("parades", parades);
+		result.addObject("chapter", chapter);
+		return result;
+		
 	}
 
 }

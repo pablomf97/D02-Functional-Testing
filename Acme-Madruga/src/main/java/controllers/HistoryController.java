@@ -23,9 +23,9 @@ import domain.PeriodRecord;
 
 @Controller
 @RequestMapping("/history")
-public class HistoryController extends AbstractController{
+public class HistoryController extends AbstractController {
 
-	//Services
+	// Services
 
 	@Autowired
 	private HistoryService historyService;
@@ -36,10 +36,11 @@ public class HistoryController extends AbstractController{
 	@Autowired
 	private ActorService actorService;
 
-	//Display
+	// Display
 
-	@RequestMapping(value="/display", method = RequestMethod.GET)
-	public ModelAndView display(@RequestParam (required = false) final Integer brotherhoodId) {
+	@RequestMapping(value = "/display", method = RequestMethod.GET)
+	public ModelAndView display(
+			@RequestParam(required = false) final Integer brotherhoodId) {
 		ModelAndView result;
 		Brotherhood principal;
 		History history = null;
@@ -49,14 +50,25 @@ public class HistoryController extends AbstractController{
 		Collection<LegalRecord> legalRecords;
 		Collection<MiscellaneousRecord> miscellaneousRecords = new ArrayList<MiscellaneousRecord>();
 		boolean isInceptionRecord = false;
-		
-		if(brotherhoodId != null){
+		boolean possible = false;
 
-			principal = this.brotherhoodService.findOne(brotherhoodId);
+		if (brotherhoodId != null) {
 
-			history = principal.getHistory();
+			try {
+				principal = (Brotherhood) this.actorService.findByPrincipal();
 
-		}else{
+				history = principal.getHistory();
+
+				if (brotherhoodId == principal.getId()) {
+					possible = true;
+				}
+			} catch (Throwable oops) {
+				principal = this.brotherhoodService.findOne(brotherhoodId);
+				
+				history = principal.getHistory();
+			}
+
+		} else {
 			principal = (Brotherhood) this.actorService.findByPrincipal();
 
 			history = principal.getHistory();
@@ -70,32 +82,26 @@ public class HistoryController extends AbstractController{
 		miscellaneousRecords = history.getMiscellaneousRecords();
 
 		result = new ModelAndView("history/display");
-		
-		if(inceptionRecord != null){
+
+		if (inceptionRecord != null) {
 			isInceptionRecord = true;
 		}
-		if(!(linkRecords.isEmpty())){
+		if (!(linkRecords.isEmpty())) {
 			result.addObject("linkRecord", linkRecords.iterator().next());
 		}
-			
-		
 
-		if(!(periodRecords.isEmpty())){
+		if (!(periodRecords.isEmpty())) {
 			result.addObject("periodRecord", periodRecords.iterator().next());
 		}
-			
-		
 
-		if(!(miscellaneousRecords.isEmpty())){
-			result.addObject("miscellaneousRecord", miscellaneousRecords.iterator().next());
+		if (!(miscellaneousRecords.isEmpty())) {
+			result.addObject("miscellaneousRecord", miscellaneousRecords
+					.iterator().next());
 		}
-			
-		
-		if(!(legalRecords.isEmpty())){
+
+		if (!(legalRecords.isEmpty())) {
 			result.addObject("legalRecord", legalRecords.iterator().next());
 		}
-			
-		
 
 		result.addObject("history", history);
 		result.addObject("inceptionRecord", inceptionRecord);
@@ -104,11 +110,9 @@ public class HistoryController extends AbstractController{
 		result.addObject("miscellaneousRecords", miscellaneousRecords);
 		result.addObject("linkRecords", linkRecords);
 		result.addObject("isInceptionRecord", isInceptionRecord);
-		
-		
+		result.addObject("possible", possible);
+
 		return result;
 	}
-
-
 
 }

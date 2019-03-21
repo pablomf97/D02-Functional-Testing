@@ -46,10 +46,7 @@
 		<acme:cancel url="linkRecord/list.do?historyId=${historyId}"
 				code="linkRecord.cancel" />
 
-			<acme:delete name="delete" confirmation="lr.confirm.delete"
-				code="linkRecord.delete" />
-			<br />
-			<br />
+			
 
 		</form:form>
 
