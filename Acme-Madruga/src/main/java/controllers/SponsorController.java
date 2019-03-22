@@ -98,38 +98,38 @@ public class SponsorController extends AbstractController{
 		String emailError = "";
 		String passW = "";
 		String uniqueUsername = "";
-		Sponsor admin;
+		Sponsor sponsor;
 		try {
-			admin = this.sponsorService.reconstruct(sponsorForm, binding);
-			if (admin.getId() == 0) {
+			sponsor = this.sponsorService.reconstruct(sponsorForm, binding);
+			if (sponsor.getId() == 0) {
 				passW = this.actorService.checkPass(sponsorForm.getPassword(), sponsorForm.getPassword2());
 				uniqueUsername = this.actorService.checkUniqueUser(sponsorForm.getUsername());
 			}
-			admin.setEmail(admin.getEmail().toLowerCase());
-			emailError = this.actorService.checkEmail(admin.getEmail(), admin.getUserAccount().getAuthorities().iterator().next().getAuthority());
+			sponsor.setEmail(sponsor.getEmail().toLowerCase());
+			emailError = this.actorService.checkEmail(sponsor.getEmail(), sponsor.getUserAccount().getAuthorities().iterator().next().getAuthority());
 			if (binding.hasErrors() || !emailError.isEmpty() || !passW.isEmpty() || !uniqueUsername.isEmpty()) {
 				result = new ModelAndView("sponsor/edit");
 				result.addObject("uri", "sponsor/edit.do");
-				admin.getUserAccount().setPassword("");
-				result.addObject("sponsor", admin);
+				sponsor.getUserAccount().setPassword("");
+				result.addObject("sponsor", sponsor);
 				result.addObject("emailError", emailError);
 				result.addObject("checkPass", passW);
 				result.addObject("uniqueUsername", uniqueUsername);
 			} else
 				try {
-					admin.setPhoneNumber(this.actorService.checkSetPhoneCC(admin.getPhoneNumber()));
-					final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-					final String hash = encoder.encodePassword(admin.getUserAccount().getPassword(), null);
-					admin.getUserAccount().setPassword(hash);
-					this.sponsorService.save(admin);
+					sponsor.setPhoneNumber(this.actorService.checkSetPhoneCC(sponsor.getPhoneNumber()));
+					//final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+					//final String hash = encoder.encodePassword(sponsor.getUserAccount().getPassword(), null);
+					//sponsor.getUserAccount().setPassword(hash);
+					this.sponsorService.save(sponsor);
 					result = new ModelAndView("redirect:/welcome/index.do");
 				} catch (final Throwable opps) {
 					result = new ModelAndView("sponsor/edit");
 					result.addObject("uri", "sponsor/edit.do");
 					result.addObject("messageCode", "actor.commit.error");
 					result.addObject("emailError", emailError);
-					admin.getUserAccount().setPassword("");
-					result.addObject("sponsor", admin);
+					sponsor.getUserAccount().setPassword("");
+					result.addObject("sponsor", sponsor);
 				}
 		} catch (final Throwable opps) {
 			//TODO: pantalla de error
@@ -139,6 +139,5 @@ public class SponsorController extends AbstractController{
 	}
 
 
-	
 	
 }

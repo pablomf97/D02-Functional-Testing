@@ -164,6 +164,8 @@
 								code="master.page.register.brotherhood" /></a></li>
 					<li><a href="chapter/edit.do?id=0"><spring:message
 								code="master.page.register.chapter" /></a></li>
+					<li><a href="sponsor/edit.do?id=0"><spring:message
+								code="master.page.register.sponsor" /></a></li>
 				</ul></li>
 
 			<li><a class="fNiv" href="brotherhood/list.do"><spring:message

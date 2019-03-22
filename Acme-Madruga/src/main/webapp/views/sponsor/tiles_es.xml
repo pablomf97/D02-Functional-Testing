@@ -16,18 +16,14 @@
       
 <tiles-definitions>
 
-	<definition name="administrator/edit" extends="master.page">	
-		<put-attribute name="title" value="Administrador: editar" />
-		<put-attribute name="body" value="/views/administrator/edit.jsp" />
+	<definition name="sponsor/edit" extends="master.page">	
+		<put-attribute name="title" value="Sponsor: editar" />
+		<put-attribute name="body" value="/views/sponsor/edit.jsp" />
 	</definition>
+
 	
-	<definition name="administrator/statistics" extends="master.page">	
-		<put-attribute name="title" value="Administrador: tablero de estadísticas" />
-		<put-attribute name="body" value="/views/administrator/statistics.jsp" />
-	</definition>
-	
-	<definition name="administrator/display" extends="master.page">
-		<put-attribute name="title" value="Administrador: mostrar perfil" />
-		<put-attribute name="body" value="/views/administrator/display.jsp" />
+	<definition name="sponsor/display" extends="master.page">
+		<put-attribute name="title" value="Sponsor: mostrar perfil" />
+		<put-attribute name="body" value="/views/sponsor/display.jsp" />
 	</definition>
 </tiles-definitions>

@@ -55,8 +55,8 @@ public class SponsorService {
 	}
 
 	public SponsorForm createForm() {
-		Assert.isTrue(this.actorService.checkAuthority(
-				this.actorService.findByPrincipal(), "SPONSOR"));
+		//Assert.isTrue(this.actorService.checkAuthority(
+			//	this.actorService.findByPrincipal(), "SPONSOR"));
 		final SponsorForm res = new SponsorForm();
 		return res;
 	}
@@ -102,10 +102,10 @@ public class SponsorService {
 	}
 	
 	public void delete(final int id) {
-		final Sponsor brotherhood = this.sponsorRepository
+		final Sponsor sponsor = this.sponsorRepository
 				.findOne(id);
 		final UserAccount userAccount = LoginService.getPrincipal();
-		Assert.isTrue(brotherhood.getUserAccount().equals(userAccount),
+		Assert.isTrue(sponsor.getUserAccount().equals(userAccount),
 				"This account does not belong to you");
 		this.sponsorRepository.delete(id);
 	}

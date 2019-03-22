@@ -30,6 +30,11 @@
 			return confirm(msg);
 		}
 	}
+	function unCheck() {
+		var checkbox = document.getElementById('checkBox');
+		checkbox.checked = false;
+	}
+	window.onload = unCheck;
 </script>
 
 <p>
@@ -37,12 +42,12 @@
 </p>
 
 <spring:message code="phone.confirmation" var="confirmTelephone" />
-<form:form action="administrator/edit.do"
-	modelAttribute="administratorForm" methodParam="post"
+<form:form action="sponsor/edit.do" modelAttribute="sponsorForm"
+	methodParam="post"
 	onsubmit="javascript: return checkPhone('${confirmTelephone}');">
 	<form:hidden path="id" />
 
-	<jstl:if test="${administrator.id == 0}">
+	<jstl:if test="${sponsor.id == 0}">
 		<form:label path="username">
 			<spring:message code="actor.userAccount.username" />:
 			</form:label>
@@ -74,28 +79,28 @@
 	<form:label path="surname">
 		<spring:message code="actor.surname" />:
 		</form:label>
-	<form:input path="surname" value="${administrator.surname}" />
+	<form:input path="surname" value="${sponsor.surname}" />
 	<form:errors cssClass="error" path="surname" />
 	<br>
 
 	<form:label path="name">
 		<spring:message code="actor.name" />:
 		</form:label>
-	<form:input path="name" value="${administrator.name}" />
+	<form:input path="name" value="${sponsor.name}" />
 	<form:errors cssClass="error" path="name" />
 	<br>
 
 	<form:label path="middleName">
 		<spring:message code="actor.middlename" />:
 		</form:label>
-	<form:input path="middleName" value="${administrator.middleName}" />
+	<form:input path="middleName" value="${sponsor.middleName}" />
 	<form:errors cssClass="error" path="middleName" />
 	<br>
 
 	<form:label path="email">
 		<spring:message code="actor.email" />:
 		</form:label>
-	<form:input path="email" value="${administrator.email}" id="email" />
+	<form:input path="email" value="${sponsor.email}" id="email" />
 	<form:errors cssClass="error" path="email" />
 	<jstl:if test="${not empty emailError}">
 		<a class="error"><spring:message code="${emailError}" /></a>
@@ -105,17 +110,33 @@
 	<form:label path="photo">
 		<spring:message code="actor.photo" />:
 		</form:label>
-	<form:input path="photo" value="${administrator.photo}" />
+	<form:input path="photo" value="${sponsor.photo}" />
 	<form:errors cssClass="error" path="photo" />
 	<br>
 
 	<form:label path="phoneNumber">
 		<spring:message code="actor.phone" />:
 		</form:label>
-	<form:input path="phoneNumber" value="${administrator.phoneNumber}"
+	<form:input path="phoneNumber" value="${sponsor.phoneNumber}"
 		id="phoneNumber" />
 	<form:errors cssClass="error" path="phoneNumber" />
 	<br>
+	<form:label path="address">
+		<spring:message code="actor.address" />:
+		</form:label>
+	<form:input path="address" value="${chapter.address}" />
+	<form:errors cssClass="error" path="address" />
+	<br>
+	<security:authorize access="isAnonymous()">
+		<form:label path="checkBox">
+			<spring:message code="actor.check.law" />:
+				</form:label>
+		<form:checkbox path="checkBox" id="checkBox" value="true" />
+		<jstl:if test="${not empty checkLaw}">
+			<a class="error"><spring:message code="${checkLaw}" /></a>
+		</jstl:if>
+		<br>
+	</security:authorize>
 
 	<input type="submit" name="save" id="save"
 		value='<spring:message code="actor.save"/>' onclick="checkPhone()" />

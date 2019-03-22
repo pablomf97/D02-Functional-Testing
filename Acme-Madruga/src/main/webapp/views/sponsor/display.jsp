@@ -1,12 +1,3 @@
-<%--
- * action-2.jsp
- *
- * Copyright (C) 2019 Universidad de Sevilla
- * 
- * The use of this project is hereby constrained to the conditions of the 
- * TDG Licence, a copy of which you may download from 
- * http://www.tdg-seville.info/License.html
- --%>
 
 <%@page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -23,36 +14,36 @@
 	<jstl:out value="${username }" />
 </h2>
 
-<img src="${administrator.photo }" height="250"
-	alt="<spring:message code="profile.photo" /> <jstl:out value="${administrator.userAccount.username }"/>" />
+<img src="${sponsor.photo }" height="250"
+	alt="<spring:message code="profile.photo" /> <jstl:out value="${sponsor.userAccount.username }"/>" />
 <p>
 	<b><spring:message code="profile.name" /></b>:
-	<jstl:out value="${administrator.surname }" />
+	<jstl:out value="${sponsor.surname }" />
 	,
-	<jstl:out value="${administrator.name }" />
-	<jstl:out value="${administrator.middleName }" />
+	<jstl:out value="${sponsor.name }" />
+	<jstl:out value="${sponsor.middleName }" />
 </p>
 <p>
 	<b><spring:message code="profile.email" /></b> :
-	<jstl:out value="${administrator.email }" />
+	<jstl:out value="${sponsor.email }" />
 </p>
 <p>
 	<b><spring:message code="profile.phone" /></b>:
-	<jstl:out value="${administrator.phoneNumber }" />
+	<jstl:out value="${sponsor.phoneNumber }" />
 </p>
 <p>
 	<b><spring:message code="profile.address" /></b>:
-	<jstl:out value="${administrator.address }" />
+	<jstl:out value="${sponsor.address }" />
 </p>
+<!-- 
 
-<security:authorize access="hasRole('ADMINISTRATOR')">
 	<b><spring:message code="profile.score" /></b>:
 			<p>
-		<jstl:if test="${administrator.score != null}">
-			<jstl:out value="${administrator.score }" />
+		<jstl:if test="${sponsor.score != null}">
+			<jstl:out value="${sponsor.score }" />
 		</jstl:if>
 	<p>
-		<jstl:if test="${administrator.score == null}">
+		<jstl:if test="${sponsor.score == null}">
 			<jstl:out value="N/A" />
 		</jstl:if>
 	</p>
@@ -60,11 +51,11 @@
 	<p>
 		<b><spring:message code="profile.spammer" /></b>:
 	<p>
-		<jstl:if test="${administrator.score != null}">
-			<jstl:out value="${administrator.spammer }" />
+		<jstl:if test="${sponsor.score != null}">
+			<jstl:out value="${sponsor.spammer }" />
 		</jstl:if>
 	<p>
-		<jstl:if test="${administrator.spammer == null}">
+		<jstl:if test="${sponsor.spammer == null}">
 			<jstl:out value="N/A" />
 		</jstl:if>
 	</p>
@@ -72,10 +63,10 @@
 	<jstl:if test="${isPrincipal}">
 	<input type="button" name="flagSpammers"
 		value="<spring:message code="admin.flag.spammers" />"
-		onclick="redirect: location.href = 'administrator/flag-spammers.do';" />
+		onclick="redirect: location.href = 'sponsor/flag-spammers.do';" />
 		
 		<input type="button" name="flagSpammers"
 		value="<spring:message code="admin.compute.score" />"
-		onclick="redirect: location.href = 'administrator/compute-scores.do';" />		
-	</jstl:if>
-</security:authorize>
+		onclick="redirect: location.href = 'sponsor/compute-scores.do';" />		
+	</jstl:if> -->
+

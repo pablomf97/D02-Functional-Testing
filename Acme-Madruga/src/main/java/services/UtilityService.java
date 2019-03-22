@@ -188,5 +188,17 @@ public class UtilityService {
 			
 		}
 	}
+	
+	public List<String> getCreditCardMakes() {
+
+		final String makes = this.systemConfigurationService
+				.findMySystemConfiguration().getMakers();
+		final List<String> listCCMakes = new ArrayList<String>(
+				Arrays.asList(makes.split(",")));
+		return listCCMakes;
+	}
+
+	
+	
 
 }

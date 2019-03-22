@@ -43,7 +43,7 @@
 		
 		<value>/views/periodRecord/tiles.xml</value>
 		<value>/views/legalRecord/tiles.xml</value>
-
+		
 		
 		<value>/views/history/tiles.xml</value>
 
@@ -51,6 +51,10 @@
 
 		<value>/views/linkRecord/tiles.xml</value>
 		<value>/views/miscellaneousRecord/tiles.xml</value>
+		<value>/views/sponsor/tiles.xml</value>
+		<value>/views/sponsorship/tiles.xml</value>
+		<value>/views/creditCard/tiles.xml</value>
+		
 		
 	</util:list>
 
