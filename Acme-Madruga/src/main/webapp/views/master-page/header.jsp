@@ -42,6 +42,11 @@
 
 				</ul></li>
 
+
+			<li><a class="fNiv"
+				href="actor/administrator/list-suspicious-actors.do"><spring:message
+						code="master.page.administrator.list" /></a></li>
+
 			<li><a class="fNiv"><spring:message
 						code="master.page.administrator.positions" /></a>
 				<ul>
@@ -87,11 +92,11 @@
 
 
 			<li><a class="fNiv"><spring:message
-						code="master.page.member.procession" /></a>
+						code="master.page.member.parade" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="procession/member,brotherhood/list.do"><spring:message
-								code="master.page.member.procession.show" /></a></li>
+					<li><a href="parade/member,brotherhood/list.do"><spring:message
+								code="master.page.member.parade.show" /></a></li>
 
 				</ul></li>
 
@@ -132,13 +137,13 @@
 				</ul></li>
 
 			<li><a class="fNiv"><spring:message
-						code="master.page.member.procession" /></a>
+						code="master.page.member.parade" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="procession/member,brotherhood/list.do"><spring:message
-								code="master.page.member.procession.show" /></a></li>
-					<li><a href="procession/create.do"><spring:message
-								code="master.page.member.procession.new" /></a></li>
+					<li><a href="parade/member,brotherhood/list.do"><spring:message
+								code="master.page.member.parade.show" /></a></li>
+					<li><a href="parade/create.do"><spring:message
+								code="master.page.member.parade.new" /></a></li>
 				</ul></li>
 
 			<li><a class="fNiv" href="march/member,brotherhood/list.do"><spring:message
@@ -228,12 +233,19 @@
 	</ul>
 </div>
 
-<!-- 	<security:authorize access="isAuthenticated()">
-		<jstl:if test="${pageContext.response.locale.language == 'es'}">
-		<h2><strong style="color:red;"><jstl:out value="${breachNotification.get('Espa�ol')}"></jstl:out><br/> </strong></h2>
-		</jstl:if>
-		<jstl:if test="${pageContext.response.locale.language == 'en'}">
-			<h2><strong style="color:red;"> <jstl:out value="${breachNotification.get('English')}" ></jstl:out><br/> </strong></h2>
-		</jstl:if>
-	</security:authorize>
- -->
+<security:authorize access="isAuthenticated()">
+	<jstl:if test="${pageContext.response.locale.language == 'es'}">
+		<h2>
+			<strong style="color: red;"><jstl:out
+					value="${breachNotification.get('Espa�ol')}"></jstl:out><br /> </strong>
+		</h2>
+	</jstl:if>
+	<jstl:if test="${pageContext.response.locale.language == 'en'}">
+		<h2>
+			<strong style="color: red;"> <jstl:out
+					value="${breachNotification.get('English')}"></jstl:out><br />
+			</strong>
+		</h2>
+	</jstl:if>
+</security:authorize>
+

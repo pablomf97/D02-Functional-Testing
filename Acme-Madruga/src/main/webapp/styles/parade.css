@@ -1,0 +1,12 @@
+
+.SUBMITTED{
+	color: grey;
+}
+
+.ACCEPTED{
+	color: green;
+}
+
+.REJECTED{
+	color: red;
+}

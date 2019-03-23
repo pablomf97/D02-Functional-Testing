@@ -65,7 +65,9 @@ your processions." />
 			value="good,fantastic,excellent,great,amazing,terrific,beautiful,bueno,fantástico,excelente,genial,increíble,terrorífico,bonita" />
 		<property name="negativeWords"
 			value="not,bad,horrible,average,disaster,no,malo,horroroso,regular,desastre" />
-
+		<property name="makers" value="VISA, MCARD, AMEX, DINNERS, FLY"></property>
+		<property name="fare" value="0.21"></property>
+		<property name="VAT" value="0.89"></property>
 	</bean>
 
 	<!-- MESSAGE BOXES -->

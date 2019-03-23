@@ -30,6 +30,9 @@ public interface ParadeRepository extends JpaRepository<Parade, Integer> {
 	@Query("select p from Parade p where p.organisedMoment > NOW() AND p.organisedMoment < ?1")
 	Collection<Parade> findEarlyParades(Date maxDate);
 
+	@Query("select p from Parade p where p.brotherhood.zone.id = ?1")
+	Collection<Parade> findParadesByAres(int areaId);
+
 	/* The ratio of parades in draft mode versus parades in final mode */
 	@Query("select count(p) /(select count(p1) from Parade p1 where p1.isDraft = false)*1.0 from Parade p where p.isDraft = true")
 	Double ratioDraftVsFinal();

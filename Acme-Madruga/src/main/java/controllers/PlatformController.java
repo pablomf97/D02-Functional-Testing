@@ -38,13 +38,13 @@ public class PlatformController extends AbstractController {
 		Platform platform;
 		boolean isPrincipal = false;
 		Actor principal;
-		try{
+		try {
 			principal = this.actorService.findByPrincipal();
 			platform = this.platformService.findOne(platformId);
 			if (platform.getBrotherhood().getId() == principal.getId())
 				isPrincipal = true;
 
-		}catch(Throwable oops){
+		} catch (Throwable oops) {
 			platform = this.platformService.findOne(platformId);
 
 		}
@@ -56,27 +56,30 @@ public class PlatformController extends AbstractController {
 				+ platformId);
 		return result;
 
-
 	}
 
 	// List
 	@RequestMapping(value = "/list")
-	public ModelAndView list(@RequestParam Integer brotherhoodId) {
+	public ModelAndView list(
+			@RequestParam(required = false) Integer brotherhoodId) {
 		ModelAndView result = null;
 		Actor principal;
 		Collection<Platform> platforms;
 		String requestURI;
-		platforms = this.platformService
-				.findPlatformsByBrotherhoodId(brotherhoodId);
+
 		try {
 			principal = this.actorService.findByPrincipal();
-			requestURI = "platform/list.do?=brotherhoodId"
-					+ brotherhoodId;
+			Assert.isTrue(this.actorService.checkAuthority(principal,
+					"BROTHERHOOD"));
+			requestURI = "platform/list.do?brotherhoodId=" + principal.getId();
+			platforms = this.platformService
+					.findPlatformsByBrotherhoodId(principal.getId());
 
-		} catch (Throwable oops){
+		} catch (Throwable oops) {
 
-			requestURI = "platform/list.do?=brotherhoodId"
-					+ brotherhoodId;
+			requestURI = "platform/list.do?brotherhoodId=" + brotherhoodId;
+			platforms = this.platformService
+					.findPlatformsByBrotherhoodId(brotherhoodId);
 
 		}
 		result = new ModelAndView("platform/list");
@@ -150,7 +153,8 @@ public class PlatformController extends AbstractController {
 			try {
 				platform = this.platformService.reconstruct(platform, binding);
 				this.platformService.save(platform);
-				result = new ModelAndView("redirect:list.do?brotherhoodId="+platform.getBrotherhood().getId());
+				result = new ModelAndView("redirect:list.do?brotherhoodId="
+						+ platform.getBrotherhood().getId());
 			} catch (IllegalArgumentException oops) {
 				result = new ModelAndView("misc/403");
 			} catch (final Throwable oops) {
@@ -161,18 +165,19 @@ public class PlatformController extends AbstractController {
 		return result;
 
 	}
-	
+
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(Platform platform, final BindingResult binding) {
 		ModelAndView result;
-			
+
 		try {
 			platform = this.platformService.reconstruct(platform, binding);
 			int brotherhoodId = platform.getBrotherhood().getId();
-			
+
 			this.platformService.delete(platform);
-			
-			result = new ModelAndView("redirect:list.do?brotherhoodId="+brotherhoodId);
+
+			result = new ModelAndView("redirect:list.do?brotherhoodId="
+					+ brotherhoodId);
 		} catch (final Throwable oops) {
 			result = new ModelAndView("welcome/index");
 
@@ -201,7 +206,7 @@ public class PlatformController extends AbstractController {
 
 		Brotherhood actorBrother = (Brotherhood) principal;
 
-		if(this.actorService.checkAuthority(principal, "BROTHERHOOD")) {
+		if (this.actorService.checkAuthority(principal, "BROTHERHOOD")) {
 
 			isBrotherhood = true;
 		}

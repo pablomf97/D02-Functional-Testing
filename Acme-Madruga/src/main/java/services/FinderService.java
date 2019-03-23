@@ -146,7 +146,7 @@ public class FinderService {
 
 	// Other business methods
 
-	// expiración de la busqueda cuando termina tiempo caché
+	// expiraciï¿½n de la busqueda cuando termina tiempo cachï¿½
 	public void deleteExpiredFinder(Finder finder) {
 
 		Date maxLivedMoment = new Date();

@@ -272,7 +272,7 @@ public class ChapterService {
 						if (chapter.getZone().getId() == brotherhood.getZone()
 								.getId()) {
 							values.add((double) (this.paradeService
-									.findParadeByBrotherhoodId(
+									.findParadesByBrotherhoodId(
 											brotherhood.getId()).size() - 1));
 							break;
 						}
@@ -334,7 +334,7 @@ public class ChapterService {
 						if (chapter.getZone().getId() == brotherhood.getZone()
 								.getId()) {
 							values.add((double) (this.paradeService
-									.findParadeByBrotherhoodId(
+									.findParadesByBrotherhoodId(
 											brotherhood.getId()).size() - 1));
 							break;
 						}

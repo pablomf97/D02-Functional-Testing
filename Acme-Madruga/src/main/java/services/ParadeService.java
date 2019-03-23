@@ -18,6 +18,7 @@ import org.springframework.validation.Validator;
 import repositories.ParadeRepository;
 import domain.Actor;
 import domain.Brotherhood;
+import domain.Chapter;
 import domain.Enrolment;
 import domain.March;
 import domain.Parade;
@@ -30,7 +31,7 @@ public class ParadeService {
 	// Managed repository ------------------------------------
 
 	@Autowired
-	private ParadeRepository processionRepository;
+	private ParadeRepository paradeRepository;
 
 	// Supporting services -----------------------------------
 
@@ -70,89 +71,116 @@ public class ParadeService {
 
 	public Collection<Parade> findAll() {
 		Collection<Parade> result;
-		result = this.processionRepository.findAll();
+		result = this.paradeRepository.findAll();
 
 		return result;
 	}
 
-	public Parade findOne(final int processionId) {
+	public Parade findOne(final int paradeId) {
 		Parade result;
-		result = this.processionRepository.findOne(processionId);
+		result = this.paradeRepository.findOne(paradeId);
 
 		return result;
 	}
 
-	public Parade save(final Parade procession) {
+	public Parade save(final Parade parade) {
 		Actor principal;
 		Brotherhood brotherhood;
+		Chapter chapter;
 		Parade result;
 
 		principal = this.actorService.findByPrincipal();
-		Assert.isTrue(
-				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
-				"not.allowed");
 
-		Assert.isTrue(procession.getBrotherhood().equals(principal),
-				"not.allowed");
+		try {
+			brotherhood = (Brotherhood) principal;
 
-		Assert.notNull(procession);
-		Assert.notNull(procession.getDescription());
-		Assert.notNull(procession.getMaxCols());
-		Assert.notNull(procession.getTitle());
-		Assert.notNull(procession.getOrganisedMoment());
+			Assert.isTrue(parade.getBrotherhood().equals(principal),
+					"not.allowed");
 
-		brotherhood = (Brotherhood) principal;
+			Assert.notNull(parade);
+			Assert.notNull(parade.getDescription());
+			Assert.notNull(parade.getMaxCols());
+			Assert.notNull(parade.getTitle());
+			Assert.notNull(parade.getOrganisedMoment());
 
-		if (procession.getId() == 0) {
-			Assert.notNull(brotherhood.getZone());
+			if (parade.getId() == 0) {
+				Assert.notNull(brotherhood.getZone());
+				parade.setStatus("SUBMITTED");
+			}
+
+		} catch (Throwable oops) {
+			chapter = (Chapter) principal;
+
+			Assert.isTrue(
+					parade.getBrotherhood().getZone().equals(chapter.getZone()),
+					"not.allowed");
+
+			Assert.notNull(parade);
+			Assert.notNull(parade.getDescription());
+			Assert.notNull(parade.getMaxCols());
+			Assert.notNull(parade.getTitle());
+			Assert.notNull(parade.getOrganisedMoment());
 		}
 
-		result = this.processionRepository.save(procession);
+		result = this.paradeRepository.save(parade);
 		Assert.notNull(result);
 
 		return result;
 	}
 
-	public void delete(final Parade procession) {
+	public void delete(final Parade parade) {
 		Actor principal;
 
-		Assert.notNull(procession);
-		Assert.isTrue(procession.getId() != 0, "wrong.id");
+		Assert.notNull(parade);
+		Assert.isTrue(parade.getId() != 0, "wrong.id");
 
 		principal = this.actorService.findByPrincipal();
 		Assert.isTrue(
 				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
 				"not.allowed");
 
-		Assert.isTrue(procession.getBrotherhood().equals(principal),
-				"not.allowed");
+		Assert.isTrue(parade.getBrotherhood().equals(principal), "not.allowed");
 
-		this.processionRepository.delete(procession.getId());
+		this.paradeRepository.delete(parade.getId());
 
 	}
 
 	// Other business methods -------------------------------
 
-	public Parade reconstruct(Parade procession, BindingResult binding) {
+	public Parade reconstruct(Parade parade, BindingResult binding) {
 		Parade result;
+		Chapter chapter;
 		Actor principal = this.actorService.findByPrincipal();
 
-		if (procession.getId() == 0) {
+		if (parade.getId() == 0) {
 
-			result = procession;
+			result = parade;
 			result.setTicker(this.utilityService.generateTicker());
 			result.setPlatforms(new ArrayList<Platform>());
 			result.setBrotherhood((Brotherhood) principal);
+			result.setStatus("SUBMITTED");
 
 		} else {
-			result = this.findOne(procession.getId());
+			result = this.findOne(parade.getId());
 			Assert.notNull(result);
-			Assert.isTrue(result.getBrotherhood().getId() == principal.getId());
 
-			result.setTitle(procession.getTitle());
-			result.setDescription(procession.getDescription());
-			result.setPlatforms(procession.getPlatforms());
-			result.setIsDraft(procession.getIsDraft());
+			try {
+				Assert.isTrue(result.getBrotherhood().getId() == principal
+						.getId());
+				result.setTitle(parade.getTitle());
+				result.setDescription(parade.getDescription());
+				result.setPlatforms(parade.getPlatforms());
+				result.setIsDraft(parade.getIsDraft());
+				if (parade.getStatus() != null)
+					result.setStatus(parade.getStatus());
+			} catch (Throwable oops) {
+				chapter = (Chapter) principal;
+				Assert.isTrue(result.getBrotherhood().getZone().getId() == (chapter
+						.getZone().getId()));
+				if (parade.getStatus() != null)
+					result.setStatus(parade.getStatus());
+			}
+
 		}
 
 		validator.validate(result, binding);
@@ -160,90 +188,85 @@ public class ParadeService {
 		return result;
 	}
 
-	public Collection<Parade> findParadeByBrotherhoodId(int id) {
-		return this.processionRepository.findParadesByBrotherhoodId(id);
-	}
-
-	public Collection<Parade> findProcessionsByBrotherhoodId(int brotherhoodId) {
+	public Collection<Parade> findParadesByBrotherhoodId(int brotherhoodId) {
 		Collection<Parade> result;
 
-		result = this.processionRepository
+		result = this.paradeRepository
 				.findParadesByBrotherhoodId(brotherhoodId);
 
 		return result;
 	}
 
-	public Collection<Parade> findAcceptedProcessionsByMemberId(int memberId) {
+	public Collection<Parade> findAcceptedParadesByMemberId(int memberId) {
 		Collection<Parade> result;
 
-		result = this.processionRepository
-				.findAcceptedParadesByMemberId(memberId);
+		result = this.paradeRepository.findAcceptedParadesByMemberId(memberId);
 
 		return result;
 	}
 
-	private Collection<Parade> findProcessionsAlreadyApplied(int memberId) {
+	private Collection<Parade> findParadesAlreadyApplied(int memberId) {
 		Collection<Parade> result;
 
-		result = this.processionRepository.findParadesAlreadyApplied(memberId);
+		result = this.paradeRepository.findParadesAlreadyApplied(memberId);
 
 		return result;
 	}
 
-	public Collection<Parade> processionsToApply(int memberId) {
+	public Collection<Parade> paradesToApply(int memberId) {
 		Collection<Parade> toApply;
 		Collection<Enrolment> memberEnrolments;
 		Collection<Integer> brotherhoodIds = new ArrayList<>();
 
 		Collection<Parade> notToApply = this
-				.findProcessionsAlreadyApplied(memberId);
+				.findParadesAlreadyApplied(memberId);
 
-		toApply = this.findFinalProcessions();
+		toApply = this.findFinalParades();
 		toApply.removeAll(notToApply);
 
 		Collection<Parade> result = new ArrayList<Parade>(toApply);
 
 		memberEnrolments = this.enrolmentService
 				.findActiveEnrolmentsByMember(memberId);
-		for (Enrolment enrolment : memberEnrolments) {
+		for (Enrolment enrolment : memberEnrolments)
 			brotherhoodIds.add(enrolment.getBrotherhood().getId());
-		}
+		
 
-		for (Parade procesion : toApply) {
-			for (Integer brotherhoodId : brotherhoodIds) {
-				if (procesion.getBrotherhood().getId() != brotherhoodId) {
+		for (Parade procesion : toApply)
+			for (Integer brotherhoodId : brotherhoodIds)
+				if (procesion.getBrotherhood().getId() != brotherhoodId)
 					result.remove(procesion);
-				}
-			}
-		}
+		
 
 		return result;
 	}
 
-	public Collection<Parade> findFinalProcessions() {
+
+	private Collection<Parade> findFinalParades() {
+
 		Collection<Parade> result;
 
-		result = this.processionRepository.findFinalParades();
+		result = this.paradeRepository.findFinalParades();
 
 		return result;
 	}
 
-	public Collection<Parade> findEarlyProcessions() {
+	public Collection<Parade> findEarlyParades() {
 		Collection<Parade> result;
 		Calendar c = new GregorianCalendar();
 		c.add(Calendar.DATE, 30);
 		Date maxDate = c.getTime();
 
-		result = this.processionRepository.findEarlyParades(maxDate);
+		result = this.paradeRepository.findEarlyParades(maxDate);
 		Assert.notNull(result);
 
 		return result;
 	}
 
-	public Boolean checkPos(Integer row, Integer column, Parade procession,
+	public Boolean checkPos(Integer row, Integer column, Parade parade,
 			Collection<March> marchs) {
 		Boolean validPos = true;
-		Integer maxCols = procession.getMaxCols();
+		Integer maxCols = parade.getMaxCols();
 
 		if (column > maxCols)
 			validPos = false;
@@ -259,16 +282,16 @@ public class ParadeService {
 		return validPos;
 	}
 
-	public List<Integer> recommendedPos(Parade procession) {
+	public List<Integer> recommendedPos(Parade parade) {
 		List<Integer> rowColumn = new ArrayList<>();
 		Boolean validPos = false;
 		Collection<March> marchs;
 
-		marchs = this.marchService.findMarchByProcession(procession.getId());
+		marchs = this.marchService.findMarchByParade(parade.getId());
 
 		for (Integer auxRow = 1; auxRow < 20000; auxRow++) {
-			for (Integer auxCol = 1; auxCol <= procession.getMaxCols(); auxCol++) {
-				validPos = this.checkPos(auxRow, auxCol, procession, marchs);
+			for (Integer auxCol = 1; auxCol <= parade.getMaxCols(); auxCol++) {
+				validPos = this.checkPos(auxRow, auxCol, parade, marchs);
 				if (validPos) {
 					rowColumn.add(auxRow);
 					rowColumn.add(auxCol);
@@ -281,27 +304,24 @@ public class ParadeService {
 		return rowColumn;
 	}
 
-	private Collection<Parade> findFinalProcessionByBrotherhood(
-			int brotherhoodId) {
+	private Collection<Parade> findFinalParadeByBrotherhood(int brotherhoodId) {
 		Collection<Parade> result;
 
-		result = this.processionRepository
+		result = this.paradeRepository
 				.findFinalParadeByBrotherhood(brotherhoodId);
 
 		return result;
 	}
 
-	public Collection<Parade> findPossibleProcessionsToMarchByMember(
-			int memberId) {
+	public Collection<Parade> findPossibleParadesToMarchByMember(int memberId) {
 		Collection<Parade> result = new ArrayList<>();
 		Collection<Brotherhood> brotherhoods = this.brotherhoodService
 				.brotherhoodsByMemberInId(memberId);
 
 		for (Brotherhood brotherhood : brotherhoods) {
 			Collection<Parade> aux1 = this
-					.findFinalProcessionByBrotherhood(brotherhood.getId());
-			Collection<Parade> aux2 = this
-					.findProcessionsAlreadyApplied(memberId);
+					.findFinalParadeByBrotherhood(brotherhood.getId());
+			Collection<Parade> aux2 = this.findParadesAlreadyApplied(memberId);
 			aux1.removeAll(aux2);
 			result.addAll(aux1);
 		}
@@ -309,20 +329,52 @@ public class ParadeService {
 	}
 
 	public Double ratioDraftVsFinal() {
-		return this.processionRepository.ratioDraftVsFinal();
+		Double result;
+
+		result = this.paradeRepository.ratioDraftVsFinal();
+
+		return result;
 	}
 
 	public Double[] ratioFinalModeGroupedByStatus() {
-		Double[] res = this.processionRepository
-				.ratioFinalModeGroupedByStatus();
-		return (res.length > 0) ? res : new Double[] { 0., 0., 0. };
+		Double[] result;
+
+		result = this.paradeRepository.ratioFinalModeGroupedByStatus();
+
+		return result;
+	}
+
+	public Collection<Parade> findParadesByAres(int id) {
+		return this.paradeRepository.findParadesByAres(id);
+	}
+
+	public Parade copyParade(final Integer paradeId) {
+		Parade res;
+		final Actor principal = this.actorService.findByPrincipal();
+		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+		res = this.paradeRepository.findOne(paradeId);
+		Assert.isTrue(res.getBrotherhood().equals(principal));
+		final Parade copy = this.create();
+		copy.setBrotherhood(res.getBrotherhood());
+		copy.setDescription(res.getDescription());
+		copy.setIsDraft(true);
+		copy.setMaxCols(res.getMaxCols());
+		copy.setOrganisedMoment(res.getOrganisedMoment());
+		copy.setPath(res.getPath());
+		copy.setPlatforms(res.getPlatforms());
+		copy.setReason("");
+		copy.setStatus("SUBMITTED");
+		copy.setTicker(this.utilityService.generateTicker());
+		copy.setTitle(res.getTitle());
+		res = this.save(copy);
+		return res;
 	}
 	
 	
 	public Collection<Parade> getAcceptedParades(){
 		Collection<Parade> result;
 		
-		result = this.processionRepository.getAcceptedParades();
+		result = this.paradeRepository.getAcceptedParades();
 		
 		return result;
 		

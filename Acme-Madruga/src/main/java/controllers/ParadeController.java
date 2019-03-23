@@ -27,20 +27,20 @@ import domain.Platform;
 import domain.Zone;
 
 @Controller
-@RequestMapping("/procession")
+@RequestMapping("/parade")
 public class ParadeController extends AbstractController {
 
 	// Services
 
 	@Autowired
-	private ParadeService processionService;
+	private ParadeService paradeService;
 
 	@Autowired
 	private PlatformService platformService;
 
 	@Autowired
 	private ActorService actorService;
-	
+
 	@Autowired
 	private MessageService messageService;
 	
@@ -56,24 +56,28 @@ public class ParadeController extends AbstractController {
 	// Display
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
-	public ModelAndView display(@RequestParam int processionId) {
+	public ModelAndView display(@RequestParam int paradeId) {
 
 		ModelAndView result;
-		Parade procession;
+		Parade parade;
 		boolean isPrincipal = false;
 		Actor principal;
 
-		principal = this.actorService.findByPrincipal();
-		procession = this.processionService.findOne(processionId);
+		parade = this.paradeService.findOne(paradeId);
 
-		if (procession.getBrotherhood().getId() == principal.getId())
-			isPrincipal = true;
+		try {
+			principal = this.actorService.findByPrincipal();
 
-		result = new ModelAndView("procession/display");
-		result.addObject("procession", procession);
+			if (parade.getBrotherhood().getId() == principal.getId())
+				isPrincipal = true;
+		} catch (Throwable oops) {
+		}
+
+		result = new ModelAndView("parade/display");
+		result.addObject("parade", parade);
 		result.addObject("isPrincipal", isPrincipal);
-		result.addObject("requestURI", "procession/display.do?processionId="
-				+ processionId);
+		result.addObject("requestURI", "parade/display.do?paradeId="
+				+ paradeId);
 
 		return result;
 	}
@@ -81,18 +85,16 @@ public class ParadeController extends AbstractController {
 	// List
 
 	@RequestMapping(value = "/member,brotherhood/list")
-	public ModelAndView list(@RequestParam(required = false) Integer memberId,
-			@RequestParam(required = false) Integer brotherhoodId) {
+	public ModelAndView list(@RequestParam(required = false) final Integer memberId, @RequestParam(required = false) final Integer brotherhoodId) {
 		ModelAndView result;
-		Collection<Parade> processions;
+		Collection<Parade> parades;
 		Actor principal;
 
 		Boolean permission;
 
 		try {
 			principal = this.actorService.findByPrincipal();
-			Assert.isTrue(!this.actorService.checkAuthority(principal,
-					"ADMINISTRATOR"));
+			Assert.isTrue(!this.actorService.checkAuthority(principal, "ADMINISTRATOR"));
 
 			permission = true;
 
@@ -100,35 +102,30 @@ public class ParadeController extends AbstractController {
 
 			if (this.actorService.checkAuthority(principal, "BROTHERHOOD")) {
 
-				processions = this.processionService
-						.findProcessionsByBrotherhoodId(principal.getId());
+				parades = this.paradeService.findParadesByBrotherhoodId(principal.getId());
 
-				String requestURI = "procession/member,brotherhood/list.do?brotherhoodId="
-						+ principal.getId();
-				result = new ModelAndView("procession/list");
+				final String requestURI = "parade/member,brotherhood/list.do?brotherhoodId=" + principal.getId();
+				result = new ModelAndView("parade/list");
 				result.addObject("requestURI", requestURI);
-				result.addObject("processions", processions);
+				result.addObject("parades", parades);
 
 			} else {
 
 				Collection<Parade> toApply;
 
-				processions = this.processionService
-						.findAcceptedProcessionsByMemberId(principal.getId());
-				toApply = this.processionService.processionsToApply(principal
-						.getId());
+				parades = this.paradeService.findAcceptedParadesByMemberId(principal.getId());
+				toApply = this.paradeService.paradeToApply(principal.getId());
 
-				String requestURI = "procession/member,brotherhood/list.do?memberId="
-						+ principal.getId();
-				result = new ModelAndView("procession/list");
+				final String requestURI = "parade/member,brotherhood/list.do?memberId=" + principal.getId();
+				result = new ModelAndView("parade/list");
 				result.addObject("requestURI", requestURI);
-				result.addObject("processions", processions);
+				result.addObject("parades", parades);
 				result.addObject("toApply", toApply);
 
 			}
-		} catch (IllegalArgumentException oops) {
+		} catch (final IllegalArgumentException oops) {
 			result = new ModelAndView("misc/403");
-		} catch (Throwable oopsie) {
+		} catch (final Throwable oopsie) {
 
 			result = new ModelAndView("march/member,brotherhood/list");
 			permission = false;
@@ -140,12 +137,41 @@ public class ParadeController extends AbstractController {
 		return result;
 	}
 
+	@RequestMapping(value = "/chapter/list")
+	public ModelAndView listChapter(@RequestParam Integer chapterId) {
+		ModelAndView result;
+		Collection<Parade> parades;
+		Chapter principal;
+		String requestURI;
+		Boolean permission = false;
+
+		try {
+			principal = (Chapter) this.actorService.findByPrincipal();
+			Assert.isTrue(principal.getId() == chapterId);
+			permission = true;
+
+			parades = this.paradeService.findParadesByAres(principal
+					.getZone().getId());
+			requestURI = "parade/member,brotherhood/list.do?brotherhoodId="
+					+ chapterId;
+
+			result = new ModelAndView("chapter/listparade");
+			result.addObject("requestURI", requestURI);
+			result.addObject("parades", parades);
+			result.addObject("permission", permission);
+
+		} catch (IllegalArgumentException oops) {
+			result = new ModelAndView("misc/403");
+		}
+		return result;
+	}
+
 	// Creation
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result;
-		Parade procession;
+		Parade parade;
 
 		Actor principal;
 		Boolean error;
@@ -155,14 +181,14 @@ public class ParadeController extends AbstractController {
 			Assert.isTrue(this.actorService.checkAuthority(principal,
 					"BROTHERHOOD"));
 
-			procession = this.processionService.create();
+			parade = this.paradeService.create();
 
-			result = this.createEditModelAndView(procession);
+			result = this.createEditModelAndView(parade);
 		} catch (IllegalArgumentException oops) {
 			result = new ModelAndView("misc/403");
 		} catch (Throwable oopsie) {
 
-			result = new ModelAndView("procession/member,brotherhood/list");
+			result = new ModelAndView("parade/member,brotherhood/list");
 			error = true;
 
 			result.addObject("oopsie", oopsie);
@@ -175,9 +201,9 @@ public class ParadeController extends AbstractController {
 
 	// Edition
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int processionId) {
+	public ModelAndView edit(@RequestParam final int paradeId) {
 		ModelAndView result;
-		Parade procession;
+		Parade parade;
 		Actor principal;
 
 		try {
@@ -185,9 +211,9 @@ public class ParadeController extends AbstractController {
 			Assert.isTrue(this.actorService.checkAuthority(principal,
 					"BROTHERHOOD"));
 
-			procession = this.processionService.findOne(processionId);
-			Assert.notNull(procession);
-			result = this.createEditModelAndView(procession);
+			parade = this.paradeService.findOne(paradeId);
+			Assert.notNull(parade);
+			result = this.createEditModelAndView(parade);
 
 		} catch (IllegalArgumentException oops) {
 			result = new ModelAndView("misc/403");
@@ -199,23 +225,20 @@ public class ParadeController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "saveFinal")
-	public ModelAndView saveFinal(Parade procession,
-			final BindingResult binding) {
+	public ModelAndView saveFinal(Parade parade, final BindingResult binding) {
 		ModelAndView result;
 
-		
-		
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(procession);
+			result = this.createEditModelAndView(parade);
 		else
 			try {
-				procession.setIsDraft(false);
-				procession = this.processionService.reconstruct(procession,
+				parade.setIsDraft(false);
+				parade = this.paradeService.reconstruct(parade,
 						binding);
-				this.processionService.save(procession);
-				
-				this.messageService.notificationPublishProcession(procession);
-				
+				this.paradeService.save(parade);
+
+				this.messageService.notificationPublishParade(parade);
+
 				result = new ModelAndView("redirect:member,brotherhood/list.do");
 			} catch (IllegalArgumentException oops) {
 				result = new ModelAndView("misc/403");
@@ -227,17 +250,17 @@ public class ParadeController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(Parade procession, final BindingResult binding) {
+	public ModelAndView save(Parade parade, final BindingResult binding) {
 		ModelAndView result;
 
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(procession);
+			result = this.createEditModelAndView(parade);
 		else
 			try {
-				procession.setIsDraft(true);
-				procession = this.processionService.reconstruct(procession,
+				parade.setIsDraft(true);
+				parade = this.paradeService.reconstruct(parade,
 						binding);
-				this.processionService.save(procession);
+				this.paradeService.save(parade);
 				result = new ModelAndView("redirect:member,brotherhood/list.do");
 			} catch (final Throwable oops) {
 				result = new ModelAndView("redirect:/welcome/index.do");
@@ -246,33 +269,100 @@ public class ParadeController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(Parade procession,
-			final BindingResult binding) {
+	public ModelAndView delete(Parade parade, final BindingResult binding) {
 		ModelAndView result;
 
-		procession.setIsDraft(false);
-		procession = this.processionService.reconstruct(procession, binding);
+		parade.setIsDraft(false);
+		parade = this.paradeService.reconstruct(parade, binding);
 		try {
-			this.processionService.delete(procession);
+			this.paradeService.delete(parade);
 			result = new ModelAndView("redirect:member,brotherhood/list.do");
 		} catch (final Throwable oops) {
-			result = this.createEditModelAndView(procession,
-					"procession.commit.error");
+			result = this.createEditModelAndView(parade,
+					"parade.commit.error");
 		}
 
 		return result;
 	}
 
-	// Ancillary methods
-	protected ModelAndView createEditModelAndView(final Parade procession) {
+	// Accept
+	@RequestMapping(value = "/accept", method = RequestMethod.GET)
+	public ModelAndView accept(@RequestParam final int paradeId) {
 		ModelAndView result;
+		Parade parade;
+		boolean isPrincipal = false;
+		Chapter principal;
 
-		result = this.createEditModelAndView(procession, null);
+		principal = (Chapter) this.actorService.findByPrincipal();
+		parade = this.paradeService.findOne(paradeId);
+		Assert.notNull(parade);
+
+		if (parade.getBrotherhood().getZone().equals(principal.getZone())) {
+			isPrincipal = true;
+			parade.setStatus("ACCEPTED");
+			this.paradeService.save(parade);
+		}
+
+		result = new ModelAndView("chapter/listparade");
+		result.addObject("isPrincipal", isPrincipal);
+		result.addObject("parade", parade);
 
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final Parade procession,
+	// Reject
+	@RequestMapping(value = "/rejectv", method = RequestMethod.GET)
+	public ModelAndView rejectView(@RequestParam final int paradeId) {
+		ModelAndView result;
+		Parade parade;
+		boolean isPrincipal = false;
+		Chapter principal;
+
+		principal = (Chapter) this.actorService.findByPrincipal();
+		parade = this.paradeService.findOne(paradeId);
+		Assert.notNull(parade);
+
+		if (parade.getBrotherhood().getZone().equals(principal.getZone())) {
+			isPrincipal = true;
+		}
+		result = new ModelAndView("parade/reject");
+		result.addObject("isPrincipal", isPrincipal);
+		result.addObject("parade", parade);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/rejectb", method = RequestMethod.POST, params = "reject")
+	public ModelAndView reject(Parade parade, final BindingResult binding) {
+		ModelAndView result;
+
+		parade.setStatus("REJECTED");
+		parade = this.paradeService.reconstruct(parade, binding);
+
+		if (binding.hasErrors())
+			result = this.createEditModelAndView(parade);
+		else
+			try {
+				this.paradeService.save(parade);
+
+				result = new ModelAndView("redirect:member,brotherhood/list.do");
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(parade,
+						"march.commit.error");
+			}
+		return result;
+	}
+
+	// Ancillary methods
+	protected ModelAndView createEditModelAndView(final Parade parade) {
+		ModelAndView result;
+
+		result = this.createEditModelAndView(parade, null);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final Parade parade,
 			final String messageCode) {
 		final ModelAndView result;
 		Actor principal;
@@ -280,19 +370,21 @@ public class ParadeController extends AbstractController {
 		Collection<Platform> platforms;
 
 		principal = this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"), "not.allowed");
-		
+		Assert.isTrue(
+				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
+				"not.allowed");
+
 		Brotherhood actorBrother = (Brotherhood) principal;
 
-		
-		if(procession.getId() != 0 && procession.getBrotherhood().getId() == principal.getId())
+		if (parade.getId() != 0
+				&& parade.getBrotherhood().getId() == principal.getId())
 			isPrincipal = true;
 
 		platforms = this.platformService.findPlatformsByBrotherhoodId(principal
 				.getId());
 
-		result = new ModelAndView("procession/edit");
-		result.addObject("procession", procession);
+		result = new ModelAndView("parade/edit");
+		result.addObject("parade", parade);
 		result.addObject("isPrincipal", isPrincipal);
 		result.addObject("message", messageCode);
 		result.addObject("platforms", platforms);
@@ -321,4 +413,22 @@ public class ParadeController extends AbstractController {
 		
 	}
 
+	@RequestMapping(value = "/copy", method = RequestMethod.GET)
+	public ModelAndView copy(@RequestParam final int paradeId) {
+		ModelAndView result;
+		Parade parade;
+		Boolean error;
+		try {
+			parade = this.paradeService.copyParade(paradeId);
+			result = new ModelAndView("redirect:/parade/display.do?paradeId=" + parade.getId());
+		} catch (final IllegalArgumentException oops) {
+			result = new ModelAndView("misc/403");
+		} catch (final Throwable oopsie) {
+			result = new ModelAndView("parade/member,brotherhood/list");
+			error = true;
+			result.addObject("oopsie", oopsie);
+			result.addObject("error", error);
+		}
+		return result;
+	}
 }

@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -81,6 +82,11 @@ public class MessageBoxService {
 
 	public Collection<MessageBox> findByParent(final int idBox) {
 		final Collection<MessageBox> boxes = this.messageBoxRepository.findByParent(idBox);
+		if (!boxes.isEmpty()) {
+			final List<MessageBox> childs = new ArrayList<>(boxes);
+			for (int i = 0; i < childs.size(); i++)
+				boxes.addAll(this.findByParent(childs.get(i).getId()));
+		}
 		return boxes;
 	}
 
@@ -93,7 +99,7 @@ public class MessageBoxService {
 				this.delete(b);
 		if (messageBox.getMessages() != null)
 			for (final Message m : messageBox.getMessages())
-				//TODO: cuando esté mensajes hecho
+				//TODO: cuando estï¿½ mensajes hecho
 				this.messageService.deleteMessages(m, messageBox);
 		this.messageBoxRepository.delete(messageBox);
 	}
@@ -102,27 +108,27 @@ public class MessageBoxService {
 
 		final MessageBox in = this.create(a);
 		in.setIsPredefined(true);
-		in.setName("IN");
+		in.setName("In box");
 		this.save(in);
 
 		final MessageBox trash = this.create(a);
 		trash.setIsPredefined(true);
-		trash.setName("TRASH");
+		trash.setName("Trash box");
 		this.save(trash);
 
 		final MessageBox out = this.create(a);
 		out.setIsPredefined(true);
-		out.setName("OUT");
+		out.setName("Out box");
 		this.save(out);
 
 		final MessageBox spam = this.create(a);
 		spam.setIsPredefined(true);
-		spam.setName("SPAM");
+		spam.setName("Spam box");
 		this.save(spam);
 
 		final MessageBox notification = this.create(a);
 		notification.setIsPredefined(true);
-		notification.setName("NOTIFICATION");
+		notification.setName("Notification box");
 		this.save(notification);
 
 	}

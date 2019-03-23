@@ -107,7 +107,7 @@ public class ZoneAdministratorController extends AbstractController {
 	public ModelAndView edit(@RequestParam final int zoneId) {
 		final ModelAndView result;
 		final Zone zone;
-
+		
 		zone = this.zoneService.findOne(zoneId);
 		Assert.notNull(zone);
 
@@ -125,7 +125,8 @@ public class ZoneAdministratorController extends AbstractController {
 			result = this.createEditModelAndView(zone);
 		else
 			try {
-				Assert.notNull(this.zoneService.findOne(zone.getId()));
+				if(zone.getId()!=0)
+					Assert.notNull(this.zoneService.findOne(zone.getId()));
 				this.zoneService.save(zone);
 				result = new ModelAndView("redirect:list.do");
 			} catch (final Throwable oops) {

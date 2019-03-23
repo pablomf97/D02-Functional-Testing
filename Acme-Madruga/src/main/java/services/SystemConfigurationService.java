@@ -64,12 +64,12 @@ public class SystemConfigurationService {
 				"not.allowed");
 		Map<String, String> breachNotification = new HashMap<>();
 		Map<String, String> wellMap = new HashMap<>();
-		wellMap.put("Español",
-				"¡Bienvenidos a Acme Madrugá! Tu sitio para organizar procesiones.");
+		wellMap.put("Espaï¿½ol",
+				"ï¿½Bienvenidos a Acme Madrugï¿½! Tu sitio para organizar procesiones.");
 		wellMap.put("English",
-				"Welcome to Acme Madrugá, the site to organise your processions.");
+				"Welcome to Acme Madrugï¿½, the site to organise your processions.");
 
-		breachNotification.put("Español", "");
+		breachNotification.put("Espaï¿½ol", "");
 		breachNotification.put("English", "");
 		SystemConfiguration systemConfiguration = new SystemConfiguration();
 		systemConfiguration.setSystemName("Acme-MadrugÃ¡");
@@ -81,10 +81,10 @@ public class SystemConfigurationService {
 		systemConfiguration.setTimeResultsCached(1);
 		systemConfiguration.setMaxResults(10);
 		systemConfiguration
-				.setSpamWords("sex,viagra,cialis,one million,you've been selected,nigeria,sexo,un millon,un millón,ha sido seleccionado");
+				.setSpamWords("sex,viagra,cialis,one million,you've been selected,nigeria,sexo,un millon,un millï¿½n,ha sido seleccionado");
 		systemConfiguration
-				.setPossitiveWords("good,fantastic,excellent,great,amazing,terrific,beautiful,bueno,fantastico,fantástico,excelente,genial,"
-						+ "increíble,increible,asombroso,bonito");
+				.setPossitiveWords("good,fantastic,excellent,great,amazing,terrific,beautiful,bueno,fantastico,fantï¿½stico,excelente,genial,"
+						+ "increï¿½ble,increible,asombroso,bonito");
 		systemConfiguration
 				.setNegativeWords("not,bad,horrible,average,disaster,no,malo,mediocre,desastre,desastroso");
 		systemConfiguration.setMakers("VISA, MCARD, AMEX, DINNERS, FLY");
@@ -95,16 +95,13 @@ public class SystemConfigurationService {
 	public SystemConfiguration save(SystemConfiguration systemConfiguration) {
 		Assert.notNull(systemConfiguration, "null.system.configuration");
 		Actor principal;
+		SystemConfiguration result;
 
 		principal = this.actorService.findByPrincipal();
 		Assert.isTrue(
 				this.actorService.checkAuthority(principal, "ADMINISTRATOR"),
 				"not.allowed");
 
-		systemConfiguration.setId(this.systemConfigurationRepository.findAll()
-				.get(0).getId());
-
-		SystemConfiguration result;
 		result = this.systemConfigurationRepository.save(systemConfiguration);
 
 		return result;
@@ -168,15 +165,17 @@ public class SystemConfigurationService {
 
 		Assert.isTrue(systemConfiguration.getId() == this
 				.findMySystemConfiguration().getId());
+		Assert.isTrue(this.actorService.checkAuthority(
+				this.actorService.findByPrincipal(), "ADMINISTRATOR"));
 
 		if (systemConfiguration.getId() == 0) {
 			systemConfiguration
 					.setWelcomeMessage(new HashMap<String, String>());
 			systemConfiguration
 					.setBreachNotification(new HashMap<String, String>());
-			systemConfiguration.getWelcomeMessage().put("Español", nameES);
+			systemConfiguration.getWelcomeMessage().put("Espaï¿½ol", nameES);
 			systemConfiguration.getWelcomeMessage().put("English", nameEN);
-			systemConfiguration.getBreachNotification().put("Español", nEs);
+			systemConfiguration.getBreachNotification().put("Espaï¿½ol", nEs);
 			systemConfiguration.getBreachNotification().put("English", nEn);
 			res = systemConfiguration;
 		} else {
@@ -186,16 +185,17 @@ public class SystemConfigurationService {
 			systemConfiguration
 					.setWelcomeMessage(new HashMap<String, String>());
 
-			systemConfiguration.getWelcomeMessage().put("Español", nameES);
+			systemConfiguration.getWelcomeMessage().put("Espaï¿½ol", nameES);
 			systemConfiguration.getWelcomeMessage().put("English", nameEN);
 			systemConfiguration
 					.setBreachNotification(new HashMap<String, String>());
-			systemConfiguration.getBreachNotification().put("Español", nEs);
+			systemConfiguration.getBreachNotification().put("Espaï¿½ol", nEs);
 			systemConfiguration.getBreachNotification().put("English", nEn);
 
-			res.setWelcomeMessage(systemConfiguration.getWelcomeMessage());
-			res.setBreachNotification(systemConfiguration
+			bd.setWelcomeMessage(systemConfiguration.getWelcomeMessage());
+			bd.setBreachNotification(systemConfiguration
 					.getBreachNotification());
+
 			res.setSystemName(systemConfiguration.getSystemName());
 			res.setBanner(systemConfiguration.getBanner());
 			res.setCountryCode(systemConfiguration.getCountryCode());
@@ -208,10 +208,10 @@ public class SystemConfigurationService {
 			res.setFare(systemConfiguration.getFare());
 			res.setMakers(systemConfiguration.getMakers());
 			res.setVAT(systemConfiguration.getVAT());
+
 			this.validator.validate(res, binding);
-			if (!binding.hasErrors()) {
-				res.setId(bd.getId());
-			}
+
+			res = bd;
 		}
 
 		return res;
