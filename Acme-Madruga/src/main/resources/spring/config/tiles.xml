@@ -52,6 +52,8 @@
 		<value>/views/linkRecord/tiles.xml</value>
 		<value>/views/miscellaneousRecord/tiles.xml</value>
 		
+		<value>/views/proclaim/tiles.xml</value>
+		
 	</util:list>
 
 </beans>

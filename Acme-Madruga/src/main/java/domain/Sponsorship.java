@@ -41,11 +41,11 @@ public class Sponsorship extends DomainEntity {
 		this.target = target;
 	}
 
-	public boolean isDeactivated() {
+	public boolean getIsDeactivated() {
 		return this.isDeactivated;
 	}
 
-	public void setDeactivated(final boolean isDeactivated) {
+	public void setIsDeactivated(final boolean isDeactivated) {
 		this.isDeactivated = isDeactivated;
 	}
 
@@ -61,7 +61,7 @@ public class Sponsorship extends DomainEntity {
 
 	//TODO: como será exctamente esta parte de las parades?
 	@Valid
-	@OneToOne(optional = true)
+	@OneToOne(optional = false)
 	public Parade getParade() {
 		return this.parade;
 	}

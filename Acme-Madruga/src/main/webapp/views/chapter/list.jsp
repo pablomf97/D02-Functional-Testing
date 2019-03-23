@@ -48,6 +48,12 @@
 			<spring:message code="show.parades"/>
 		</a>
 	</display:column>
+	
+	<display:column titleKey="show.proclaims">
+		<a href="proclaim/list.do?chapterId=${row.id}">
+			<spring:message code="show.proclaims"/>
+		</a>
+	</display:column>
 	</display:table>
 	
 </security:authorize>

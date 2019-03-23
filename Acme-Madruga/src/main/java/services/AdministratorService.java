@@ -1,5 +1,6 @@
 package services;
 
+import java.util.Calendar;
 import java.util.Collection;
 
 import javax.transaction.Transactional;
@@ -16,6 +17,8 @@ import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Administrator;
+import domain.CreditCard;
+import domain.Sponsorship;
 import forms.AdministratorForm;
 
 @Service
@@ -32,6 +35,8 @@ public class AdministratorService {
 	private Validator validator;
 	@Autowired
 	private MessageBoxService messageBoxService;
+	@Autowired
+	private SponsorshipService sponsorshipService;
 
 	/**
 	 * Create a new empty admin
@@ -196,5 +201,25 @@ public class AdministratorService {
 		if (binding.hasErrors())
 			check = false;
 		return check;
+	}
+	
+	public void deactivateSponsorship(){
+		Collection<Sponsorship> sponsorships;
+		
+		sponsorships = this.sponsorshipService.findAll();
+		
+		for(Sponsorship s : sponsorships){
+			CreditCard credit = s.getCreditCard();
+			
+			if(credit.getExpirationYear().compareTo(Calendar.getInstance().get(Calendar.YEAR))<0 ){
+				s.setIsDeactivated(true);
+				s.setBanner("Credit card expired");
+			}else{
+				
+			}if(credit.getExpirationMonth().compareTo(Calendar.getInstance().get(Calendar.MONTH))<0){
+				s.setIsDeactivated(true);
+				s.setBanner("Credit card expired");
+			}
+		}
 	}
 }
