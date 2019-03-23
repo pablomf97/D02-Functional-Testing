@@ -24,7 +24,7 @@ import services.UtilityService;
 
 @Controller
 @RequestMapping("/creditCard")
-public class CreditCardController {
+public class CreditCardController extends AbstractController {
 
 
 	// Services

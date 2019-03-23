@@ -1,8 +1,11 @@
 package services;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.transaction.Transactional;
 
@@ -71,12 +74,25 @@ public class CreditCardService {
 		Assert.isTrue(this.actorService
 				.checkAuthority(principal, "SPONSOR"));
 
-		Calendar expiration;
+		String input = creditCard.getExpirationMonth()+"/"+creditCard.getExpirationYear(); // for example
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/yy");
+		simpleDateFormat.setLenient(false);
+		Date expiry = null;
+		try {
+			expiry = simpleDateFormat.parse(input);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		boolean expired = expiry.before(new Date());
+		Assert.isTrue(expired==false,"commit.error");
+		
+		//Calendar expiration;
 		
 		// Comprobacion de fecha
-		expiration = Calendar.getInstance();
-		expiration.set(creditCard.getExpirationYear(), creditCard.getExpirationMonth() + 1, 1);
-		Assert.isTrue(expiration.getTime().before(LocalDate.now().toDate()));
+	//	expiration = Calendar.getInstance();
+		//expiration.set(creditCard.getExpirationYear(), creditCard.getExpirationMonth() + 1, 1);
+		//Assert.isTrue(expiration.getTime().before(LocalDate.now().toDate()));
 
 		// Comprobacion de que el tipo de tarjeta es uno de los almacenados en systemConf
 		Assert.isTrue(this.utilityService.getCreditCardMakes().contains(creditCard.getMake()));

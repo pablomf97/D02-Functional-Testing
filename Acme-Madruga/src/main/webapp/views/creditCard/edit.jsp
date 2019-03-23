@@ -22,10 +22,11 @@
 	<acme:textbox code="creditCard.holder" path="holder" />
 		<br>
 		<br>
-
+	<spring:message code="system.makers"/>
 	<form:select path="make" items="${makes}" />
 	<br />
-
+	<br>
+		<br>
 	<acme:textbox code="creditCard.number" path="number" />
 		<br>
 		<br>

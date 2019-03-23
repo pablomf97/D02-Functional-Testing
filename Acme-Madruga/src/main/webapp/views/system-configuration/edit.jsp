@@ -67,7 +67,20 @@
 			size="100%" placeholder="system.lists.placeholder" />
 		<br>
 		<br>
-
+		
+		<acme:textbox code="system.makers" path="makers"
+			size="100%" />
+		<br>
+		<br>
+			<acme:textbox code="system.fare" path="fare"
+			size="100%" />
+		<br>
+		<br>
+		
+			<acme:textbox code="system.VAT" path="VAT"
+			size="100%" />
+		<br>
+		<br>
 		<p>
 			<spring:message code="wel.name.es" />
 		</p>
@@ -91,7 +104,7 @@
 		<br />
 		<br />
 
-	<!-- 	
+		
 		<p>
 			<spring:message code="breachNotification.name.es" />
 		</p>
@@ -110,7 +123,7 @@
 		<form:errors cssClass="error" path="breachNotification" />
 		<br />
 		<br />
- -->
+ 
 		<acme:submit code="system.save" name="save" />&nbsp;
 		<acme:cancel code="system.cancel"
 			url="sysconfig/administrator/display.do" />

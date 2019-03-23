@@ -87,6 +87,7 @@ public class SystemConfigurationService {
 						+ "increíble,increible,asombroso,bonito");
 		systemConfiguration
 				.setNegativeWords("not,bad,horrible,average,disaster,no,malo,mediocre,desastre,desastroso");
+		systemConfiguration.setMakers("VISA, MCARD, AMEX, DINNERS, FLY");
 		return systemConfiguration;
 	}
 
@@ -204,6 +205,9 @@ public class SystemConfigurationService {
 			res.setSpamWords(systemConfiguration.getSpamWords());
 			res.setPossitiveWords(systemConfiguration.getPossitiveWords());
 			res.setNegativeWords(systemConfiguration.getNegativeWords());
+			res.setFare(systemConfiguration.getFare());
+			res.setMakers(systemConfiguration.getMakers());
+			res.setVAT(systemConfiguration.getVAT());
 			this.validator.validate(res, binding);
 			if (!binding.hasErrors()) {
 				res.setId(bd.getId());
