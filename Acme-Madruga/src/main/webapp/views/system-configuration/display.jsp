@@ -72,6 +72,21 @@
 							</display:table></td>
 				</table>
 			</div>
+			
+				<div style="width: 20%; float: left; position: static">
+		<table class="displayStyle">
+			<tr>
+				<td><display:table pagesize="5" class="displaytag"
+						name="creditCardMakes"
+						requestURI="sysconfig/administrator/display.do"
+						id="creditCardMakes">
+
+						<display:column titleKey="system.creditcardmakes"
+							sortable="true" />
+						 <jstl:out value="${creditCardMakes}" />
+					</display:table></td>
+		</table>
+	</div>
 
 			<div style="width: 20%; float: left">
 				<table class="displayStyle" style="text-align: center;">

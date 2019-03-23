@@ -12,6 +12,7 @@ import domain.Administrator;
 import domain.Brotherhood;
 import domain.Chapter;
 import domain.Member;
+import domain.Sponsor;
 
 @Controller
 @RequestMapping("/actor")
@@ -46,6 +47,11 @@ public class ActorController extends AbstractController {
 			result = new ModelAndView("redirect:/member/display.do?id="
 					+ m.getId());
 			break;
+		case "SPONSOR":
+			final Sponsor s = (Sponsor) actor;
+			result = new ModelAndView("redirect:/sponsor/display.do?id="
+					+ s.getId());
+			break;
 		case "CHAPTER":
 			final Chapter chapter = (Chapter) actor;
 			result = new ModelAndView("redirect:/chapter/display.do?id="
@@ -79,6 +85,11 @@ public class ActorController extends AbstractController {
 			final Member m = (Member) actor;
 			result = new ModelAndView("redirect:/member/edit.do?id="
 					+ m.getId());
+			break;
+		case "SPONSOR":
+			final Sponsor s = (Sponsor) actor;
+			result = new ModelAndView("redirect:/sponsor/edit.do?id="
+					+ s.getId());
 			break;
 		case "CHAPTER":
 			final Chapter chapter = (Chapter) actor;

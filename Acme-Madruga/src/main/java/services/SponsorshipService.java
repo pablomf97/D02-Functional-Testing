@@ -1,5 +1,6 @@
 package services;
 
+
 import java.util.Collection;
 
 import javax.transaction.Transactional;
@@ -120,5 +121,5 @@ public class SponsorshipService {
 		
 		return result;
 	}
-
 }
+

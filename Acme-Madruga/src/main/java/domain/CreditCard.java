@@ -5,6 +5,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
@@ -40,6 +41,7 @@ public class CreditCard extends DomainEntity {
 	}
 
 	@NotBlank
+	@Pattern(regexp = "[0-9]{16}")
 	public String getNumber() {
 		return this.number;
 	}
@@ -69,8 +71,7 @@ public class CreditCard extends DomainEntity {
 	}
 
 	@NotNull
-	//TODO: el cvv pueden ser 3 ceros?
-	//@Range(min = 0, max = 999)
+	@Range(min = 0, max = 999)
 	public Integer getCVV() {
 		return this.CVV;
 	}

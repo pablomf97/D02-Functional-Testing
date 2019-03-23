@@ -220,7 +220,7 @@ public class ParadeService {
 		return result;
 	}
 
-	private Collection<Parade> findFinalProcessions() {
+	public Collection<Parade> findFinalProcessions() {
 		Collection<Parade> result;
 
 		result = this.processionRepository.findFinalParades();

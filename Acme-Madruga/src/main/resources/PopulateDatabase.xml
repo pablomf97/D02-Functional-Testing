@@ -1562,7 +1562,153 @@ your processions." />
 		</property>
 
 	</bean>
+	
+		<!-- CREDIT CARD -->
 
+	<bean id="creditCard1" class="domain.CreditCard">
+		<property name="holder" value="Esteban Coralino Riesco Motos" />
+		<property name="make" value="VISA" />
+		<property name="number" value="1234567891234567" />
+		<property name="expirationMonth" value="07" />
+		<property name="expirationYear" value="22" />
+		<property name="CVV" value="123" />
+	</bean>
 
+	<bean id="creditCard2" class="domain.CreditCard">
+		<property name="holder" value="Manolito gafotas" />
+		<property name="make" value="MCARD" />
+		<property name="number" value="1234567891234999" />
+		<property name="expirationMonth" value="07" />
+		<property name="expirationYear" value="22" />
+		<property name="CVV" value="223" />
+	</bean>
+
+	<bean id="creditCard3" class="domain.CreditCard">
+		<property name="holder" value="Julián Pérez Pérez" />
+		<property name="make" value="AMEX" />
+		<property name="number" value="6572143692013651" />
+		<property name="expirationMonth" value="06" />
+		<property name="expirationYear" value="21" />
+		<property name="CVV" value="861" />
+	</bean>
+
+	<bean id="creditCard4" class="domain.CreditCard">
+		<property name="holder" value="Pepe Viyuela" />
+		<property name="make" value="DINNERS" />
+		<property name="number" value="6301248569785641" />
+		<property name="expirationMonth" value="08" />
+		<property name="expirationYear" value="21" />
+		<property name="CVV" value="165" />
+	</bean>
+
+	<bean id="creditCard5" class="domain.CreditCard">
+		<property name="holder" value="Alba Merino Expósito" />
+		<property name="make" value="FLY" />
+		<property name="number" value="6354120125896547" />
+		<property name="expirationMonth" value="03" />
+		<property name="expirationYear" value="21" />
+		<property name="CVV" value="136" />
+	</bean>
+
+	<bean id="creditCard6" class="domain.CreditCard">
+		<property name="holder" value="Laura Infante Rodríguez" />
+		<property name="make" value="VISA" />
+		<property name="number" value="5632145789654123" />
+		<property name="expirationMonth" value="01" />
+		<property name="expirationYear" value="21" />
+		<property name="CVV" value="133" />
+	</bean>
+	<!-- SPONSOR -->
+	<bean id="sponsor1" class="domain.Sponsor">
+		<property name="name" value="Pepe" />
+		<property name="middleName" value="Carlos" />
+		<property name="surname" value="Gamiz Redondo" />
+		<property name="photo"
+			value="https://ih1.redbubble.net/image.376305132.3400/flat,550x550,075,f.u1.jpg" />
+		<property name="email" value="pepeamred@mail.com" />
+		<property name="phoneNumber" value="+34611387654" />
+		<property name="address" value="C/ Attica, 1 (Málaga)" />
+		<property name="userAccount" ref="userSponsor1" />
+	</bean>
+	<bean id="sponsor2" class="domain.Sponsor">
+		<property name="name" value="Carl" />
+		<property name="middleName" value="Carlos" />
+		<property name="surname" value="Rico Redondo" />
+		<property name="photo"
+			value="https://ible.net/image.376305132.3400/flat,550x550,075,f.u1.jpg" />
+		<property name="email" value="CArlamred@mail.com" />
+		<property name="phoneNumber" value="+34611387651" />
+		<property name="address" value="C/ Pueblo 1 (Málaga)" />
+		<property name="userAccount" ref="userSponsor2" />
+	</bean>
+
+		<bean id="userSponsor1" class="security.UserAccount">
+		<property name="username" value="sponsor1" />
+		<property name="password" value="42c63ad66d4dc07ed17753772bef96d6" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="SPONSOR" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+			<bean id="userSponsor2" class="security.UserAccount">
+		<property name="username" value="sponsor2" />
+		<property name="password" value="3dc67f80a03324e01b1640f45d107485" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="SPONSOR" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Sponsorships -->
+
+	<!-- Sponsorship 1 of sponsor 1 -->
+
+	<bean id="sponsorship1" class="domain.Sponsorship">
+		<property name="banner"
+			value="http://2.bp.blogspot.com/-8TFZxUDrFCg/UEx8iJXnZPI/AAAAAAAAARw/RgR7KVxC42g/s1600/Absolutely-Random-banner.jpg" />
+		<property name="target" value="http://www.random.es" />
+		<property name="isDeactivated" value="false" />
+		<property name="creditCard" ref="creditCard1" />
+		<property name="parade" ref="parade1" />
+		<property name="sponsor" ref="sponsor1" />
+	</bean>
+
+		<bean id="sponsorship2" class="domain.Sponsorship">
+		<property name="banner"
+			value="http://2.bp.blogspot.com/-8TFZxUDrFCg/UEx8iJXnZPI/AAAAAAAAARw/RgR7KVxC42g/s1600/Absolutely-Random-banner.jpg" />
+		<property name="target" value="http://www.random.es" />
+		<property name="isDeactivated" value="false" />
+		<property name="creditCard" ref="creditCard2" />
+		<property name="parade" ref="parade2" />
+		<property name="sponsor" ref="sponsor2" />
+	</bean>
+<!-- 
+	<bean id="sponsorship3" class="domain.Sponsorship">
+		<property name="banner"
+			value="http://2.bp.blogspot.com/-8TFZxUDrFCg/UEx8iJXnZPI/AAAAAAAAARw/RgR7KVxC42g/s1600/Absolutely-Random-banner.jpg" />
+		<property name="target" value="http://www.random.es" />
+		<property name="isDeactivated" value="false" />
+		<property name="creditCard" ref="creditCard3" />
+		<property name="parade" ref="parade1" />
+		<property name="sponsor" ref="sponsor2" />
+	</bean>
+	
+	<bean id="sponsorship4" class="domain.Sponsorship">
+		<property name="banner"
+			value="http://2.bp.blogspot.com/-8TFZxUDrFCg/UEx8iJXnZPI/AAAAAAAAARw/RgR7KVxC42g/s1600/Absolutely-Random-banner.jpg" />
+		<property name="target" value="http://www.random.es" />
+		<property name="isDeactivated" value="false" />
+		<property name="creditCard" ref="creditCard4" />
+		<property name="parade" ref="parade2" />
+		<property name="sponsor" ref="sponsor1" />
+	</bean> -->
+	
 
 </beans>

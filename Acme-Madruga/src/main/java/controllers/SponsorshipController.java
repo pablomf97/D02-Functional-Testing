@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
+import services.CreditCardService;
+import services.ParadeService;
 import services.SponsorshipService;
 import domain.CreditCard;
+import domain.Parade;
 import domain.Sponsor;
 import domain.Sponsorship;
 
@@ -27,6 +31,12 @@ public class SponsorshipController extends AbstractController{
 
 	@Autowired
 	private ActorService actorService;
+	
+	@Autowired
+	private CreditCardService creditCardService;
+	
+	@Autowired
+	private ParadeService paradeService;
 	
 	
 	
@@ -151,9 +161,20 @@ public class SponsorshipController extends AbstractController{
 	protected ModelAndView createEditModelAndView(final Sponsorship sponsorship, final String messageError){
 		ModelAndView result;
 		Collection<Sponsorship> sponsorships;
-		Collection<CreditCard> selectedBySponsorship = new ArrayList<CreditCard>();
-		Collection<CreditCard> allCreditCards;
+		Collection<CreditCard> selectedBySponsorship = new ArrayList<CreditCard>(),
+														allCreditCards,
+														notValidCreditCards = new ArrayList<CreditCard>();
 		
+		Collection<Parade> acceptedParades = new ArrayList<Parade>(), sponsorshipsParades = new ArrayList<Parade>();
+		Sponsor principal = (Sponsor) this.actorService.findByPrincipal();
+		boolean possible = false;
+		
+		if(principal.getId() == sponsorship.getSponsor().getId()){
+			possible = true;
+		}
+		
+		acceptedParades = this.paradeService.findFinalProcessions();
+		allCreditCards = this.creditCardService.findAll();
 		sponsorships = this.sponsorshipService.findAll();
 		
 		for(Sponsorship s : sponsorships){
@@ -161,9 +182,34 @@ public class SponsorshipController extends AbstractController{
 				selectedBySponsorship.add(s.getCreditCard());
 			}
 			
+			sponsorshipsParades.add(s.getParade());
+				
+		
 		}
 		
+		acceptedParades.removeAll(sponsorshipsParades);
+		
+		allCreditCards.removeAll(selectedBySponsorship);
+		
+		for(CreditCard c : allCreditCards){
+			if(c.getExpirationYear().compareTo(Calendar.getInstance().get(Calendar.YEAR))<0 ){
+				notValidCreditCards.add(c);
+			}else{
+				
+			}if(c.getExpirationMonth().compareTo(Calendar.getInstance().get(Calendar.MONTH))<0){
+				notValidCreditCards.add(c);
+			}
+		}
+		
+		
+		
+		allCreditCards.removeAll(notValidCreditCards);
+		
 		result = new ModelAndView("sponsorship/edit");
+		result.addObject("sponsorship", sponsorship);
+		result.addObject("validCreditCards", allCreditCards);
+		result.addObject("acceptedParades", acceptedParades);
+		result.addObject("possible", possible);
 		
 		return result;
 	}
