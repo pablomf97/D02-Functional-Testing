@@ -42,6 +42,11 @@
 
 				</ul></li>
 
+
+			<li><a class="fNiv"
+				href="actor/administrator/list-suspicious-actors.do"><spring:message
+						code="master.page.administrator.list" /></a></li>
+
 			<li><a class="fNiv"><spring:message
 						code="master.page.administrator.positions" /></a>
 				<ul>
@@ -210,12 +215,19 @@
 	</ul>
 </div>
 
-<!-- 	<security:authorize access="isAuthenticated()">
-		<jstl:if test="${pageContext.response.locale.language == 'es'}">
-		<h2><strong style="color:red;"><jstl:out value="${breachNotification.get('Espa�ol')}"></jstl:out><br/> </strong></h2>
-		</jstl:if>
-		<jstl:if test="${pageContext.response.locale.language == 'en'}">
-			<h2><strong style="color:red;"> <jstl:out value="${breachNotification.get('English')}" ></jstl:out><br/> </strong></h2>
-		</jstl:if>
-	</security:authorize>
- -->
+<security:authorize access="isAuthenticated()">
+	<jstl:if test="${pageContext.response.locale.language == 'es'}">
+		<h2>
+			<strong style="color: red;"><jstl:out
+					value="${breachNotification.get('Espa�ol')}"></jstl:out><br /> </strong>
+		</h2>
+	</jstl:if>
+	<jstl:if test="${pageContext.response.locale.language == 'en'}">
+		<h2>
+			<strong style="color: red;"> <jstl:out
+					value="${breachNotification.get('English')}"></jstl:out><br />
+			</strong>
+		</h2>
+	</jstl:if>
+</security:authorize>
+
