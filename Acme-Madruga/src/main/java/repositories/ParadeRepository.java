@@ -37,4 +37,7 @@ public interface ParadeRepository extends JpaRepository<Parade, Integer> {
 	/* The ratio of parades in final mode grouped by status */
 	@Query("select count(distinct p)*1.0 / count(distinct p1) from Parade p, Parade p1 where p.isDraft = false and p1.isDraft = false group by p.status")
 	Double[] ratioFinalModeGroupedByStatus();
+	
+	@Query("select p from Parade p where p.status = 'ACCEPTED'")
+	Collection<Parade> getAcceptedParades();
 }

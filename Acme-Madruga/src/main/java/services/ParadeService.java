@@ -317,4 +317,14 @@ public class ParadeService {
 				.ratioFinalModeGroupedByStatus();
 		return (res.length > 0) ? res : new Double[] { 0., 0., 0. };
 	}
+	
+	
+	public Collection<Parade> getAcceptedParades(){
+		Collection<Parade> result;
+		
+		result = this.processionRepository.getAcceptedParades();
+		
+		return result;
+		
+	}
 }
