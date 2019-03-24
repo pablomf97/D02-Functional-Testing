@@ -44,7 +44,8 @@
 	<b><spring:message code="profile.address" /></b>:
 	<jstl:out value="${brotherhood.address }" />
 </p>
-
+<div><a href="brotherhood/export.do"><spring:message
+								code="export" /></a></div>
 <security:authorize access="hasRole('ADMINISTRATOR')">
 	<p>
 		<b><spring:message code="profile.score" /></b>:

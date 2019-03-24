@@ -50,7 +50,7 @@
 		<value>/views/miscellaneousRecord/messages</value>
 
 		<value>/views/chapter/messages</value>
-
+	
 	</util:list>
 
 </beans>

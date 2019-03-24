@@ -44,7 +44,10 @@
 	<b><spring:message code="profile.address" /></b>:
 	<jstl:out value="${chapter.address}" />
 </p>
-
+<p>
+<div><a href="chapter/export.do"><spring:message
+								code="export" /></a></div>
+								<p>
 <security:authorize access="hasRole('ADMINISTRATOR')">
 	<p>
 		<b><spring:message code="profile.score" /></b>:

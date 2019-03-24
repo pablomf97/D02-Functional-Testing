@@ -635,5 +635,8 @@ public class MessageService {
 
 		return result;
 	}
+	public Collection<Message> AllMessagesInvolvedActor(int actorId){
+		return this.messageRepository.AllMessagesInvolvedActor(actorId);
+	}
 
 }
