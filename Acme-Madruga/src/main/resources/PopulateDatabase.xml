@@ -1209,10 +1209,10 @@ your processions." />
 
 	<bean id="parade2" class="domain.Parade">
 		<property name="ticker" value="190519-XZRTY" />
-		<property name="title" value="Viernes Santo" />
+		<property name="title" value="Cabalgata del orgullo" />
 		<property name="description"
-			value="Procesion asignada para el viernes santo por la hermandad Silencio" />
-		<property name="organisedMoment" value="19/05/19 20:00" />
+			value="Procesion asignada para el recuerdo de los reprimidos por la iglesia en contra de los homosexuales" />
+		<property name="organisedMoment" value="25/05/19 20:00" />
 		<property name="isDraft" value="false" />
 		<property name="maxCols" value="2" />
 		<property name="platforms">
@@ -1230,7 +1230,120 @@ your processions." />
 		<property name="status" value="REJECTED"></property>
 		<property name="reason" value="Bad guy"></property>
 	</bean>
+	<bean id="parade3" class="domain.Parade">
+		<property name="ticker" value="190519-XZPTY" />
+		<property name="title" value="Viernes rojo" />
+		<property name="description"
+			value="Protesta comunista" />
+		<property name="organisedMoment" value="19/06/19 20:00" />
+		<property name="isDraft" value="false" />
+		<property name="maxCols" value="2" />
+		<property name="platforms">
+			<list>
+				<ref bean="platform3" />
+				<ref bean="platform4" />
+			</list>
 
+		</property>
+		<property name="brotherhood">
+
+			<ref bean="brotherhood2" />
+		</property>
+
+		<property name="status" value="SUBMITTED"></property>
+		<property name="reason" value="Es un rojed"></property>
+		<property name="path">
+
+			<null />
+
+		</property>
+	</bean>
+		<bean id="parade4" class="domain.Parade">
+		<property name="ticker" value="190519-XVRTY" />
+		<property name="title" value="Que no te engañen" />
+		<property name="description"
+			value="Los chicos tienen I y las chicas O" />
+		<property name="organisedMoment" value="19/05/19 20:00" />
+		<property name="isDraft" value="false" />
+		<property name="maxCols" value="2" />
+		<property name="platforms">
+			<list>
+				<ref bean="platform3" />
+				<ref bean="platform4" />
+			</list>
+
+		</property>
+		<property name="brotherhood">
+
+			<ref bean="brotherhood2" />
+		</property>
+
+		<property name="status" value="ACCEPTED"></property>
+		<property name="reason" value="Arriba españa"></property>
+		<property name="path">
+
+			<null />
+
+		</property>
+	</bean>
+	
+	<bean id="parade5" class="domain.Parade">
+		<property name="ticker" value="190519-XZRTN" />
+		<property name="title" value="Personas de casa" />
+		<property name="description"
+			value="Cosas de casa tarradellas" />
+		<property name="organisedMoment" value="19/05/19 20:00" />
+		<property name="isDraft" value="false" />
+		<property name="maxCols" value="2" />
+		<property name="platforms">
+			<list>
+				<ref bean="platform3" />
+				<ref bean="platform4" />
+			</list>
+
+		</property>
+		<property name="brotherhood">
+
+			<ref bean="brotherhood2" />
+		</property>
+
+		<property name="status" value="REJECTED"></property>
+		<property name="reason" value="No me gusta"></property>
+		<property name="path">
+
+			<null />
+
+		</property>
+	</bean>
+	
+	<bean id="parade6" class="domain.Parade">
+		<property name="ticker" value="190519-XZRTL" />
+		<property name="title" value="Viernes de juegación" />
+		<property name="description"
+			value="Festival de videojuegos en la calle, necesarioa Nintendo Switch" />
+		<property name="organisedMoment" value="19/05/19 20:00" />
+		<property name="isDraft" value="false" />
+		<property name="maxCols" value="2" />
+		<property name="platforms">
+			<list>
+				<ref bean="platform3" />
+				<ref bean="platform4" />
+			</list>
+
+		</property>
+		<property name="brotherhood">
+
+			<ref bean="brotherhood2" />
+		</property>
+
+		<property name="status" value="ACCEPTED"></property>
+		<property name="reason" value="Yeah"></property>
+		<property name="path">
+
+			<null />
+
+		</property>
+	</bean>
 
 	<!-- PLATFORM -->
 

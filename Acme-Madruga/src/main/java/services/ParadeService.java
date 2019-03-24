@@ -18,6 +18,7 @@ import org.springframework.validation.Validator;
 import repositories.ParadeRepository;
 import domain.Actor;
 import domain.Brotherhood;
+import domain.Chapter;
 import domain.Enrolment;
 import domain.March;
 import domain.Parade;
@@ -85,25 +86,40 @@ public class ParadeService {
 	public Parade save(final Parade parade) {
 		Actor principal;
 		Brotherhood brotherhood;
+		Chapter chapter;
 		Parade result;
 
 		principal = this.actorService.findByPrincipal();
-		Assert.isTrue(
-				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
-				"not.allowed");
 
-		Assert.isTrue(parade.getBrotherhood().equals(principal), "not.allowed");
+		try {
+			brotherhood = (Brotherhood) principal;
 
-		Assert.notNull(parade);
-		Assert.notNull(parade.getDescription());
-		Assert.notNull(parade.getMaxCols());
-		Assert.notNull(parade.getTitle());
-		Assert.notNull(parade.getOrganisedMoment());
+			Assert.isTrue(parade.getBrotherhood().equals(principal),
+					"not.allowed");
 
-		brotherhood = (Brotherhood) principal;
+			Assert.notNull(parade);
+			Assert.notNull(parade.getDescription());
+			Assert.notNull(parade.getMaxCols());
+			Assert.notNull(parade.getTitle());
+			Assert.notNull(parade.getOrganisedMoment());
 
-		if (parade.getId() == 0) {
-			Assert.notNull(brotherhood.getZone());
+			if (parade.getId() == 0) {
+				Assert.notNull(brotherhood.getZone());
+				parade.setStatus("SUBMITTED");
+			}
+
+		} catch (Throwable oops) {
+			chapter = (Chapter) principal;
+
+			Assert.isTrue(
+					parade.getBrotherhood().getZone().equals(chapter.getZone()),
+					"not.allowed");
+
+			Assert.notNull(parade);
+			Assert.notNull(parade.getDescription());
+			Assert.notNull(parade.getMaxCols());
+			Assert.notNull(parade.getTitle());
+			Assert.notNull(parade.getOrganisedMoment());
 		}
 
 		result = this.paradeRepository.save(parade);
@@ -133,6 +149,7 @@ public class ParadeService {
 
 	public Parade reconstruct(Parade parade, BindingResult binding) {
 		Parade result;
+		Chapter chapter;
 		Actor principal = this.actorService.findByPrincipal();
 
 		if (parade.getId() == 0) {
@@ -141,16 +158,29 @@ public class ParadeService {
 			result.setTicker(this.utilityService.generateTicker());
 			result.setPlatforms(new ArrayList<Platform>());
 			result.setBrotherhood((Brotherhood) principal);
+			result.setStatus("SUBMITTED");
 
 		} else {
 			result = this.findOne(parade.getId());
 			Assert.notNull(result);
-			Assert.isTrue(result.getBrotherhood().getId() == principal.getId());
 
-			result.setTitle(parade.getTitle());
-			result.setDescription(parade.getDescription());
-			result.setPlatforms(parade.getPlatforms());
-			result.setIsDraft(parade.getIsDraft());
+			try {
+				Assert.isTrue(result.getBrotherhood().getId() == principal
+						.getId());
+				result.setTitle(parade.getTitle());
+				result.setDescription(parade.getDescription());
+				result.setPlatforms(parade.getPlatforms());
+				result.setIsDraft(parade.getIsDraft());
+				if (parade.getStatus() != null)
+					result.setStatus(parade.getStatus());
+			} catch (Throwable oops) {
+				chapter = (Chapter) principal;
+				Assert.isTrue(result.getBrotherhood().getZone().getId() == (chapter
+						.getZone().getId()));
+				if (parade.getStatus() != null)
+					result.setStatus(parade.getStatus());
+			}
+
 		}
 
 		validator.validate(result, binding);
@@ -198,17 +228,15 @@ public class ParadeService {
 
 		memberEnrolments = this.enrolmentService
 				.findActiveEnrolmentsByMember(memberId);
-		for (Enrolment enrolment : memberEnrolments) {
+		for (Enrolment enrolment : memberEnrolments)
 			brotherhoodIds.add(enrolment.getBrotherhood().getId());
-		}
+		
 
-		for (Parade procesion : toApply) {
-			for (Integer brotherhoodId : brotherhoodIds) {
-				if (procesion.getBrotherhood().getId() != brotherhoodId) {
+		for (Parade procesion : toApply)
+			for (Integer brotherhoodId : brotherhoodIds)
+				if (procesion.getBrotherhood().getId() != brotherhoodId)
 					result.remove(procesion);
-				}
-			}
-		}
+		
 
 		return result;
 	}
@@ -297,19 +325,45 @@ public class ParadeService {
 		}
 		return result;
 	}
-	
-	public Double ratioDraftVsFinal(){
+
+	public Double ratioDraftVsFinal() {
 		Double result;
-		
+
 		result = this.paradeRepository.ratioDraftVsFinal();
-		
+
 		return result;
 	}
-	public Double[] ratioFinalModeGroupedByStatus(){
+
+	public Double[] ratioFinalModeGroupedByStatus() {
 		Double[] result;
-		
+
 		result = this.paradeRepository.ratioFinalModeGroupedByStatus();
-		
+
 		return result;
+	}
+
+	public Collection<Parade> findParadesByAres(int id) {
+		return this.paradeRepository.findParadesByAres(id);
+	}
+
+	public Parade copyParade(final Integer paradeId) {
+		Parade res;
+		final Actor principal = this.actorService.findByPrincipal();
+		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+		res = this.paradeRepository.findOne(paradeId);
+		Assert.isTrue(res.getBrotherhood().equals(principal));
+		final Parade copy = this.create();
+		copy.setBrotherhood(res.getBrotherhood());
+		copy.setDescription(res.getDescription());
+		copy.setIsDraft(true);
+		copy.setMaxCols(res.getMaxCols());
+		copy.setOrganisedMoment(res.getOrganisedMoment());
+		copy.setPlatforms(res.getPlatforms());
+		copy.setReason("");
+		copy.setStatus("SUBMITTED");
+		copy.setTicker(this.utilityService.generateTicker());
+		copy.setTitle(res.getTitle());
+		res = this.save(copy);
+		return res;
 	}
 }

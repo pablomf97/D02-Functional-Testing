@@ -84,6 +84,7 @@ public class SegmentService {
 		Assert.notNull(segment.getOrigin(), "segment.NotEmpty");
 		Assert.notNull(segment.getParade(), "segment.NotEmpty");
 		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+		Assert.isTrue(segment.getExpectedTimeOrigin().before(segment.getExpectedTimeDestination()));
 		
 		path = this.findAllSegmentsByParadeId(segment.getParade().getId());
 			

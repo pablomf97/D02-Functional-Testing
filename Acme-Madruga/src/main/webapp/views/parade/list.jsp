@@ -10,54 +10,59 @@
 
 <!-- Listing grid -->
 
-<display:table pagesize="5" class="displaytag" name="processions"
-	requestURI="procession/member,brotherhood/list.do" id="row">
+<display:table pagesize="5" class="displaytag" name="parades"
+	requestURI="parade/member,brotherhood/list.do" id="row">
 
 	<security:authorize access="hasRole('BROTHERHOOD')">
 
 		<!-- Attributes-->
 
-		<display:column titleKey="procession.title" sortable="true">
+		<display:column titleKey="parade.title" sortable="true">
 			<jstl:out value="${row.title }"></jstl:out>
 		</display:column>
 
-		<display:column titleKey="procession.ticker" sortable="true">
+		<display:column titleKey="parade.ticker" sortable="true">
 			<jstl:out value="${row.ticker }"></jstl:out>
 		</display:column>
+		<display:column titleKey="parade.status" sortable="true">
+			<jstl:if test="${row.status == 'SUBMITTED' }">
+				<span class="SUBMITTED"> <jstl:out value="${ row.status }" /></span>
+			</jstl:if>
+			<jstl:if test="${row.status == 'ACCEPTED' }">
+				<span class="ACCEPTED"> <jstl:out value="${ row.status }" /></span>
+			</jstl:if>
+			<jstl:if test="${row.status == 'REJECTED' }">
+				<span class="REJECTED"> <jstl:out value="${ row.status }" /></span>
+			</jstl:if>
+			<br />
+		</display:column>
 
-		<display:column titleKey="procession.description">
+		<display:column titleKey="parade.description">
 			<jstl:out value="${row.description }"></jstl:out>
 		</display:column>
 
-		<display:column titleKey="procession.organisedMoment" sortable="true">
+		<display:column titleKey="parade.organisedMoment" sortable="true">
 			<jstl:out value="${row.organisedMoment }"></jstl:out>
 		</display:column>
 
 		<!-- Action links -->
 
-	<display:column>
-		<a href="procession/display.do?processionId=${row.id}"> <spring:message
-				code="procession.display" />
-		</a>
-	</display:column>
-	
+		<display:column>
+			<a href="parade/display.do?paradeId=${row.id}"> <spring:message
+					code="parade.display" />
+			</a>
+		</display:column>
 
 		<display:column>
 			<jstl:if test="${row.isDraft == true}">
-				<a href="procession/edit.do?processionId=${row.id}"> <spring:message
-						code="procession.edit" />
+				<a href="parade/edit.do?paradeId=${row.id}"> <spring:message
+						code="parade.edit" />
 				</a>
 			</jstl:if>
 
 		</display:column>
 
 	</security:authorize>
-	
-		<display:column titleKey="parade.path" >
-		<a href="segment/list.do?paradeId=${row.id}"> <spring:message
-				code="procession.display" />
-		</a>
-	</display:column>
 
 	<security:authorize access="hasRole('MEMBER')">
 
@@ -67,32 +72,24 @@
 
 				<!-- Attributes-->
 
-				<display:column titleKey="procession.title" sortable="true">
+				<display:column titleKey="parade.title" sortable="true">
 					<jstl:out value="${row.title }"></jstl:out>
 				</display:column>
 
-				<display:column titleKey="procession.ticker" sortable="true">
+				<display:column titleKey="parade.ticker" sortable="true">
 					<jstl:out value="${row.ticker }"></jstl:out>
 				</display:column>
 
-				<display:column titleKey="procession.status" sortable="true">
-					<jstl:if test="${row.status == 'SUBMITTED' }">
-						<span class="SUBMITTED"> <jstl:out value="${ row.status }" /></span>
-					</jstl:if>
-					<jstl:if test="${row.status == 'ACCEPTED' }">
-						<span class="ACCEPTED"> <jstl:out value="${ row.status }" /></span>
-					</jstl:if>
-					<jstl:if test="${row.status == 'REJECTED' }">
-						<span class="REJECTED"> <jstl:out value="${ row.status }" /></span>
-					</jstl:if>
+				<display:column titleKey="parade.status" sortable="true">
+						<jstl:out value="${ row.status }" />
 					<br />
 				</display:column>
 
-				<display:column titleKey="procession.description">
+				<display:column titleKey="parade.description">
 					<jstl:out value="${row.description }"></jstl:out>
 				</display:column>
 
-				<display:column titleKey="procession.organisedMoment"
+				<display:column titleKey="parade.organisedMoment"
 					sortable="true">
 					<jstl:out value="${row.organisedMoment }"></jstl:out>
 				</display:column>
@@ -100,8 +97,8 @@
 				<!-- Action links -->
 
 				<display:column>
-					<a href="procession/display.do?processionId=${row.id}"> <spring:message
-							code="procession.display" />
+					<a href="parade/display.do?paradeId=${row.id}"> <spring:message
+							code="parade.display" />
 					</a>
 				</display:column>
 
@@ -118,7 +115,7 @@
 </display:table>
 <security:authorize access="hasRole('BROTHERHOOD')">
 	<p>
-		<a href="procession/create.do"><spring:message
-				code="procession.create" /></a>
+		<a href="parade/create.do"><spring:message
+				code="parade.create" /></a>
 	</p>
 </security:authorize>

@@ -467,7 +467,7 @@ public class MessageService {
 
 	}
 
-	public Message notificationPublishProcession(Parade p) {
+	public Message notificationPublishParade(Parade p) {
 		Message result = new Message();
 		Actor principal;
 		Collection<Actor> recipients;

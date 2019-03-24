@@ -17,7 +17,7 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-<%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <div style="float: right">
 	<a href="?language=es" id="es"><img src="images/sp.png"
@@ -92,11 +92,11 @@
 
 
 			<li><a class="fNiv"><spring:message
-						code="master.page.member.procession" /></a>
+						code="master.page.member.parade" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="procession/member,brotherhood/list.do"><spring:message
-								code="master.page.member.procession.show" /></a></li>
+					<li><a href="parade/member,brotherhood/list.do"><spring:message
+								code="master.page.member.parade.show" /></a></li>
 
 				</ul></li>
 
@@ -137,13 +137,13 @@
 				</ul></li>
 
 			<li><a class="fNiv"><spring:message
-						code="master.page.member.procession" /></a>
+						code="master.page.member.parade" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="procession/member,brotherhood/list.do"><spring:message
-								code="master.page.member.procession.show" /></a></li>
-					<li><a href="procession/create.do"><spring:message
-								code="master.page.member.procession.new" /></a></li>
+					<li><a href="parade/member,brotherhood/list.do"><spring:message
+								code="master.page.member.parade.show" /></a></li>
+					<li><a href="parade/create.do"><spring:message
+								code="master.page.member.parade.new" /></a></li>
 				</ul></li>
 
 			<li><a class="fNiv" href="march/member,brotherhood/list.do"><spring:message
@@ -151,6 +151,7 @@
 
 			<li><a class="fNiv" href="history/display.do"><spring:message
 						code="master.page.administrator.history" /></a></li>
+
 
 		</security:authorize>
 
@@ -168,21 +169,29 @@
 								code="master.page.register.brotherhood" /></a></li>
 					<li><a href="chapter/edit.do?id=0"><spring:message
 								code="master.page.register.chapter" /></a></li>
-
 				</ul></li>
 
 			<li><a class="fNiv" href="brotherhood/list.do"><spring:message
-						code="master.page.administrator.brotherhoods" /></a></li>
+						code="master.page.administrator.brotherhoods" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="brotherhood/members/list.do"><spring:message
+								code="master.page.brotherhood.members.list" /></a></li>
+				</ul></li>
+
 
 		</security:authorize>
 
 		<security:authorize access="isAuthenticated()">
 
 			<li><a class="fNiv" href="brotherhood/list.do"><spring:message
-						code="master.page.administrator.brotherhoods" /></a></li>
+						code="master.page.administrator.brotherhoods" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="brotherhood/members/list.do"><spring:message
+								code="master.page.brotherhood.members.list" /></a></li>
+				</ul></li>
 
-			<li><a class="fNiv" href="socialProfile/actor/list.do"><spring:message
-						code="master.page.actor.social" /></a></li>
 
 			<li><a class="fNiv"> <spring:message
 						code="master.page.profile" /> (<security:authentication
@@ -194,12 +203,10 @@
 								code="master.page.profile.view" /></a></li>
 					<li><a href="actor/edit.do"><spring:message
 								code="master.page.profile.edit" /></a></li>
-					<li><a href="messagebox/list.do"><spring:message
+					<li><a href="box/actor/list.do"><spring:message
 								code="master.page.profile.message.boxes" /></a></li>
 					<li><a href="messagebox/create.do"><spring:message
 								code="master.page.box.new" /></a></li>
-					<li><a href="message/actor/create.do"><spring:message
-								code="master.page.message.new" /></a></li>
 					<li><a href="j_spring_security_logout"><spring:message
 								code="master.page.logout" /> </a></li>
 				</ul></li>
@@ -212,7 +219,7 @@
 	<jstl:if test="${pageContext.response.locale.language == 'es'}">
 		<h2>
 			<strong style="color: red;"><jstl:out
-					value="${breachNotification.get('Español')}"></jstl:out><br /> </strong>
+					value="${breachNotification.get('Espaï¿½ol')}"></jstl:out><br /> </strong>
 		</h2>
 	</jstl:if>
 	<jstl:if test="${pageContext.response.locale.language == 'en'}">
