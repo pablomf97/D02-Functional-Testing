@@ -87,9 +87,9 @@
 		<security:intercept-url pattern="/profile/action-3.do"
 			access="isAuthenticated()" />
 			
-		<security:intercept-url pattern="procession/member,brotherhood/list.do"
+		<security:intercept-url pattern="parade/member,brotherhood/list.do"
 			access="hasAnyRole('MEMBER','BROTHERHOOD')" />
-		<security:intercept-url pattern="procession/display.do"
+		<security:intercept-url pattern="parade/display.do"
 			access="hasAnyRole('MEMBER','BROTHERHOOD')" />
 			
 		<security:intercept-url pattern="platform/list.do"

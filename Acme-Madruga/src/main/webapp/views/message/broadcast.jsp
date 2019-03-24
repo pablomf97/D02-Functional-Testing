@@ -38,15 +38,15 @@
 			<form:label path="priority">
 				<spring:message code="message.priority" />:
 	</form:label>
-			<form:select path="priority" >
+			<form:select path="priority">
 				<form:options items="${priorities}" />
 			</form:select>
 			<form:errors cssClass="error" path="priority" />
 			<br />
 			<br />
-			
 
-			<input type="submit" name="save"
+
+			<input type="submit" name="saveBroadcast"
 				value="<spring:message code="message.broadcast"/>" />&nbsp;
 		
 

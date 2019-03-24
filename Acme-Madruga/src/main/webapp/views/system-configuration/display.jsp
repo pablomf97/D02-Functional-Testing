@@ -63,6 +63,7 @@
 					<td><jstl:out value="${sysConfig.fare}" /></td>
 				</tr>
 			</table>
+
 			<div>
 				<div style="width: 20%; float: left; position: static">
 					<table class="displayStyle">
@@ -182,6 +183,7 @@
 					</table>
 				</div>
 			</div>
+
 			<input type="button" name="edit"
 				value='<spring:message code="system.edit"/>'
 				onclick="redirect: location.href = 'sysconfig/administrator/edit.do?systemconfigurationID=${sysConfig.id}';" />

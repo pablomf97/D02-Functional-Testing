@@ -26,6 +26,5 @@ public interface BrotherhoodRepository extends
 
 	@Query("select b from Enrolment e join e.brotherhood b where e.member.id = ?1 and e.isOut = false")
 	Collection<Brotherhood> brotherhoodsByMemberInId(int memberId);
-	
-	
+
 }

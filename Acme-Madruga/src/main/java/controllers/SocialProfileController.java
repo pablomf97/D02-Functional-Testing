@@ -87,34 +87,18 @@ public class SocialProfileController extends AbstractController {
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(SocialProfile socialProfile, BindingResult binding) {
-		ModelAndView res;
-		Actor principal, owner;
-		principal = this.actorService.findByPrincipal();
+		ModelAndView result;
 		
-		if(socialProfile.getId()== 0) {
-			socialProfile.setActor(this.actorService.findByPrincipal());
-			socialProfile.setActor(principal);
-		} else {
-			owner = this.actorService.findBySocialProfileId(socialProfile.getId());
-			Assert.isTrue(owner.equals(principal));
-			socialProfile.setActor(owner);
-		}
-		
-		this.validator.validate(socialProfile, binding);
-		
-		if (binding.hasErrors()) {
-			res = createEditModelAndView(socialProfile);
-		} else {
+		if (binding.hasErrors())
+			result = this.createEditModelAndView(socialProfile);
+		else
 			try {
-
 				this.socialProfileService.save(socialProfile);
-				res = new ModelAndView("redirect:list.do");
-			} catch (Throwable oops) {
-				res = createEditModelAndView(socialProfile,
-						"system.commit.error");
+				result = new ModelAndView("redirect:list.do");
+			} catch (final Throwable oops) {
+				result = new ModelAndView("redirect:/welcome/index.do");
 			}
-		}
-		return res;
+		return result;
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")

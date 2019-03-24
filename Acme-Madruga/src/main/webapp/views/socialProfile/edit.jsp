@@ -37,8 +37,7 @@
 		<form:label path="name">
 			<spring:message code="actor.socialprofile.network" />:
 		</form:label>
-		<form:input path="name"
-			value="${socialProfile.name}" />
+		<form:input path="name" value="${socialProfile.name}" />
 		<form:errors cssClass="error" path="name" />
 		<br>
 

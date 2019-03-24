@@ -19,9 +19,23 @@
 		<put-attribute name="title" value="Chapter: see profile" />
 		<put-attribute name="body" value="/views/chapter/display.jsp" />
 	</definition>
+
 	
 	<definition name="chapter/list" extends="master.page">
 		<put-attribute name="title" value="Chapter's list" />
 		<put-attribute name="body" value="/views/chapter/list.jsp" />
 	</definition>
+
+
+	<definition name="chapter/listparade" extends="master.page">
+		<put-attribute name="title" value="Chapter: list of parades" />
+		<put-attribute name="body" value="/views/chapter/listparade.jsp" />
+	</definition>
+
+	<definition name="parade/reject" extends="master.page">
+		<put-attribute name="title" value="Chapter: reject parade" />
+		<put-attribute name="body" value="/views/chapter/reject.jsp" />
+	</definition>
+
+
 </tiles-definitions>

@@ -50,6 +50,7 @@ public class SystemConfigurationController extends AbstractController {
 		String[] makers;
 		Map<String, String> welcomeMessage;
 		Map<String,String> breachNotification;
+
 		Boolean err;
 
 		try {
@@ -65,8 +66,10 @@ public class SystemConfigurationController extends AbstractController {
 			positiveWords = sysConfig.getPossitiveWords().split(",");
 			messagePriority = sysConfig.getMessagePriority().split(",");
 			welcomeMessage = sysConfig.getWelcomeMessage();
+
 			breachNotification=sysConfig.getBreachNotification();
 			makers=sysConfig.getMakers().split(",");
+
 
 			res = new ModelAndView("sysConfig/display");
 			res.addObject("sysConfig", sysConfig);
@@ -77,6 +80,7 @@ public class SystemConfigurationController extends AbstractController {
 			res.addObject("welcomeMessage", welcomeMessage);
 			res.addObject("breachNotification",breachNotification);
 			res.addObject("makers",makers);
+
 
 		} catch (IllegalArgumentException oops) {
 			res = new ModelAndView("misc/403");
@@ -130,7 +134,9 @@ public class SystemConfigurationController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(SystemConfiguration systemConfiguration,
 			@RequestParam("nameES") String nameES,
-			@RequestParam("nameEN") String nameEN,@RequestParam("nEs") String nEs,@RequestParam("nEn") String nEn,BindingResult binding) {
+			@RequestParam("nameEN") String nameEN,
+			@RequestParam("nEs") String nEs, @RequestParam("nEn") String nEn,
+			BindingResult binding) {
 		ModelAndView res;
 		String message = null;
 
@@ -140,8 +146,8 @@ public class SystemConfigurationController extends AbstractController {
 		} else {
 			try {
 				systemConfiguration = this.systemConfigurationService
-						.reconstruct(systemConfiguration, nameES, nameEN,nEs,nEn,
-								binding);
+						.reconstruct(systemConfiguration, nameES, nameEN, nEs,
+								nEn, binding);
 
 				this.systemConfigurationService.save(systemConfiguration);
 				res = new ModelAndView("redirect:display.do");

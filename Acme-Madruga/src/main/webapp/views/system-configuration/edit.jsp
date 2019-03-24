@@ -85,7 +85,7 @@
 			<spring:message code="wel.name.es" />
 		</p>
 		<input type="text" name="nameES" id="nameES" size="100%"
-			value="${sysConfig.welcomeMessage.get('Español')}"
+			value="${sysConfig.welcomeMessage.get('Espaï¿½ol')}"
 			placeholder="<spring:message code='sysconfig.edit.welcome.message.es' />"
 			required>
 
@@ -104,12 +104,12 @@
 		<br />
 		<br />
 
-		
+
 		<p>
 			<spring:message code="breachNotification.name.es" />
 		</p>
 		<input type="text" name="nEs" id="nEs" size="100%"
-			value="${sysConfig.breachNotification.get('Español')}">
+			value="${sysConfig.breachNotification.get('Espaï¿½ol')}">
 
 		<form:errors cssClass="error" path="breachNotification" />
 		<br />
@@ -123,7 +123,6 @@
 		<form:errors cssClass="error" path="breachNotification" />
 		<br />
 		<br />
- 
 		<acme:submit code="system.save" name="save" />&nbsp;
 		<acme:cancel code="system.cancel"
 			url="sysconfig/administrator/display.do" />

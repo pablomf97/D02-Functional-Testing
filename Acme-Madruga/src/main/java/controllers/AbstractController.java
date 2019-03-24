@@ -39,14 +39,14 @@ public class AbstractController {
 		String urlBanner = this.systemConfigurationService.findMyBanner();
 		return urlBanner;
 	}
-/*	@ModelAttribute("breachNotification")
+	@ModelAttribute("breachNotification")
 	public Map<String,String> getBreachNotification(Model model) {
 		Map<String,String> res=this.systemConfigurationService.findBreachNotification();
 		
 		return res;
 	}
 	
-*/
+
 	// Panic handler ----------------------------------------------------------
 
 	@ExceptionHandler(Throwable.class)

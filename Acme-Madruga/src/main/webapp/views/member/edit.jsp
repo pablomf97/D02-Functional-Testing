@@ -83,13 +83,20 @@
 		<br />
 	</security:authorize>
 
-	<acme:textbox code="actor.surname" path="surname" />
+
+	<form:label path="surname">
+		<spring:message code="actor.surname" />:
+		</form:label>
+	<form:input path="surname" value="${member.surname}" />
+	<form:errors cssClass="error" path="surname" />
 	<br>
 
-	<acme:textbox code="actor.name" path="name" />
+	<form:label path="name">
+		<spring:message code="actor.name" />:
+		</form:label>
+	<form:input path="name" value="${member.name}" />
+	<form:errors cssClass="error" path="name" />
 	<br>
-
-
 
 	<form:label path="middleName">
 		<spring:message code="actor.middlename" />:

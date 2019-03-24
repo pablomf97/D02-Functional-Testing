@@ -321,7 +321,7 @@ public class MarchController extends AbstractController {
 		
 		
 		if(this.actorService.checkAuthority(principal, "MEMBER")){
-			toApply = this.processionService.findPossibleProcessionsToMarchByMember(principal.getId());
+			toApply = this.processionService.findPossibleParadesToMarchByMember(principal.getId());
 			if(principal.getId() == march.getId()){
 				isPrincipal = true;
 			}

@@ -17,7 +17,6 @@
 				<spring:message code="message.recipient.userAccount" />:
 	</form:label>
 			<form:select path="recipient">
-				<form:option label="-----" value="0" />
 				<form:options items="${recipients}" itemLabel="userAccount.username"
 					itemValue="id" />
 			</form:select>
@@ -51,10 +50,6 @@
 			<jstl:if test="${mensaje.id == 0}">
 				<acme:submit code="message.send" name="save" />&nbsp;
   			</jstl:if>
-
-			<jstl:if test="${(mensaje.id == 0) && (broadcast)}">
-				<acme:submit code="message.broadcast" name="save" />&nbsp;
-			</jstl:if>
 
 			<acme:cancel code="message.cancel" url="messagebox/list.do" />
 			<br />

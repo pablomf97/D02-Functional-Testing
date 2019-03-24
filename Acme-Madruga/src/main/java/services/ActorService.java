@@ -94,7 +94,7 @@ public class ActorService {
 				.compile("(^(([a-z]|[0-9]){1,}[@]{1}([a-z]|[0-9]){1,}([.]{1}([a-z]|[0-9]){1,}){1,})$)|(^((([a-z]|[0-9]){1,}[ ]{1}){1,}<(([a-z]|[0-9]){1,}[@]{1}([a-z]|[0-9]){1,}([.]{1}([a-z]|[0-9]){1,}){1,})>)$)");
 		final Matcher matcher = pattern.matcher(email);
 		if (authority.equals("ADMININISTRATOR") && matcher.matches()) {
-			// TODO: faltaría comprobar si se intenta insertar un admin y que
+			// TODO: faltarï¿½a comprobar si se intenta insertar un admin y que
 			// compruebe su correo para su caso
 			final Pattern patternAdmin = Pattern
 					.compile("(^((([a-z]|[0-9]){1,}[@])$)|(^(([a-z]|[0-9]){1,}[ ]{1}){1,}<(([a-z]|[0-9]){1,}[@]>))$)");
@@ -186,16 +186,42 @@ public class ActorService {
 		result.remove(principal);
 		return result;
 	}
-	
+
 	public Actor findBySocialProfileId(int socialProfileId) {
-		Actor result = this.actorRepository.findBySocialProfileId(socialProfileId);
+		Actor result = this.actorRepository
+				.findBySocialProfileId(socialProfileId);
 		Assert.notNull(result);
-		
+
 		return result;
 	}
 	
-	public Member dataMember(){
-		return this.actorRepository.dataMember();
+
+	// Other business methods
+
+	public void ban(Actor a) {
+		Actor principal;
+
+		principal = this.findByPrincipal();
+		Assert.isTrue(this.checkAuthority(principal, "ADMINISTRATOR"));
+		Assert.notNull(a);
+		Assert.isTrue(!a.getUserAccount().getIsBanned());
+//		Assert.isTrue(a.getScore() < -0.5);
+
+		a.getUserAccount().setIsBanned(true);
+		a = this.actorRepository.save(a);
+	}
+
+	public void unban(Actor a) {
+		Actor principal;
+
+		principal = this.findByPrincipal();
+		Assert.isTrue(this.checkAuthority(principal, "ADMINISTRATOR"));
+		Assert.notNull(principal);
+		Assert.notNull(a);
+		Assert.isTrue(a.getUserAccount().getIsBanned());
+
+		a.getUserAccount().setIsBanned(false);
+		a = this.actorRepository.save(a);
 	}
 
 }

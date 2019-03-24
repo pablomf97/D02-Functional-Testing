@@ -28,13 +28,13 @@
 -->
 </style>
 
-	<!-- Listing grid -->
+<!-- Listing grid -->
 
-	<display:table pagesize="5" class="displaytag" name="marchs"
-		requestURI="march/member,brotherhood/list.do" id="row">
+<display:table pagesize="5" class="displaytag" name="marchs"
+	requestURI="march/member,brotherhood/list.do" id="row">
 
 	<security:authorize access="hasRole('MEMBER')">
-	
+
 		<jstl:choose>
 			<jstl:when test="${row.status == 'APPROVED'}">
 				<jstl:set var="bgcolor" value="tableColorGreen" />
@@ -52,56 +52,58 @@
 				<jstl:set var="bgcolor" value="tableColorDefault" />
 			</jstl:otherwise>
 		</jstl:choose>
-			
+
 		<!-- Attributes-->
-		
-		<display:column titleKey="march.member" sortable="true" >
-		
+
+		<display:column titleKey="march.member" sortable="true">
+
 			<jstl:out value="${row.member.name}"></jstl:out>
 		</display:column>
-				
-		<display:column titleKey="march.procession" sortable="true" >
-			<a href="procession/display.do?processionId=${row.procession.id}">
-				<jstl:out value="${row.procession.title }"></jstl:out>
+
+		<display:column titleKey="march." sortable="true">
+			<a href="/display.do?Id=${row..id}"> <jstl:out
+					value="${row.parade.title }"></jstl:out>
 			</a>
 		</display:column>
-				
-		<display:column titleKey="march.status" sortable="true" class="${bgcolor}">
+
+		<display:column titleKey="march.status" sortable="true"
+			class="${bgcolor}">
 			<jstl:out value="${row.status }"></jstl:out>
 		</display:column>
-		
+
 		<jstl:if test="${status == 'ACCEPTED' }">
-				
-		<display:column titleKey="march.row" sortable="true" >
-			<jstl:out value="${row.row }"></jstl:out>
-		</display:column>
-				
-		<display:column titleKey="march.column" sortable="true" >
-			<jstl:out value="${row.col }"></jstl:out>
-		</display:column>
-		
+
+			<display:column titleKey="march.row" sortable="true">
+				<jstl:out value="${row.row }"></jstl:out>
+			</display:column>
+
+			<display:column titleKey="march.column" sortable="true">
+				<jstl:out value="${row.col }"></jstl:out>
+			</display:column>
+
 		</jstl:if>
-	
+
 		<!-- Action links -->
-	
+
 		<display:column>
 			<a href="march/display.do?marchId=${row.id}"> <spring:message
-						code="march.display" />
-			</a>		
+					code="march.display" />
+			</a>
 		</display:column>
-		
+
 		<display:column>
-				<jstl:if test="${row.status == 'PENDING'}">
-					<a id="delete" href="march/delete.do?marchId=${row.id}"> <spring:message code="march.delete" /></a>
-				</jstl:if>
+			<jstl:if test="${row.status == 'PENDING'}">
+				<a id="delete" href="march/delete.do?marchId=${row.id}"> <spring:message
+						code="march.delete" /></a>
+			</jstl:if>
 
 		</display:column>
-		
+
 	</security:authorize>
-	
+
 	<security:authorize access="hasRole('BROTHERHOOD')">
-	
-	<jstl:choose>
+
+		<jstl:choose>
 			<jstl:when test="${row.status == 'APPROVED'}">
 				<jstl:set var="bgcolor" value="tableColorGreen" />
 			</jstl:when>
@@ -118,61 +120,61 @@
 				<jstl:set var="bgcolor" value="tableColorDefault" />
 			</jstl:otherwise>
 		</jstl:choose>
-			
+
 		<!-- Attributes-->
-		
-		<display:column titleKey="march.member" sortable="true" >
+
+		<display:column titleKey="march.member" sortable="true">
 			<jstl:out value="${row.member.name}"></jstl:out>
 		</display:column>
-				
-		<display:column titleKey="march.procession" sortable="true" >
-			<jstl:out value="${row.procession.title }"></jstl:out>
+
+		<display:column titleKey="march.parade" sortable="true">
+			<jstl:out value="${row.parade.title }"></jstl:out>
 		</display:column>
-				
-		<display:column titleKey="march.status" sortable="true" class="${bgcolor}">
+
+		<display:column titleKey="march.status" sortable="true"
+			class="${bgcolor}">
 			<jstl:out value="${row.status }"></jstl:out>
 		</display:column>
-		
+
 		<jstl:if test="${status == 'ACCEPTED' }">
-				
-		<display:column titleKey="march.row" sortable="true" >
-			<jstl:out value="${row.row }"></jstl:out>
-		</display:column>
-				
-		<display:column titleKey="march.column" sortable="true" >
-			<jstl:out value="${row.col }"></jstl:out>
-		</display:column>
-		
+
+			<display:column titleKey="march.row" sortable="true">
+				<jstl:out value="${row.row }"></jstl:out>
+			</display:column>
+
+			<display:column titleKey="march.column" sortable="true">
+				<jstl:out value="${row.col }"></jstl:out>
+			</display:column>
+
 		</jstl:if>
-	
+
 		<!-- Action links -->
-	
+
 		<display:column>
 			<a href="march/display.do?marchId=${row.id}"> <spring:message
-						code="march.display" />
-			</a>		
+					code="march.display" />
+			</a>
 		</display:column>
-		
+
 		<display:column>
 			<jstl:if test="${row.status == 'PENDING'}">
-				<a href="march/accept.do?marchId=${row.id}">
-					<spring:message code="march.accept" />
+				<a href="march/accept.do?marchId=${row.id}"> <spring:message
+						code="march.accept" />
 				</a>
 			</jstl:if>
 		</display:column>
-			
+
 		<display:column>
 			<jstl:if test="${row.status == 'PENDING'}">
-				<a href="march/rejectv.do?marchId=${row.id}">
-					<spring:message code="march.reject" />
+				<a href="march/rejectv.do?marchId=${row.id}"> <spring:message
+						code="march.reject" />
 				</a>
-			</jstl:if>			
+			</jstl:if>
 		</display:column>
 	</security:authorize>
-	</display:table>
-	<security:authorize access="hasRole('MEMBER')">
+</display:table>
+<security:authorize access="hasRole('MEMBER')">
 	<p>
-		<a href="march/create.do"><spring:message
-				code="march.create" /></a>
+		<a href="march/create.do"><spring:message code="march.create" /></a>
 	</p>
 </security:authorize>

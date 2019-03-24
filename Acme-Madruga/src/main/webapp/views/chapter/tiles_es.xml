@@ -25,4 +25,14 @@
 		<put-attribute name="body" value="/views/chapter/list.jsp" />
 	</definition>
 
+	<definition name="chapter/listparade" extends="master.page">
+		<put-attribute name="title" value="Chapter: lista de desfiles" />
+		<put-attribute name="body" value="/views/chapter/listparade.jsp" />
+	</definition>
+
+	<definition name="parade/reject" extends="master.page">
+		<put-attribute name="title" value="Chapter: rechazar desfile" />
+		<put-attribute name="body" value="/views/chapter/reject.jsp" />
+	</definition>
+
 </tiles-definitions>

@@ -149,13 +149,13 @@ public class DashboardAdministratorController extends AbstractController {
 		ratioRejectedRequests = this.marchService.ratioRejectedRequests();
 		ratioPendingRequests = this.marchService.ratioPendingRequests();
 		ratioApprovedRequestsInAProcession = this.marchService
-				.ratioApprovedInAProcession();
+				.ratioApprovedInAParade();
 		ratioRejectedInAProcession = this.marchService
-				.ratioRejectedInAProcession();
+				.ratioRejectedInAParade();
 		ratioPendingInAProcession = this.marchService
-				.ratioPendingInAProcession();
+				.ratioPendingInAParade();
 
-		earlyProcessions = this.processionService.findEarlyProcessions();
+		earlyProcessions = this.processionService.findEarlyParades();
 
 		// histogram = this.positionService.histogram();
 
