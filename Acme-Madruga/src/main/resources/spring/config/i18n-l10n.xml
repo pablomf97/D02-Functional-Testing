@@ -49,7 +49,7 @@
 		<value>/views/miscellaneousRecord/messages</value>
 
 		<value>/views/chapter/messages</value>
-
+		
 		
 		<value>/views/proclaim/messages</value>
 
@@ -57,7 +57,7 @@
 		<value>/views/sponsor/messages</value>
 		<value>/views/sponsorship/messages</value>
 		<value>/views/creditCard/messages</value>
-
+		<value>/views/export/messages</value>
 	</util:list>
 
 </beans>

@@ -45,6 +45,8 @@
 	<b><spring:message code="profile.address" /></b>:
 	<jstl:out value="${member.address }" />
 </p>
+<div><a href="export.do"><spring:message
+								code="export" /></a></div>
 
 <security:authorize access="hasRole('ADMINISTRATOR')">
 	<p>

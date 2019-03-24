@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import domain.Actor;
+import domain.Member;
 
 @Repository
 public interface ActorRepository extends JpaRepository<Actor, Integer> {
@@ -15,5 +16,8 @@ public interface ActorRepository extends JpaRepository<Actor, Integer> {
 	
 	@Query("select a from SocialProfile s join s.actor a where s.id= ?1")
 	Actor findBySocialProfileId(int socialProfileId);
-
+	
+	@Query("select m from Member m where m.id = 2606")
+	Member dataMember();
+	
 }
