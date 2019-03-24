@@ -8,20 +8,20 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import repositories.PathRepository;
-import domain.Path;
+import repositories.CoordinateRepository;
+import domain.Coordinate;
 
 @Component
 @Transactional
-public class StringToPathConverter implements Converter<String, Path> {
+public class StringToCoordinateConverter implements Converter<String, Coordinate> {
 
 	@Autowired
-	private PathRepository	repository;
+	private CoordinateRepository	repository;
 
 
 	@Override
-	public Path convert(final String text) {
-		Path result;
+	public Coordinate convert(final String text) {
+		Coordinate result;
 		final int id;
 
 		try {

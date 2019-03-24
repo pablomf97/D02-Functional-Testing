@@ -58,6 +58,14 @@
 
 		<bean class="converters.StringToChapterConverter" />
 		<bean class="converters.ChapterToStringConverter" />
+		
+		<bean class="converters.StringToSegmentConverter" />
+		<bean class="converters.SegmentToStringConverter" />
+		
+		<bean class="converters.StringToCoordinateConverter" />
+		<bean class="converters.CoordinateToStringConverter" />
+
+		
 
 	</util:list>
 

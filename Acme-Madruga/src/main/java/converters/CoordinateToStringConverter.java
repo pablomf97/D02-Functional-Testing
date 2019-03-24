@@ -6,20 +6,20 @@ import javax.transaction.Transactional;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import domain.Path;
+import domain.Coordinate;
 
 @Component
 @Transactional
-public class PathToStringConverter implements Converter<Path, String> {
+public class CoordinateToStringConverter implements Converter<Coordinate, String> {
 
 	@Override
-	public String convert(final Path entity) {
+	public String convert(final Coordinate coordinate) {
 		String result;
 
-		if (entity == null)
+		if (coordinate == null)
 			result = null;
 		else
-			result = String.valueOf(entity.getId());
+			result = String.valueOf(coordinate.getId());
 		return result;
 	}
 

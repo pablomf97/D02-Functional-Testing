@@ -40,6 +40,7 @@
 				code="procession.display" />
 		</a>
 	</display:column>
+	
 
 	<security:authorize access="hasRole('BROTHERHOOD')">
 		<display:column>
@@ -51,6 +52,12 @@
 
 		</display:column>
 	</security:authorize>
+	
+		<display:column titleKey="parade.path" >
+		<a href="segment/list.do?paradeId=${row.id}"> <spring:message
+				code="procession.display" />
+		</a>
+	</display:column>
 
 </display:table>
 <security:authorize access="hasRole('BROTHERHOOD')">

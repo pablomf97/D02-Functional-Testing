@@ -1204,11 +1204,6 @@ your processions." />
 		</property>
 		<property name="status" value="ACCEPTED"></property>
 		<property name="reason" value=""></property>
-		<property name="path">
-
-			<null />
-
-		</property>
 	</bean>
 
 
@@ -1234,11 +1229,6 @@ your processions." />
 
 		<property name="status" value="REJECTED"></property>
 		<property name="reason" value="Bad guy"></property>
-		<property name="path">
-
-			<null />
-
-		</property>
 	</bean>
 
 
@@ -1562,7 +1552,82 @@ your processions." />
 		</property>
 
 	</bean>
+	
+	<!-- LEVEL B ACME-PARADE -->	
+	<!-- Segment -->
 
+	<bean id="segment1" class="domain.Segment">
+		<property name="expectedTimeOrigin" value="20/05/2020 08:00" />
+		<property name="expectedTimeDestination" value="20/05/2020 10:00" />
+		<property name="isEditable" value="false"/>
+		<property name="origin">
+			<ref bean="coordinate1" />
+		</property>
+		<property name="destination">
+			<ref bean="coordinate2" />
+		</property>
+		<property name="parade">
+			<ref bean="parade1" />
+		</property>
+	</bean>
+	
+	<bean id="segment2" class="domain.Segment">
+		<property name="expectedTimeOrigin" value="20/05/2020 10:00" />
+		<property name="expectedTimeDestination" value="20/05/2020 12:00" />
+		<property name="isEditable" value="true"/>
+		<property name="origin">
+			<ref bean="coordinate2" />
+		</property>
+		<property name="destination">
+			<ref bean="coordinate3" />
+		</property>
+		<property name="parade">
+			<ref bean="parade1" />
+		</property>
+	</bean>
+
+	<bean id="segment3" class="domain.Segment">
+		<property name="expectedTimeOrigin" value="21/05/2020 10:00" />
+		<property name="expectedTimeDestination" value="20/05/2020 12:00" />
+		<property name="isEditable" value="true"/>
+		<property name="origin">
+			<ref bean="coordinate4" />
+		</property>
+		<property name="destination">
+			<ref bean="coordinate5" />
+		</property>
+		<property name="parade">
+			<ref bean="parade2" />
+		</property>
+	</bean>
+	
+	
+	<!-- Coordinate -->
+
+	<bean id="coordinate1" class="domain.Coordinate">
+		<property name="latitude" value="45.2" />
+		<property name="longitude" value="105.6" />
+	</bean>
+	
+	<bean id="coordinate2" class="domain.Coordinate">
+		<property name="latitude" value="21.2" />
+		<property name="longitude" value="-11.6" />
+	</bean>
+	
+	<bean id="coordinate3" class="domain.Coordinate">
+		<property name="latitude" value="45.2" />
+		<property name="longitude" value="0.0" />
+	</bean>
+	
+	<bean id="coordinate4" class="domain.Coordinate">
+		<property name="latitude" value="80.0" />
+		<property name="longitude" value="31.7" />
+	</bean>
+	
+	<bean id="coordinate5" class="domain.Coordinate">
+		<property name="latitude" value="-71.9" />
+		<property name="longitude" value="105.6" />
+	</bean>
 
 
 </beans>

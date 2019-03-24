@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -44,7 +43,6 @@ public class Parade extends DomainEntity {
 	//new atributte
 	private String					status;
 	private String					reason;
-	private Path					path;
 
 
 	/* Getters&Setters */
@@ -145,13 +143,5 @@ public class Parade extends DomainEntity {
 		this.reason = reason;
 	}
 
-	@Valid
-	@OneToOne(optional = true)
-	public Path getPath() {
-		return this.path;
-	}
-
-	public void setPath(final Path path) {
-		this.path = path;
-	}
+	
 }

@@ -38,6 +38,7 @@
 		<value>/views/messagebox/tiles.xml</value>
 		<value>/views/message/tiles.xml</value>
 		<value>/views/socialProfile/tiles.xml</value>
+		<value>/views/segment/tiles.xml</value>
 
 		<value>/views/inceptionRecord/tiles.xml</value>
 		
