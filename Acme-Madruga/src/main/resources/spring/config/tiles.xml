@@ -54,7 +54,7 @@
 		<value>/views/sponsor/tiles.xml</value>
 		<value>/views/sponsorship/tiles.xml</value>
 		<value>/views/creditCard/tiles.xml</value>
-		
+		<value>/views/export/tiles.xml</value>
 		
 		<value>/views/proclaim/tiles.xml</value>
 		

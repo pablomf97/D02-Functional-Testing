@@ -1802,26 +1802,25 @@ your processions." />
 		<property name="parade" ref="parade2" />
 		<property name="sponsor" ref="sponsor2" />
 	</bean>
-<!-- 
-	<bean id="sponsorship3" class="domain.Sponsorship">
+
+ 	<bean id="sponsorship3" class="domain.Sponsorship">
 		<property name="banner"
 			value="http://2.bp.blogspot.com/-8TFZxUDrFCg/UEx8iJXnZPI/AAAAAAAAARw/RgR7KVxC42g/s1600/Absolutely-Random-banner.jpg" />
 		<property name="target" value="http://www.random.es" />
 		<property name="isDeactivated" value="false" />
 		<property name="creditCard" ref="creditCard3" />
-		<property name="parade" ref="parade1" />
-		<property name="sponsor" ref="sponsor2" />
+		<property name="parade" ref="parade2" />
+		<property name="sponsor" ref="sponsor1" />
 	</bean>
 	
 	<bean id="sponsorship4" class="domain.Sponsorship">
 		<property name="banner"
 			value="http://2.bp.blogspot.com/-8TFZxUDrFCg/UEx8iJXnZPI/AAAAAAAAARw/RgR7KVxC42g/s1600/Absolutely-Random-banner.jpg" />
 		<property name="target" value="http://www.random.es" />
-		<property name="isDeactivated" value="false" />
+		<property name="isDeactivated" value="true" />
 		<property name="creditCard" ref="creditCard4" />
-		<property name="parade" ref="parade2" />
-		<property name="sponsor" ref="sponsor1" />
-	</bean> -->
+		<property name="parade" ref="parade1" />
+		<property name="sponsor" ref="sponsor2" />
+	</bean> 
 	
-
 </beans>

@@ -87,13 +87,6 @@ public class CreditCardService {
 		boolean expired = expiry.before(new Date());
 		Assert.isTrue(expired==false,"commit.error");
 		
-		//Calendar expiration;
-		
-		// Comprobacion de fecha
-	//	expiration = Calendar.getInstance();
-		//expiration.set(creditCard.getExpirationYear(), creditCard.getExpirationMonth() + 1, 1);
-		//Assert.isTrue(expiration.getTime().before(LocalDate.now().toDate()));
-
 		// Comprobacion de que el tipo de tarjeta es uno de los almacenados en systemConf
 		Assert.isTrue(this.utilityService.getCreditCardMakes().contains(creditCard.getMake()));
 		Assert.notNull(creditCard.getCVV());
@@ -104,7 +97,7 @@ public class CreditCardService {
 		Assert.notNull(creditCard.getMake());
 		res = this.creditCardRepository.save(creditCard);
 		Assert.notNull(res);
-	//COMPROBAR QUE UN SPONSOR NO PUEDE VER UNA CREDITCARD Q NO LE PERTENECE
+		//COMPROBAR QUE UN SPONSOR NO PUEDE VER UNA CREDITCARD Q NO LE PERTENECE
 
 		return res;
 		

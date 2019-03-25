@@ -1,5 +1,9 @@
 package services;
 
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,11 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+
+
+
 import repositories.ActorRepository;
 import security.LoginService;
 import security.UserAccount;
 import security.UserAccountRepository;
 import domain.Actor;
+import domain.Member;
 import forms.ActorForm;
 
 @Service
@@ -30,6 +38,7 @@ public class ActorService {
 	@Autowired
 	private SystemConfigurationService systemConfigurationService;
 
+		
 	public ActorForm createForm() {
 
 		final ActorForm res = new ActorForm();
@@ -185,6 +194,7 @@ public class ActorService {
 
 		return result;
 	}
+	
 
 	// Other business methods
 

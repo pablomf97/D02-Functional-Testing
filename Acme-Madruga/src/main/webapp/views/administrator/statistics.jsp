@@ -19,7 +19,48 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 <security:authorize access="hasRole('ADMINISTRATOR')">
+	
+	
+	
+	<table class="displayStyle" style="width: 50%">
+			<tr>
+				<th colspan="2"><spring:message
+						code="administrator.sponsorship.statistics" /></th>
+			</tr>
+			<tr>
+				<td><spring:message code="administrator.sponsorship.ratio" /></td>
+				<td style="text-align: right">${ratioActiveSponsorship}</td>
+			</tr>
 
+				<tr>
+				<td><spring:message code="administrator.sponsorship.max" /></td>
+				<td style="text-align: right">${maxActiveSponsorshipsPerSponsor}</td>
+			</tr>
+							<tr>
+				<td><spring:message code="administrator.sponsorship.min" /></td>
+				<td style="text-align: right">${minActiveSponsorshipsPerSponsor}</td>
+			</tr>
+										<tr>
+				<td><spring:message code="administrator.sponsorship.avg" /></td>
+				<td style="text-align: right">${avgActiveSponsorshipsPerSponsor}</td>
+			</tr>
+										<tr>
+				<td><spring:message code="administrator.sponsorship.stedev" /></td>
+				<td style="text-align: right">${SteDevActiveSponsorshipsPerSponsor}</td>
+			</tr>
+										<tr>
+				<td><spring:message code="administrator.sponsorship.top5" /></td>
+				<jstl:forEach var="sponsor" items="${top5SponsorsPerActiveSponsorships}">
+					<td style="text-align: right"><jstl:out
+							value="${sponsor.userAccount.username}" /></td>
+					<br />
+				</jstl:forEach>
+
+			</tr>
+
+		</table>
+	
+	
 	<jstl:if test="${not empty bros}">
 		<table class="displayStyle" style="width: 50%">
 			<tr>

@@ -17,12 +17,14 @@ import services.MarchService;
 import services.MemberService;
 import services.ParadeService;
 import services.PositionService;
+import services.SponsorshipService;
 import domain.Brotherhood;
 import domain.Finder;
 import domain.March;
 import domain.Member;
 import domain.Parade;
 import domain.Position;
+import domain.Sponsor;
 
 @Controller
 @RequestMapping(value = "statistics/administrator")
@@ -53,6 +55,9 @@ public class DashboardAdministratorController extends AbstractController {
 
 	@Autowired
 	private ChapterService chapterService;
+	
+	@Autowired
+	private SponsorshipService sponsorshipService;
 
 	// Display
 
@@ -105,7 +110,15 @@ public class DashboardAdministratorController extends AbstractController {
 		Double ratioBrotherhoodsPerArea;
 		Double countBrotherhoodsPerArea;
 		Double stdevBrotherhoodPerArea;
-
+		
+		Double ratioActiveSponsorship=this.sponsorshipService.ratioActiveSponsorship();
+		Integer maxActiveSponsorshipsPerSponsor=this.sponsorshipService.maxActiveSponsorshipsPerSponsor();
+		Integer minActiveSponsorshipsPerSponsor=this.sponsorshipService.minActiveSponsorshipsPerSponsor();
+		Double avgActiveSponsorshipsPerSponsor=this.sponsorshipService.avgActiveSponsorshipsPerSponsor();
+		Double SteDevActiveSponsorshipsPerSponsor=this.sponsorshipService.SteDevActiveSponsorshipsPerSponsor();
+		Collection<Sponsor> top5SponsorsPerActiveSponsorships=this.sponsorshipService.top5SponsorsPerActiveSponsorships();
+		
+		
 		String language;
 		language = locale.getLanguage();
 
@@ -160,7 +173,14 @@ public class DashboardAdministratorController extends AbstractController {
 				.getLargestBrotherhood();
 
 		result = new ModelAndView("administrator/statistics");
-
+		
+		result.addObject("ratioActiveSponsorship",ratioActiveSponsorship);
+		result.addObject("maxActiveSponsorshipsPerSponsor",maxActiveSponsorshipsPerSponsor);
+		result.addObject("minActiveSponsorshipsPerSponsor",minActiveSponsorshipsPerSponsor);
+		result.addObject("avgActiveSponsorshipsPerSponsor",avgActiveSponsorshipsPerSponsor);
+		result.addObject("SteDevActiveSponsorshipsPerSponsor",SteDevActiveSponsorshipsPerSponsor);
+		result.addObject("top5SponsorsPerActiveSponsorships",top5SponsorsPerActiveSponsorships);
+		
 		result.addObject("getLargestBrotherhood", getLargestBrotherhood);
 		result.addObject("largerBrosthanAvg", largerBrosthanAvg);
 		result.addObject("maxRecordsPerHistory", maxRecordsPerHistory);
