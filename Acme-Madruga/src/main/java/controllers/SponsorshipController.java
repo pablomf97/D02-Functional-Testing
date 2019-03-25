@@ -63,13 +63,19 @@ public class SponsorshipController extends AbstractController{
 	public ModelAndView display(@RequestParam final int sponsorshipId){
 		final ModelAndView result;
 		Sponsorship sponsorship;
-
+		boolean possible = false;
+		Sponsor principal = (Sponsor) this.actorService.findByPrincipal();
+		
 		sponsorship = this.sponsorshipService.findOne(sponsorshipId);
 		Assert.notNull(sponsorship);
-
+		
+		if(sponsorship.getSponsor().getId() == principal.getId()){
+			possible = true;
+		}
+		
 		result = new ModelAndView("sponsorship/display");
 		result.addObject("sponsorship", sponsorship);
-
+		result.addObject("possible", possible);
 		return result;
 	}
 
@@ -112,19 +118,17 @@ public class SponsorshipController extends AbstractController{
 	@RequestMapping(value="/edit", method =RequestMethod.POST, params="delete")
 	public ModelAndView delete(final Sponsorship sponsorshipParam, final BindingResult binding){
 		ModelAndView result;
-		Sponsorship sponsorship;
-
-		sponsorship = this.sponsorshipService.reconstruct(sponsorshipParam, binding);
+		
 
 		if(binding.hasErrors())
-			result = this.createEditModelAndView(sponsorship);
+			result = this.createEditModelAndView(sponsorshipParam);
 		else
 			try{
-				this.sponsorshipService.delete(sponsorship);
+				this.sponsorshipService.delete(sponsorshipParam,binding);
 				result = new ModelAndView("redirect:/sponsorship/list.do");
 
 			}catch(Throwable oops){
-				result = this.createEditModelAndView(sponsorship, "sponsorship.commit.error");
+				result = this.createEditModelAndView(sponsorshipParam, "sponsorship.commit.error");
 			}
 
 		return result;
@@ -137,14 +141,24 @@ public class SponsorshipController extends AbstractController{
 		ModelAndView result;
 		Collection<Sponsorship> sponsorships;
 		Sponsor principal;
-
+		boolean possible = false;
+		
 		principal = (Sponsor) this.actorService.findByPrincipal();
 
 		sponsorships = this.sponsorshipService.getSponsorshipBySponsor(principal.getId());
-
+		
+		for(Sponsorship s  : sponsorships){
+			if(s.getSponsor().getId() == principal.getId()){
+				possible = true;
+			}else{
+				possible = false;
+			}
+				
+		}
+		
 		result = new ModelAndView("sponsorship/list");
 		result.addObject("sponsorships", sponsorships);
-
+		result.addObject("possible", possible);
 		return result;
 	}
 

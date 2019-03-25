@@ -67,10 +67,17 @@ public class SponsorshipService {
 		return saved;
 	}
 
-	public void delete(Sponsorship sponsorship){
-
-		sponsorship.setIsDeactivated(true);
-		sponsorship.setBanner("Eliminated sponsorship");
+	public void delete(Sponsorship sponsorship, BindingResult binding){
+		
+		Assert.isTrue(sponsorship.getId() != 0);
+		
+		Sponsorship sponsorshipBD = this.sponsorshipRepository.findOne(sponsorship.getId());
+		
+		
+		sponsorshipBD.setIsDeactivated(true);
+		sponsorshipBD.setTarget("Eliminated sponsorship");
+		
+		this.validator.validate(sponsorshipBD, binding);
 
 	}
 
@@ -85,10 +92,11 @@ public class SponsorshipService {
 		}else{
 			Sponsorship sponsorshipBD = this.findOne(sponsorship.getId());
 			
-			sponsorshipBD.setBanner(sponsorship.getBanner());
-			sponsorshipBD.setTarget(sponsorship.getTarget());
-			
 			result = sponsorshipBD;
+			
+			result.setBanner(sponsorship.getBanner());
+			result.setTarget(sponsorship.getTarget());	
+		
 		}
 		
 		this.validator.validate(result, binding);

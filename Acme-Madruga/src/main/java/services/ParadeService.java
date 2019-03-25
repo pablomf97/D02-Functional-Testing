@@ -205,7 +205,7 @@ public class ParadeService {
 		return result;
 	}
 
-	private Collection<Parade> findParadesAlreadyApplied(int memberId) {
+	public Collection<Parade> findParadesAlreadyApplied(int memberId) {
 		Collection<Parade> result;
 
 		result = this.paradeRepository.findParadesAlreadyApplied(memberId);
@@ -242,7 +242,7 @@ public class ParadeService {
 	}
 
 
-	private Collection<Parade> findFinalParades() {
+	public Collection<Parade> findFinalParades() {
 
 		Collection<Parade> result;
 
@@ -304,7 +304,7 @@ public class ParadeService {
 		return rowColumn;
 	}
 
-	private Collection<Parade> findFinalParadeByBrotherhood(int brotherhoodId) {
+	public Collection<Parade> findFinalParadeByBrotherhood(int brotherhoodId) {
 		Collection<Parade> result;
 
 		result = this.paradeRepository

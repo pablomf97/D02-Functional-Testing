@@ -114,7 +114,7 @@ public class ParadeController extends AbstractController {
 				Collection<Parade> toApply;
 
 				parades = this.paradeService.findAcceptedParadesByMemberId(principal.getId());
-				toApply = this.paradeService.paradeToApply(principal.getId());
+				toApply = this.paradeService.paradesToApply(principal.getId());
 
 				final String requestURI = "parade/member,brotherhood/list.do?memberId=" + principal.getId();
 				result = new ModelAndView("parade/list");
@@ -402,7 +402,7 @@ public class ParadeController extends AbstractController {
 		Collection<Brotherhood> brotherhoods = this.brotherhoodService.findBrotherhoodsByZone(zone.getId());
 		
 		for(Brotherhood b: brotherhoods){
-			parades.addAll(this.processionService.findProcessionsByBrotherhoodId(b.getId()));
+			parades.addAll(this.paradeService.findParadesByBrotherhoodId(b.getId()));
 		}
 		
 		result = new ModelAndView("procession/listSimple");

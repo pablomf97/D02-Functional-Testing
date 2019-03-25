@@ -16,7 +16,7 @@
        
 <tiles-definitions>
 	<definition name="sponsorship/list" extends="master.page">	
-		<put-attribute name="title" value="Perfiles sociales" />
+		<put-attribute name="title" value="List of sponsorships" />
 		<put-attribute name="body" value="/views/sponsorship/list.jsp" />
 	</definition>
 	

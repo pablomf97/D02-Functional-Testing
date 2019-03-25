@@ -155,7 +155,7 @@
 
 		</security:authorize>
 		<security:authorize access="hasRole('SPONSOR')">
-		
+
 			<li><a class="fNiv"><spring:message
 						code="master.page.sponsor.creditCard" /></a>
 				<ul>
@@ -165,8 +165,14 @@
 					<li><a href="creditCard/create.do"><spring:message
 								code="master.page.creditCard.new" /></a></li>
 				</ul></li>
-		
-		
+
+			<li><a class="fNiv"><spring:message
+						code="master.page.sponsor.sponsorships" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="sponsorship/list.do"><spring:message
+								code="master.page.sponsorships.list" /></a></li></ul></li>
+
 		</security:authorize>
 
 		<security:authorize access="isAnonymous()">
