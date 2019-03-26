@@ -82,7 +82,7 @@ public class SegmentController extends AbstractController {
 					.findAllSegmentsByParadeId(paradeId);
 
 		} catch (Throwable oops) {
-			requestURI = "procession/display.do?processionId=" + paradeId;
+			requestURI = "parade/display.do?processionId=" + paradeId;
 		}
 		result = new ModelAndView("segment/list");
 		result.addObject("requestURI", requestURI);
@@ -115,7 +115,7 @@ public class SegmentController extends AbstractController {
 			result = new ModelAndView("misc/403");
 		} catch (Throwable oopsie) {
 
-			result = new ModelAndView("redirect:/procession/member,brotherhood/list.do");
+			result = new ModelAndView("redirect:/parade/member,brotherhood/list.do");
 			error = true;
 
 			result.addObject("oopsie", oopsie);
@@ -144,7 +144,7 @@ public class SegmentController extends AbstractController {
 		} catch (IllegalArgumentException oops) {
 			result = new ModelAndView("misc/403");
 		} catch (Throwable oopsie) {
-			result = new ModelAndView("redirect:/procession/member,brotherhood/list.do");
+			result = new ModelAndView("redirect:/parade/member,brotherhood/list.do");
 		}
 
 		return result;
@@ -177,12 +177,13 @@ public class SegmentController extends AbstractController {
 		ModelAndView result;
 
 		segment = this.segmentService.reconstruct(segment, binding);
+		int paradeId = segment.getParade().getId();
 		try {
 
 			this.segmentService.delete(segment);
 
 			result = new ModelAndView("redirect:/segment/list.do?paradeId="
-					+ segment.getParade().getId());
+					+ paradeId);
 		} catch (IllegalArgumentException oops) {
 			result = new ModelAndView("misc/403");
 		} catch (final Throwable oops) {
