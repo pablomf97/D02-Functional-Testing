@@ -16,7 +16,7 @@
 			<fieldset>
 			<br>
 			<form:hidden path="id" />
-			<form:hidden path="parade" value="${par}"/>
+			<input type="hidden" name="paradeId" value="${ par.id }"/>
 
 			<acme:textbox code="segment.expectedTimeOrigin" path="expectedTimeOrigin"/><br>
 			

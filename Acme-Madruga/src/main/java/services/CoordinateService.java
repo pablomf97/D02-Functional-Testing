@@ -1,6 +1,7 @@
 package services;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -70,7 +71,8 @@ public class CoordinateService {
 
 		Assert.notNull(coordinate.getLatitude(), "coordinate.NotEmpty");
 		Assert.notNull(coordinate.getLongitude(), "coordinate.NotEmpty");
-		result = this.coordinateRepository.saveAndFlush(coordinate);
+		result = this.coordinateRepository.save(coordinate);
+		this.coordinateRepository.flush();
 		Assert.notNull(result);
 
 		return result;
@@ -103,5 +105,26 @@ public class CoordinateService {
 	}
 
 	// // Other business methods
+	
+	public List<Coordinate> saveAll(final Collection<Coordinate> coordinates) {
+		List<Coordinate> result;
+		Actor principal;
+
+		Assert.notNull(coordinates);
+
+		principal = this.actorService.findByPrincipal();
+		Assert.notNull(principal);
+		for(Coordinate coordinate : coordinates) {
+			Assert.notNull(coordinate.getLatitude(), "coordinate.NotEmpty");
+			Assert.notNull(coordinate.getLongitude(), "coordinate.NotEmpty");
+		}
+		
+		result = this.coordinateRepository.save(coordinates);
+		this.coordinateRepository.flush();
+		Assert.notNull(result);
+
+		return result;
+
+	}
 
 }

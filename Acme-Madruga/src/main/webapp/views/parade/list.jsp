@@ -63,6 +63,12 @@
 		</display:column>
 
 	</security:authorize>
+	
+	<display:column titleKey="parade.path" >
+		<a href="segment/list.do?paradeId=${row.id}"> <spring:message
+				code="parade.display" />
+		</a>
+	</display:column>
 
 	<security:authorize access="hasRole('MEMBER')">
 
