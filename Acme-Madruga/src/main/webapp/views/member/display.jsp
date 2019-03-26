@@ -56,7 +56,9 @@
 
 			</display:table></td>
 </table>
-
+<div><a href="member/export.do"><spring:message
+								code="export" /></a></div>
+								
 <security:authorize access="hasRole('ADMINISTRATOR')">
 	<p>
 		<b><spring:message code="profile.score" /></b>:

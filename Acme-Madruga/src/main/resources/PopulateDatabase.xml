@@ -1252,8 +1252,8 @@ your processions." />
 
 		<property name="status" value="SUBMITTED"></property>
 		<property name="reason" value="Es un rojed"></property>
-
 	</bean>
+	
 		<bean id="parade4" class="domain.Parade">
 		<property name="ticker" value="190519-XVRTY" />
 		<property name="title" value="Que no te engañen" />
@@ -1276,7 +1276,6 @@ your processions." />
 
 		<property name="status" value="ACCEPTED"></property>
 		<property name="reason" value="Arriba españa"></property>
-
 	</bean>
 	
 	<bean id="parade5" class="domain.Parade">
@@ -1301,7 +1300,6 @@ your processions." />
 
 		<property name="status" value="REJECTED"></property>
 		<property name="reason" value="No me gusta"></property>
-
 	</bean>
 	
 	<bean id="parade6" class="domain.Parade">
@@ -1326,7 +1324,6 @@ your processions." />
 
 		<property name="status" value="ACCEPTED"></property>
 		<property name="reason" value="Yeah"></property>
-
 	</bean>
 
 	<!-- PLATFORM -->
