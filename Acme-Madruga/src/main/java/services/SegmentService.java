@@ -13,6 +13,7 @@ import org.springframework.validation.Validator;
 import repositories.SegmentRepository;
 import domain.Actor;
 import domain.Coordinate;
+import domain.Parade;
 import domain.Segment;
 
 @Service
@@ -119,8 +120,9 @@ public class SegmentService {
 
 			result = this.segmentRepository.save(aux);	
 			
-			this.coordinateService.delete(toDelete);
-
+			if(!aux.getDestination().toString().equals(segment.getDestination().toString())) {
+				this.coordinateService.delete(toDelete);
+			}
 		}
 
 		Assert.notNull(result);
@@ -153,12 +155,18 @@ public class SegmentService {
 		Assert.notNull(principal);
 		
 		path = this.findAllSegmentsByParadeId(segment.getParade().getId());
-		for(Segment seg : path) {
-			if(seg.getDestination().toString().equals(segment.getOrigin().toString())){
-				this.segmentRepository.delete(segment);
-				seg.setIsEditable(true);
-				this.segmentRepository.save(seg);
+		if(path.size() != 1) {
+			for(Segment seg : path) {
+				if(seg.getDestination().toString().equals(segment.getOrigin().toString())){
+					seg.setIsEditable(true);
+					this.segmentRepository.save(seg);
+					this.segmentRepository.delete(segment);
+				}
 			}
+		} else {
+			Parade p = new Parade();
+			segment.setParade(p);
+			this.segmentRepository.save(segment);		
 		}
 	}
 
