@@ -138,9 +138,14 @@ public class InceptionRecordService {
 		Double periods;
 		Double inception = 0.;
 		Double res;
-		if (this.brotherhoodService.findAll() != null)
-			inception = 1.;
+		Collection<Brotherhood>bros = this.brotherhoodService.findAll();
 
+		for (final Brotherhood b : bros) {
+			if (b.getHistory().getInceptionRecord() != null){
+				inception = 1.;
+				break;
+			}
+		}
 		misc = this.inceptionRecordRepository.statsMisc()[2];
 		periods = this.inceptionRecordRepository.statsPeriod()[2];
 		legals = this.inceptionRecordRepository.statsLegal()[2];
@@ -155,46 +160,44 @@ public class InceptionRecordService {
 	//the minimum
 
 	public Double minRecordsPerHistory() {
-		Double misc;
-		Double legals;
-		Double links;
-		Double periods;
+		Collection<Brotherhood> bros;
+		final Collection<Double> results = new ArrayList<Double>();
+		Double records;
+		
 		Double inception = 0.;
-		Double res;
-		if (this.brotherhoodService.findAll() != null)
-			inception = 1.;
+		bros = this.brotherhoodService.findAll();
 
-		misc = this.inceptionRecordRepository.statsMisc()[1];
-		periods = this.inceptionRecordRepository.statsPeriod()[1];
-		legals = this.inceptionRecordRepository.statsLegal()[1];
-		links = this.inceptionRecordRepository.statsLink()[1];
-
-		res = misc + periods + legals + links + inception;
-
-		return res;
+		for (final Brotherhood b : bros) {
+			if (b.getHistory().getInceptionRecord() != null)
+				inception = 1.;
+			records = inception + b.getHistory().getLegalRecords().size() + b.getHistory().getLinkRecords().size() + b.getHistory().getMiscellaneousRecords().size() + b.getHistory().getPeriodRecords().size();
+			results.add(records);
+			
+				
+		}
+		return Collections.min(results);
 
 	}
 
 	//the maximum
 	public Double maxRecordsPerHistory() {
-
-		Double misc;
-		Double legals;
-		Double links;
-		Double periods;
+		
+		Collection<Brotherhood> bros;
+		final Collection<Double> results = new ArrayList<Double>();
+		Double records;
+		
 		Double inception = 0.;
-		Double res;
-		if (this.brotherhoodService.findAll() != null)
-			inception = 1.;
+		bros = this.brotherhoodService.findAll();
 
-		misc = this.inceptionRecordRepository.statsMisc()[0];
-		periods = this.inceptionRecordRepository.statsPeriod()[0];
-		legals = this.inceptionRecordRepository.statsLegal()[0];
-		links = this.inceptionRecordRepository.statsLink()[0];
-
-		res = misc + periods + legals + links + inception;
-
-		return res;
+		for (final Brotherhood b : bros) {
+			if (b.getHistory().getInceptionRecord() != null)
+				inception = 1.;
+			records = inception + b.getHistory().getLegalRecords().size() + b.getHistory().getLinkRecords().size() + b.getHistory().getMiscellaneousRecords().size() + b.getHistory().getPeriodRecords().size();
+			results.add(records);
+			
+				
+		}
+		return Collections.max(results);
 
 	}
 
@@ -207,8 +210,14 @@ public class InceptionRecordService {
 		Double periods;
 		Double inception = 0.;
 		Double res;
-		if (this.brotherhoodService.findAll() != null)
-			inception = 1.;
+		Collection<Brotherhood>bros = this.brotherhoodService.findAll();
+
+		for (final Brotherhood b : bros) {
+			if (b.getHistory().getInceptionRecord() != null){
+				inception = 1.;
+				break;
+			}
+		}
 
 		misc = this.inceptionRecordRepository.statsMisc()[3];
 		periods = this.inceptionRecordRepository.statsPeriod()[3];
@@ -233,7 +242,7 @@ public class InceptionRecordService {
 			if (b.getHistory().getInceptionRecord() != null)
 				inception = 1.;
 			records = inception + b.getHistory().getLegalRecords().size() + b.getHistory().getLinkRecords().size() + b.getHistory().getMiscellaneousRecords().size() + b.getHistory().getPeriodRecords().size();
-			if (records >= this.avgRecordsPerHistory())
+			if (records > this.avgRecordsPerHistory())
 				results.add(b);
 		}
 		return results;
@@ -250,7 +259,7 @@ public class InceptionRecordService {
 		bros = this.brotherhoodService.findAll();
 
 		for (final Brotherhood b : bros) {
-			if (b.getHistory().getInceptionRecord() == null)
+			if (b.getHistory().getInceptionRecord() != null)
 				inception = 1.;
 			records = inception + b.getHistory().getLegalRecords().size() + b.getHistory().getLinkRecords().size() + b.getHistory().getMiscellaneousRecords().size() + b.getHistory().getPeriodRecords().size();
 			results.add(records);
