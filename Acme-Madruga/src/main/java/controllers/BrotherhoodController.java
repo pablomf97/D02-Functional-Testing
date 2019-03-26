@@ -1,3 +1,4 @@
+
 package controllers;
 
 import java.util.ArrayList;
@@ -27,14 +28,15 @@ import forms.BrotherhoodForm;
 public class BrotherhoodController extends AbstractController {
 
 	@Autowired
-	private BrotherhoodService brotherhoodService;
+	private BrotherhoodService	brotherhoodService;
 	@Autowired
-	private ActorService actorService;
+	private ActorService		actorService;
 	@Autowired
-	private ZoneService zoneService;
+	private ZoneService			zoneService;
 
 	@Autowired
-	private MemberService memberService;
+	private MemberService		memberService;
+
 
 	public BrotherhoodController() {
 		super();
@@ -47,8 +49,7 @@ public class BrotherhoodController extends AbstractController {
 		try {
 			result = new ModelAndView("brotherhood/display");
 			b = this.brotherhoodService.findOne(id);
-			final Collection<String> pictures = this.brotherhoodService
-					.getSplitPictures(b.getPictures());
+			final Collection<String> pictures = this.brotherhoodService.getSplitPictures(b.getPictures());
 			result.addObject("brotherhood", b);
 			result.addObject("pictures", pictures);
 		} catch (final Throwable opps) {
@@ -77,8 +78,7 @@ public class BrotherhoodController extends AbstractController {
 				result.addObject("brotherhoodForm", bf);
 				result.addObject("brotherhood", b);
 				result.addObject("uri", "brotherhood/edit.do");
-				final Collection<String> pictures = this.brotherhoodService
-						.getSplitPictures(b.getPictures());
+				final Collection<String> pictures = this.brotherhoodService.getSplitPictures(b.getPictures());
 				result.addObject("pictures", pictures);
 			} catch (final Throwable opps) {
 				// TODO: ver la posibilidada de una pantalla de error
@@ -89,8 +89,7 @@ public class BrotherhoodController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
-	public ModelAndView editPOST(final BrotherhoodForm brotherhoodForm,
-			final BindingResult binding) {
+	public ModelAndView editPOST(final BrotherhoodForm brotherhoodForm, final BindingResult binding) {
 		ModelAndView result;
 		String emailError = "";
 		String check = "";
@@ -102,39 +101,26 @@ public class BrotherhoodController extends AbstractController {
 		String pictureString = "";
 
 		try {
-			brotherhood = this.brotherhoodService.reconstruct(brotherhoodForm,
-					binding);
+			brotherhood = this.brotherhoodService.reconstruct(brotherhoodForm, binding);
 			try {
-				pictureString = this.brotherhoodService
-						.convetCollectionToString(brotherhoodForm.getPictures());
+				pictureString = this.brotherhoodService.convetCollectionToString(brotherhoodForm.getPictures());
 			} catch (final Throwable opps) {
 				pictureError = "brotherhood.pictures.error.url";
 			}
 			brotherhood.setPictures(pictureString);
 			if (brotherhood.getId() == 0) {
-				passW = this.actorService.checkPass(
-						brotherhoodForm.getPassword(),
-						brotherhoodForm.getPassword2());
-				uniqueUsername = this.actorService
-						.checkUniqueUser(brotherhoodForm.getUsername());
-				check = this.actorService.checkLaw(brotherhoodForm
-						.getCheckBox());
+				passW = this.actorService.checkPass(brotherhoodForm.getPassword(), brotherhoodForm.getPassword2());
+				uniqueUsername = this.actorService.checkUniqueUser(brotherhoodForm.getUsername());
+				check = this.actorService.checkLaw(brotherhoodForm.getCheckBox());
 			}
 			if (pictureError.isEmpty())
-				pictures = this.brotherhoodService.getSplitPictures(brotherhood
-						.getPictures());
+				pictures = this.brotherhoodService.getSplitPictures(brotherhood.getPictures());
 			else
 				pictures = brotherhoodForm.getPictures();
 			final Collection<Zone> zones = this.zoneService.findAll();
 			brotherhood.setEmail(brotherhood.getEmail().toLowerCase());
-			emailError = this.actorService.checkEmail(brotherhood.getEmail(),
-					brotherhood.getUserAccount().getAuthorities().iterator()
-							.next().getAuthority());
-			if (binding.hasErrors() || !emailError.isEmpty()
-					|| !check.isEmpty() || !passW.isEmpty()
-					|| !uniqueUsername.isEmpty() || !pictureError.isEmpty()) {
-				System.out.println("llega al binding"
-						+ binding.getFieldErrors());
+			emailError = this.actorService.checkEmail(brotherhood.getEmail(), brotherhood.getUserAccount().getAuthorities().iterator().next().getAuthority());
+			if (binding.hasErrors() || !emailError.isEmpty() || !check.isEmpty() || !passW.isEmpty() || !uniqueUsername.isEmpty() || !pictureError.isEmpty()) {
 				result = new ModelAndView("brotherhood/edit");
 				result.addObject("uri", "brotherhood/edit.do");
 				brotherhood.getUserAccount().setPassword("");
@@ -148,8 +134,7 @@ public class BrotherhoodController extends AbstractController {
 				result.addObject("picturesError", pictureError);
 			} else
 				try {
-					brotherhood.setPhoneNumber(this.actorService
-							.checkSetPhoneCC(brotherhood.getPhoneNumber()));
+					brotherhood.setPhoneNumber(this.actorService.checkSetPhoneCC(brotherhood.getPhoneNumber()));
 					this.brotherhoodService.save(brotherhood);
 					result = new ModelAndView("redirect:/welcome/index.do");
 				} catch (final Throwable opps) {
@@ -184,15 +169,12 @@ public class BrotherhoodController extends AbstractController {
 		try {
 			principal = this.actorService.findByPrincipal();
 			isMember = this.actorService.checkAuthority(principal, "MEMBER");
-			enrolledBrotherhoods = this.brotherhoodService
-					.brotherhoodsByMemberId(principal.getId());
-			moreBrotherhoods = this.brotherhoodService
-					.allBrotherhoodsByMemberId(principal.getId());
-			for (Brotherhood b : moreBrotherhoods) {
+			enrolledBrotherhoods = this.brotherhoodService.brotherhoodsByMemberId(principal.getId());
+			moreBrotherhoods = this.brotherhoodService.allBrotherhoodsByMemberId(principal.getId());
+			for (final Brotherhood b : moreBrotherhoods)
 				enrolledBrotherhoods.add(b);
-			}
 
-		} catch (Throwable oops) {
+		} catch (final Throwable oops) {
 			isMember = false;
 			enrolledBrotherhoods = new ArrayList<>();
 		}
@@ -208,12 +190,11 @@ public class BrotherhoodController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/members/list", method = RequestMethod.GET)
-	public ModelAndView listMembers(@RequestParam int brotherhoodId) {
+	public ModelAndView listMembers(@RequestParam final int brotherhoodId) {
 		ModelAndView result;
-		Collection<Member> members = new ArrayList<Member>();
+		final Collection<Member> members = new ArrayList<Member>();
 
-		members.addAll(this.memberService
-				.findAllMembersByBrotherhood(brotherhoodId));
+		members.addAll(this.memberService.findAllMembersByBrotherhood(brotherhoodId));
 
 		result = new ModelAndView("brotherhood/listMembers");
 		result.addObject("members", members);

@@ -18,7 +18,7 @@
 				<form:hidden path="id" />
 				
 				<acme:textbox code="platform.title" path="title"/><br/><br/>
-						
+
 				<acme:textbox code="platform.pictures" path="pictures"/><br/><br />
 				
 				<acme:textarea code="platform.description" path="description"/><br /><br />

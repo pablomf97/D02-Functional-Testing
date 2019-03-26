@@ -27,7 +27,7 @@
 	</jstl:if>
 
 	<display:column titleKey="brotherhood.title" sortable="true">
-		<jstl:out value="${brotherhood.title}" />
+		<a href="brotherhood/display.do?id=${brotherhood.id}"><jstl:out value="${brotherhood.title}" /></a>
 	</display:column>
 
 	<display:column titleKey="brotherhood.establishmentDate">
@@ -52,8 +52,8 @@
 
 	<display:column>
 		<a
-			href="procession/member,brotherhood/list.do?brotherhoodId=${brotherhood.id}">
-			<spring:message code="brotherhood.processions" />
+			href="parade/member,brotherhood/list.do?brotherhoodId=${brotherhood.id}">
+			<spring:message code="brotherhood.parades" />
 		</a>
 	</display:column>
 

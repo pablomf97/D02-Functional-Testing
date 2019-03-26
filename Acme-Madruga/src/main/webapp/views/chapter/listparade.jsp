@@ -73,21 +73,21 @@
 			<!-- Action links -->
 
 			<display:column>
-				<a href="procession/display.do?processionId=${parade.id}"> <spring:message
+				<a href="parade/display.do?paradeId=${parade.id}"> <spring:message
 						code="parade.display" />
 				</a>
 			</display:column>
 
 			<display:column>
 				<jstl:if test="${parade.status == 'SUBMITTED'}">
-					<a href="procession/accept.do?paradeId=${parade.id}"><spring:message
+					<a href="parade/accept.do?paradeId=${parade.id}"><spring:message
 							code="parade.accept" /></a>
 				</jstl:if>
 			</display:column>
 
 			<display:column>
 				<jstl:if test="${parade.status == 'SUBMITTED'}">
-					<a href="procession/rejectv.do?paradeId=${parade.id}"><spring:message
+					<a href="parade/rejectv.do?paradeId=${parade.id}"><spring:message
 							code="parade.reject" /></a>
 				</jstl:if>
 			</display:column>

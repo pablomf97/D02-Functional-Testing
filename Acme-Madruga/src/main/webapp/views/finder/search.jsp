@@ -71,31 +71,31 @@
 
 	</form:form>
 	
-	<jstl:if test="${not empty processions}">
-		<display:table name="processions" id="row"
+	<jstl:if test="${not empty parades}">
+		<display:table name="parades" id="row"
 		requestURI="finder/member/list.do" pagesize="10" class="displaytag">
 
 		<!-- Attributes-->
 
-		<display:column titleKey="procession.title" sortable="true">
+		<display:column titleKey="parade.title" sortable="true">
 			<jstl:out value="${row.title}" />
 		</display:column>
-		<display:column titleKey="procession.ticker" sortable="true">
+		<display:column titleKey="parade.ticker" sortable="true">
 			<jstl:out value="${row.ticker}" />
 		</display:column>
 		<display:column property="description"
-			titleKey="procession.description">
+			titleKey="parade.description">
 			<jstl:out value="${row.description}" />
 		</display:column>
-		<display:column titleKey="procession.organisedMoment" sortable="true">
+		<display:column titleKey="parade.organisedMoment" sortable="true">
 			<jstl:out value="${row.organisedMoment}" />
 		</display:column>
 
 		<!-- Action links -->
 
 		<display:column>
-			<a href="procession/display.do?processionId=${row.id}"> <spring:message
-					code="procession.display" />
+			<a href="parade/display.do?paradeId=${row.id}"> <spring:message
+					code="parade.display" />
 			</a>
 		</display:column>
 	</display:table>

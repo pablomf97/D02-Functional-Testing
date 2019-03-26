@@ -49,7 +49,7 @@
 Madrugá! Tu sitio para organizar procesiones." />
 				<entry key="English"
 					value="Welcome to Acme Madrugá, the site to organise
-your processions." />
+your parades." />
 			</util:map>
 		</property>
 		<property name="banner" value="https://image.ibb.co/iuaDgV/Untitled.png" />

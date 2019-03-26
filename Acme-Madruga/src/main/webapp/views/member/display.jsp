@@ -56,8 +56,18 @@
 
 			</display:table></td>
 </table>
+	<security:authorize access="isAuthenticated()">
+
+		<%
+			String name = (String) pageContext.getAttribute("user", PageContext.SESSION_SCOPE);
+		%>
+		<jstl:if test=" ${name == member.userAccount.username}">
 <div><a href="member/export.do"><spring:message
 								code="export" /></a></div>
+
+		</jstl:if>
+	</security:authorize>
+
 								
 <security:authorize access="hasRole('ADMINISTRATOR')">
 	<p>

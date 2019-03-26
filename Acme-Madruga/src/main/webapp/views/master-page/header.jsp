@@ -101,7 +101,7 @@
 				</ul></li>
 
 
-			<li><a class="fNiv" href="march/member,brotherhood/list.do"><spring:message
+			<li><a class="fNiv"><spring:message
 						code="master.page.member.march" /></a>
 				<ul>
 					<li class="arrow"></li>
@@ -173,11 +173,8 @@
 
 			<li><a class="fNiv" href="brotherhood/list.do"><spring:message
 						code="master.page.administrator.brotherhoods" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="brotherhood/members/list.do"><spring:message
-								code="master.page.brotherhood.members.list" /></a></li>
-				</ul></li>
+
+				</li>
 
 
 		</security:authorize>
@@ -186,11 +183,7 @@
 
 			<li><a class="fNiv" href="brotherhood/list.do"><spring:message
 						code="master.page.administrator.brotherhoods" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="brotherhood/members/list.do"><spring:message
-								code="master.page.brotherhood.members.list" /></a></li>
-				</ul></li>
+			</li>
 
 
 			<li><a class="fNiv"> <spring:message

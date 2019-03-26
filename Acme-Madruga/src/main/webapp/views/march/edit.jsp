@@ -16,10 +16,10 @@
 			<fieldset>
 				<br>
 				<form:hidden path="id" />
-				<form:label path="procession">
-					<spring:message code="march.procession" />:
+				<form:label path="parade">
+					<spring:message code="march.parade" />:
 				</form:label>
-				<form:select multiple="true" path="procession" items="${toApply}" itemLabel="title"  style="width:200px;"/><br/><br/>					
+				<form:select multiple="true" path="parade" items="${toApply}" itemLabel="title"  style="width:200px;"/><br/><br/>					
 			</fieldset>
 			<br>
 			<acme:submit code="march.save" name="save"/>&nbsp; 
