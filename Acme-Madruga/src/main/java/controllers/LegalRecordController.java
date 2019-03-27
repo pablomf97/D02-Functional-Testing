@@ -48,11 +48,8 @@ public class LegalRecordController extends AbstractController {
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int legalRecordId) {
 		ModelAndView res;
-		Actor principal;
 		LegalRecord legalRecord;
 		try {
-			principal = this.actorService.findByPrincipal();
-			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
 			legalRecord = this.legalRecordService.findOne(legalRecordId);
 
 			final Collection<String> laws = this.legalRecordService.getSplitLaws(legalRecord.getLaws());
@@ -71,17 +68,12 @@ public class LegalRecordController extends AbstractController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam final int historyId) {
 		ModelAndView result = null;
-		Brotherhood principal;
 		Collection<LegalRecord> records;
 		History history;
 		Boolean possible;
 
-		history = this.historyService.findOne(historyId);
-
 		try {
-
-			principal = (Brotherhood) this.actorService.findByPrincipal();
-			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+			history = this.historyService.findOne(historyId);
 
 			records = history.getLegalRecords();
 			possible = true;
@@ -108,14 +100,17 @@ public class LegalRecordController extends AbstractController {
 		ModelAndView result;
 		LegalRecord legalRecord;
 		Brotherhood principal;
-		principal = (Brotherhood) this.actorService.findByPrincipal();
+		try {
+			principal = (Brotherhood) this.actorService.findByPrincipal();
 
-		legalRecord = this.legalRecordService.findOne(legalRecordId);
-		Assert.notNull(legalRecord);
-		Assert.isTrue(principal.getHistory().getLegalRecords().contains(legalRecord), "not.allowed");
-		final Collection<String> laws = this.legalRecordService.getSplitLaws(legalRecord.getLaws());
-		result = this.createEditModelAndView(legalRecord);
-		result.addObject("laws", laws);
+			legalRecord = this.legalRecordService.findOne(legalRecordId);
+			Assert.isTrue(principal.getHistory().getLegalRecords().contains(legalRecord), "not.allowed");
+			final Collection<String> laws = this.legalRecordService.getSplitLaws(legalRecord.getLaws());
+			result = this.createEditModelAndView(legalRecord);
+			result.addObject("laws", laws);
+		} catch (final Exception e) {
+			result = new ModelAndView("redirect:/welcome/index.do");
+		}
 		return result;
 
 	}
@@ -130,7 +125,6 @@ public class LegalRecordController extends AbstractController {
 			result = this.createEditModelAndView(legalRecord);
 			final Collection<String> laws = this.legalRecordService.getSplitLaws(legalRecord.getLaws());
 			result.addObject("laws", laws);
-
 		} else
 			try {
 
@@ -172,22 +166,20 @@ public class LegalRecordController extends AbstractController {
 
 	//delete
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(@Valid final LegalRecord legalRecord, final BindingResult binding) {
+	public ModelAndView delete(final LegalRecord legalRecord, final BindingResult binding) {
 		ModelAndView result;
 		Brotherhood principal;
 		Integer historyId;
-		principal = (Brotherhood) this.actorService.findByPrincipal();
 
-		historyId = principal.getHistory().getId();
-		if (binding.hasErrors())
-			result = this.createEditModelAndView(legalRecord);
-		else
-			try {
-				this.legalRecordService.delete(legalRecord);
-				result = new ModelAndView("redirect:/legalRecord/list.do?historyId=" + historyId);
-			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(legalRecord, "mr.commit.error");
-			}
+		try {
+			principal = (Brotherhood) this.actorService.findByPrincipal();
+
+			historyId = principal.getHistory().getId();
+			this.legalRecordService.delete(legalRecord);
+			result = new ModelAndView("redirect:/legalRecord/list.do?historyId=" + historyId);
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(legalRecord, "mr.commit.error");
+		}
 
 		return result;
 	}

@@ -43,10 +43,7 @@ public class InceptionRecordController extends AbstractController {
 	public ModelAndView display(@RequestParam final int inceptionRecordId) {
 		ModelAndView res;
 		InceptionRecord inceptionRecord;
-		Actor principal;
 		try {
-			principal = this.actorService.findByPrincipal();
-			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
 			inceptionRecord = this.inceptionRecordService.findOne(inceptionRecordId);
 
 			final Collection<String> photos = this.inceptionRecordService.getSplitPictures(inceptionRecord.getPhotos());
@@ -94,19 +91,24 @@ public class InceptionRecordController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int inceptionRecordId) {
 		ModelAndView result = null;
-		InceptionRecord inceptionRecord;
-		Brotherhood principal;
-		principal = (Brotherhood) this.actorService.findByPrincipal();
-		Assert.isTrue(principal.getHistory().getInceptionRecord().getId() == inceptionRecordId, "not.allowed");
+		try {
+			InceptionRecord inceptionRecord;
+			Brotherhood principal;
+			principal = (Brotherhood) this.actorService.findByPrincipal();
+			Assert.isTrue(principal.getHistory().getInceptionRecord().getId() == inceptionRecordId, "not.allowed");
 
-		inceptionRecord = this.inceptionRecordService.findOne(inceptionRecordId);
-		Assert.notNull(inceptionRecord);
-		Assert.isTrue(principal.getHistory().getInceptionRecord().equals(inceptionRecord), "not.allowed");
+			inceptionRecord = this.inceptionRecordService.findOne(inceptionRecordId);
+			Assert.notNull(inceptionRecord);
+			Assert.isTrue(principal.getHistory().getInceptionRecord().equals(inceptionRecord), "not.allowed");
 
-		final Collection<String> photos = this.inceptionRecordService.getSplitPictures(inceptionRecord.getPhotos());
+			final Collection<String> photos = this.inceptionRecordService.getSplitPictures(inceptionRecord.getPhotos());
 
-		result = this.createEditModelAndView(inceptionRecord);
-		result.addObject("photos", photos);
+			result = this.createEditModelAndView(inceptionRecord);
+			result.addObject("photos", photos);
+		} catch (final Exception e) {
+			result = new ModelAndView("redirect:/welcome/index.do");
+
+		}
 		return result;
 
 	}
@@ -142,18 +144,16 @@ public class InceptionRecordController extends AbstractController {
 
 	//delete
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(@Valid final InceptionRecord inceptionRecord, final BindingResult binding) {
+	public ModelAndView delete(final InceptionRecord inceptionRecord, final BindingResult binding) {
 		ModelAndView result;
-		if (binding.hasErrors())
-			result = this.createEditModelAndView(inceptionRecord);
-		else
-			try {
-				this.inceptionRecordService.delete(inceptionRecord);
-				result = new ModelAndView("redirect:/history/display.do");
 
-			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(inceptionRecord, "mr.commit.error");
-			}
+		try {
+			this.inceptionRecordService.delete(inceptionRecord);
+			result = new ModelAndView("redirect:/history/display.do");
+
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(inceptionRecord, "mr.commit.error");
+		}
 
 		return result;
 	}
