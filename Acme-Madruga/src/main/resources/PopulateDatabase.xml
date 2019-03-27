@@ -63,8 +63,8 @@
 
 
 	</bean>
-	
-		<bean id="brotherhood3" class="domain.Brotherhood">
+
+	<bean id="brotherhood3" class="domain.Brotherhood">
 		<property name="name" value="pepito" />
 		<property name="middleName" value="Viyuelaaa" />
 		<property name="surname" value="gdsas" />
@@ -194,7 +194,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="userBrotherhood3" class="security.UserAccount">
 		<property name="username" value="brotherhood3" />
 		<property name="password" value="cb8f36c7d5bbbc6aa5798a0e5796ebd5" />
@@ -1233,8 +1233,7 @@ your parades." />
 	<bean id="parade3" class="domain.Parade">
 		<property name="ticker" value="190519-XZPTY" />
 		<property name="title" value="Viernes rojo" />
-		<property name="description"
-			value="Protesta comunista" />
+		<property name="description" value="Protesta comunista" />
 		<property name="organisedMoment" value="19/06/19 20:00" />
 		<property name="isDraft" value="false" />
 		<property name="maxCols" value="2" />
@@ -1253,12 +1252,11 @@ your parades." />
 		<property name="status" value="SUBMITTED"></property>
 		<property name="reason" value="Es un rojed"></property>
 	</bean>
-	
-		<bean id="parade4" class="domain.Parade">
+
+	<bean id="parade4" class="domain.Parade">
 		<property name="ticker" value="190519-XVRTY" />
 		<property name="title" value="Que no te engañen" />
-		<property name="description"
-			value="Los chicos tienen I y las chicas O" />
+		<property name="description" value="Los chicos tienen I y las chicas O" />
 		<property name="organisedMoment" value="19/05/19 20:00" />
 		<property name="isDraft" value="false" />
 		<property name="maxCols" value="2" />
@@ -1277,12 +1275,11 @@ your parades." />
 		<property name="status" value="ACCEPTED"></property>
 		<property name="reason" value="Arriba españa"></property>
 	</bean>
-	
+
 	<bean id="parade5" class="domain.Parade">
 		<property name="ticker" value="190519-XZRTN" />
 		<property name="title" value="Personas de casa" />
-		<property name="description"
-			value="Cosas de casa tarradellas" />
+		<property name="description" value="Cosas de casa tarradellas" />
 		<property name="organisedMoment" value="19/05/19 20:00" />
 		<property name="isDraft" value="false" />
 		<property name="maxCols" value="2" />
@@ -1301,7 +1298,7 @@ your parades." />
 		<property name="status" value="REJECTED"></property>
 		<property name="reason" value="No me gusta"></property>
 	</bean>
-	
+
 	<bean id="parade6" class="domain.Parade">
 		<property name="ticker" value="190519-XZRTL" />
 		<property name="title" value="Viernes de juegación" />
@@ -1470,7 +1467,7 @@ your parades." />
 		<property name="photos" value="https://www.google.com/img=217puha9" />
 
 	</bean>
-	
+
 	<bean id="inceptionRecord3" class="domain.InceptionRecord">
 		<property name="title" value="lloololo" />
 		<property name="description"
@@ -1479,8 +1476,16 @@ your parades." />
 
 	</bean>
 
-	
 
+
+	<bean id="linkRecord1" class="domain.LinkRecord">
+		<property name="title" value="Enlace2" />
+		<property name="description" value="Enlace backup del Brotherhood" />
+		<property name="linkedBrotherhood">
+			<ref bean="brotherhood1" />
+		</property>
+
+	</bean>
 
 	<bean id="linkRecord2" class="domain.LinkRecord">
 		<property name="title" value="Enlace2" />
@@ -1573,9 +1578,9 @@ your parades." />
 			</list>
 		</property>
 
-	
+
 	</bean>
-	
+
 	<bean id="history3" class="domain.History">
 
 
@@ -1597,7 +1602,7 @@ your parades." />
 
 		<property name="linkRecords">
 			<list>
-
+				<ref bean="linkRecord1" />
 
 			</list>
 		</property>
@@ -1609,9 +1614,9 @@ your parades." />
 			</list>
 		</property>
 
-	
+
 	</bean>
-	
+
 	<bean id="history2" class="domain.History">
 
 
@@ -1646,47 +1651,47 @@ your parades." />
 		</property>
 
 	</bean>
-	
-	<!-- LEVEL B ACME-PARADE -->	
+
+	<!-- LEVEL B ACME-PARADE -->
 	<!-- Segment -->
 
 	<bean id="segment1" class="domain.Segment">
 		<property name="expectedTimeOrigin" value="20/05/2020 08:00" />
 		<property name="expectedTimeDestination" value="20/05/2020 10:00" />
-		<property name="isEditable" value="false"/>
+		<property name="isEditable" value="false" />
 		<property name="parade">
 			<ref bean="parade1" />
 		</property>
-		<property name="originLatitude" value="45.2"/>
-		<property name="originLongitude" value="105.6"/>
-		<property name="destinationLatitude" value="21.2"/>
-		<property name="destinationLongitude" value="-11.6"/>
+		<property name="originLatitude" value="45.2" />
+		<property name="originLongitude" value="105.6" />
+		<property name="destinationLatitude" value="21.2" />
+		<property name="destinationLongitude" value="-11.6" />
 	</bean>
-	
+
 	<bean id="segment2" class="domain.Segment">
 		<property name="expectedTimeOrigin" value="20/05/2020 10:00" />
 		<property name="expectedTimeDestination" value="20/05/2020 12:00" />
-		<property name="isEditable" value="true"/>
+		<property name="isEditable" value="true" />
 		<property name="parade">
 			<ref bean="parade1" />
 		</property>
-		<property name="originLatitude" value="21.2"/>
-		<property name="originLongitude" value="-11.6"/>
-		<property name="destinationLatitude" value="-21.2"/>
-		<property name="destinationLongitude" value="14.6"/>
+		<property name="originLatitude" value="21.2" />
+		<property name="originLongitude" value="-11.6" />
+		<property name="destinationLatitude" value="-21.2" />
+		<property name="destinationLongitude" value="14.6" />
 	</bean>
 
 	<bean id="segment3" class="domain.Segment">
 		<property name="expectedTimeOrigin" value="21/05/2020 10:00" />
 		<property name="expectedTimeDestination" value="20/05/2020 12:00" />
-		<property name="isEditable" value="true"/>
+		<property name="isEditable" value="true" />
 		<property name="parade">
 			<ref bean="parade2" />
 		</property>
-		<property name="originLatitude" value="80.0"/>
-		<property name="originLongitude" value="31.7"/>
-		<property name="destinationLatitude" value="-71.9"/>
-		<property name="destinationLongitude" value="105.6"/>
+		<property name="originLatitude" value="80.0" />
+		<property name="originLongitude" value="31.7" />
+		<property name="destinationLatitude" value="-71.9" />
+		<property name="destinationLongitude" value="105.6" />
 	</bean>
-	
+
 </beans>
