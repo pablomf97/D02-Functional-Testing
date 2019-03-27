@@ -38,15 +38,15 @@
 		<security:authorize access="hasRole('CHAPTER')">
 
 			<jstl:choose>
-				<jstl:when test="${row.status == 'APPROVED'}">
+				<jstl:when test="${parade.status == 'ACCEPTED'}">
 					<jstl:set var="bgcolor" value="tableColorGreen" />
 				</jstl:when>
 
-				<jstl:when test="${row.status == 'REJECTED'}">
+				<jstl:when test="${parade.status == 'REJECTED'}">
 					<jstl:set var="bgcolor" value="tableColorOrange" />
 				</jstl:when>
 
-				<jstl:when test="${row.status == 'SUBMITTED'}">
+				<jstl:when test="${parade.status == 'SUBMITTED'}">
 					<jstl:set var="bgcolor" value="tableColorGrey" />
 				</jstl:when>
 

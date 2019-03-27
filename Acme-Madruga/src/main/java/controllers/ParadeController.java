@@ -131,7 +131,7 @@ public class ParadeController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/chapter/list")
-	public ModelAndView listChapter(@RequestParam final Integer chapterId) {
+	public ModelAndView listChapter() {
 		ModelAndView result;
 		Collection<Parade> parades;
 		Chapter principal;
@@ -140,13 +140,17 @@ public class ParadeController extends AbstractController {
 
 		try {
 			principal = (Chapter) this.actorService.findByPrincipal();
-			Assert.isTrue(principal.getId() == chapterId);
-			permission = true;
+			
+			if(this.actorService.checkAuthority(principal, "CHAPTER")){
+				permission = true;
+			}
+			
 
 			parades = this.paradeService.findParadesByAres(principal.getZone()
 					.getId());
-			requestURI = "parade/member,brotherhood/list.do?brotherhoodId="
-					+ chapterId;
+			
+			
+			requestURI = "parade/chaper/list.do";
 
 			result = new ModelAndView("chapter/listparade");
 			result.addObject("requestURI", requestURI);

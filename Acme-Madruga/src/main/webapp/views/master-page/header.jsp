@@ -208,7 +208,7 @@
 	</ul>
 </div>
 
-<security:authorize access="isAuthenticated()">
+<%-- <security:authorize access="isAuthenticated()">
 	<jstl:if test="${pageContext.response.locale.language == 'es'}">
 		<h2>
 			<strong style="color: red;"><jstl:out
@@ -223,4 +223,4 @@
 		</h2>
 	</jstl:if>
 </security:authorize>
-
+ --%>

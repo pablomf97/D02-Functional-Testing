@@ -30,7 +30,7 @@ public class Segment extends DomainEntity {
 	private Double 	destinationLongitude;
 	private boolean isEditable;
 
-	@Future
+	//@Future
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
@@ -42,7 +42,7 @@ public class Segment extends DomainEntity {
 		this.expectedTimeOrigin = expectedTimeOrigin;
 	}
 
-	@Future
+	//@Future
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")

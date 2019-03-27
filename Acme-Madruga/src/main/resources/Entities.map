@@ -1,5 +1,5 @@
 #./src/main/resources/Entities.map
-#Wed Mar 27 04:38:06 CET 2019
+#Wed Mar 27 13:46:14 CET 2019
 socialAdministrator2=2607
 socialAdministrator1=2606
 socialbrotherhood2=2631
@@ -104,4 +104,3 @@ miscellaneousRecord1=2611
 userBrotherhood3=2559
 userBrotherhood2=2560
 userBrotherhood1=2558
->>>>>>> merge
