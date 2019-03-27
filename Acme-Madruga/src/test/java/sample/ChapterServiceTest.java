@@ -102,7 +102,7 @@ public class ChapterServiceTest extends AbstractTest {
 			final Chapter principal =this.chapterService.create();
 			BindingResult binding=null;
 				
-
+ 
 				principal.setAddress(address);
 				principal.setEmail(email);
 				principal.setMiddleName(middleName);

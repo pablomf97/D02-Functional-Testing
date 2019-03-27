@@ -15,8 +15,8 @@ import domain.Actor;
 
 import repositories.ParadeRepository;
 import services.ActorService;
-import services.ChapterService;
-import services.ParadeService;
+
+
 import utilities.AbstractTest;
 
 @ContextConfiguration(locations = {

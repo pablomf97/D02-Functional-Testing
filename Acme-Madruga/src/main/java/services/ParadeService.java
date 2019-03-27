@@ -334,8 +334,8 @@ public class ParadeService {
 		return result;
 	}
 
-	public Double[] ratioFinalModeGroupedByStatus() {
-		Double[] result;
+	public Collection<Double> ratioFinalModeGroupedByStatus() {
+		Collection<Double> result;
 
 		result = this.paradeRepository.ratioFinalModeGroupedByStatus();
 
