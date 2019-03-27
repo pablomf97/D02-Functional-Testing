@@ -10,118 +10,160 @@
 
 <!-- Listing grid -->
 
+<style>
+<!--
+.tableColorGreen {
+	background-color: chartreuse;
+}
+
+.tableColorOrange {
+	background-color: orange;
+}
+
+.tableColorGrey {
+	background-color: lightgrey;
+}
+
+.tableColorDefault {
+	background-color: white;
+}
+-->
+</style>
+
 <display:table pagesize="5" class="displaytag" name="parades"
 	requestURI="parade/member,brotherhood/list.do" id="row">
 
-	<security:authorize access="hasRole('BROTHERHOOD')">
+	<jstl:choose>
+		<jstl:when test="${row.status == 'ACCEPTED'}">
+			<jstl:set var="bgcolor" value="tableColorGreen" />
+		</jstl:when>
 
-		<!-- Attributes-->
+		<jstl:when test="${row.status == 'REJECTED'}">
+			<jstl:set var="bgcolor" value="tableColorOrange" />
+		</jstl:when>
 
-		<display:column titleKey="parade.title" sortable="true">
-			<jstl:out value="${row.title }"></jstl:out>
-		</display:column>
+		<jstl:when test="${row.status == 'SUBMITTED'}">
+			<jstl:set var="bgcolor" value="tableColorGrey" />
+		</jstl:when>
 
-		<display:column titleKey="parade.ticker" sortable="true">
-			<jstl:out value="${row.ticker }"></jstl:out>
-		</display:column>
-		<display:column titleKey="parade.status" sortable="true">
-			<jstl:if test="${row.status == 'SUBMITTED' }">
-				<span class="SUBMITTED"> <jstl:out value="${ row.status }" /></span>
-			</jstl:if>
-			<jstl:if test="${row.status == 'ACCEPTED' }">
-				<span class="ACCEPTED"> <jstl:out value="${ row.status }" /></span>
-			</jstl:if>
-			<jstl:if test="${row.status == 'REJECTED' }">
-				<span class="REJECTED"> <jstl:out value="${ row.status }" /></span>
-			</jstl:if>
-			<br />
-		</display:column>
+		<jstl:otherwise>
+			<jstl:set var="bgcolor" value="tableColorDefault" />
+		</jstl:otherwise>
+	</jstl:choose>
 
-		<display:column titleKey="parade.description">
-			<jstl:out value="${row.description }"></jstl:out>
-		</display:column>
+	<jstl:choose>
+		<jstl:when test="${permission }">
 
-		<display:column titleKey="parade.organisedMoment" sortable="true">
-			<jstl:out value="${row.organisedMoment }"></jstl:out>
-		</display:column>
+			<!-- Attributes-->
 
-		<!-- Action links -->
+			<display:column titleKey="parade.title" sortable="true">
+				<jstl:out value="${row.title }"></jstl:out>
+			</display:column>
 
-		<display:column>
-			<a href="parade/display.do?paradeId=${row.id}"> <spring:message
-					code="parade.display" />
-			</a>
-		</display:column>
+			<display:column titleKey="parade.ticker" sortable="true">
+				<jstl:out value="${row.ticker }"></jstl:out>
+			</display:column>
 
-		<display:column>
-			<jstl:if test="${row.isDraft == true}">
-				<a href="parade/edit.do?paradeId=${row.id}"> <spring:message
-						code="parade.edit" />
+			<display:column class="${bgcolor}" titleKey="parade.status"
+				sortable="true">
+				<jstl:if test="${row.status == 'SUBMITTED' }">
+					<span class="SUBMITTED"> <jstl:out value="${ row.status }" /></span>
+				</jstl:if>
+				<jstl:if test="${row.status == 'ACCEPTED' }">
+					<span class="ACCEPTED"> <jstl:out value="${ row.status }" /></span>
+				</jstl:if>
+				<jstl:if test="${row.status == 'REJECTED' }">
+					<span class="REJECTED"> <jstl:out value="${ row.status }" /></span>
+				</jstl:if>
+				<br />
+			</display:column>
+
+			<display:column titleKey="parade.description">
+				<jstl:out value="${row.description }"></jstl:out>
+			</display:column>
+
+			<display:column titleKey="parade.organisedMoment" sortable="true">
+				<jstl:out value="${row.organisedMoment }"></jstl:out>
+			</display:column>
+
+			<!-- Action links -->
+
+			<display:column>
+				<a href="parade/display.do?paradeId=${row.id}"> <spring:message
+						code="parade.display" />
 				</a>
-			</jstl:if>
+			</display:column>
 
-		</display:column>
-
-	</security:authorize>
-	
-	<display:column titleKey="parade.path" >
-		<a href="segment/list.do?paradeId=${row.id}"> <spring:message
-				code="parade.display" />
-		</a>
-	</display:column>
-
-	<security:authorize access="permit">
-
-		<jstl:choose>
-
-			<jstl:when test="${row.isDraft == false}">
-
-				<!-- Attributes-->
-
-				<display:column titleKey="parade.title" sortable="true">
-					<jstl:out value="${row.title }"></jstl:out>
-				</display:column>
-
-				<display:column titleKey="parade.ticker" sortable="true">
-					<jstl:out value="${row.ticker }"></jstl:out>
-				</display:column>
-
-				<display:column titleKey="parade.status" sortable="true">
-						<jstl:out value="${ row.status }" />
-					<br />
-				</display:column>
-
-				<display:column titleKey="parade.description">
-					<jstl:out value="${row.description }"></jstl:out>
-				</display:column>
-
-				<display:column titleKey="parade.organisedMoment"
-					sortable="true">
-					<jstl:out value="${row.organisedMoment }"></jstl:out>
-				</display:column>
-
-				<!-- Action links -->
-
-				<display:column>
-					<a href="parade/display.do?paradeId=${row.id}"> <spring:message
-							code="parade.display" />
+			<display:column>
+				<jstl:if test="${row.isDraft == true}">
+					<a href="parade/edit.do?paradeId=${row.id}"> <spring:message
+							code="parade.edit" />
 					</a>
-				</display:column>
+				</jstl:if>
 
-			</jstl:when>
-			<jstl:otherwise>
-				<p>
-					<spring:message code="march.create" />
-				</p>
-			</jstl:otherwise>
+			</display:column>
 
-		</jstl:choose>
 
-	</security:authorize>
+			<display:column titleKey="parade.path">
+				<a href="segment/list.do?paradeId=${row.id}"> <spring:message
+						code="parade.display" />
+				</a>
+			</display:column>
+		</jstl:when>
+
+		<jstl:otherwise>
+
+			<jstl:choose>
+
+				<jstl:when test="${row.isDraft == false}">
+
+					<!-- Attributes-->
+
+					<display:column titleKey="parade.title" sortable="true">
+						<jstl:out value="${row.title }"></jstl:out>
+					</display:column>
+
+					<display:column titleKey="parade.ticker" sortable="true">
+						<jstl:out value="${row.ticker }"></jstl:out>
+					</display:column>
+
+					<display:column titleKey="parade.status" sortable="true"
+						class="${bgcolor}">
+						<jstl:out value="${ row.status }" />
+						<br />
+					</display:column>
+
+					<display:column titleKey="parade.description">
+						<jstl:out value="${row.description }"></jstl:out>
+					</display:column>
+
+					<display:column titleKey="parade.organisedMoment" sortable="true">
+						<jstl:out value="${row.organisedMoment }"></jstl:out>
+					</display:column>
+
+					<!-- Action links -->
+
+					<display:column>
+						<a href="parade/display.do?paradeId=${row.id}"> <spring:message
+								code="parade.display" />
+						</a>
+					</display:column>
+
+				</jstl:when>
+				<jstl:otherwise>
+					<p>
+						<spring:message code="march.create" />
+					</p>
+				</jstl:otherwise>
+
+			</jstl:choose>
+
+		</jstl:otherwise>
+	</jstl:choose>
 </display:table>
+
 <security:authorize access="hasRole('BROTHERHOOD')">
 	<p>
-		<a href="parade/create.do"><spring:message
-				code="parade.create" /></a>
+		<a href="parade/create.do"><spring:message code="parade.create" /></a>
 	</p>
 </security:authorize>

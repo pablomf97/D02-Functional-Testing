@@ -60,8 +60,8 @@
 			<jstl:out value="${row.member.name}"></jstl:out>
 		</display:column>
 
-		<display:column titleKey="march." sortable="true">
-			<a href="/display.do?Id=${row..id}"> <jstl:out
+		<display:column titleKey="march.parade" sortable="true">
+			<a href="parade/display.do?paradeId=${row.id}"> <jstl:out
 					value="${row.parade.title }"></jstl:out>
 			</a>
 		</display:column>

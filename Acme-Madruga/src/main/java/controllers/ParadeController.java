@@ -1,4 +1,3 @@
-
 package controllers;
 
 import java.util.Collection;
@@ -29,17 +28,16 @@ public class ParadeController extends AbstractController {
 	// Services
 
 	@Autowired
-	private ParadeService	paradeService;
+	private ParadeService paradeService;
 
 	@Autowired
-	private PlatformService	platformService;
+	private PlatformService platformService;
 
 	@Autowired
-	private ActorService	actorService;
+	private ActorService actorService;
 
 	@Autowired
-	private MessageService	messageService;
-
+	private MessageService messageService;
 
 	// Display
 
@@ -72,7 +70,9 @@ public class ParadeController extends AbstractController {
 	// List
 
 	@RequestMapping(value = "/member,brotherhood/list")
-	public ModelAndView list(@RequestParam(required = false) final Integer memberId, @RequestParam(required = false) final Integer brotherhoodId) {
+	public ModelAndView list(
+			@RequestParam(required = false) final Integer memberId,
+			@RequestParam(required = false) final Integer brotherhoodId) {
 		ModelAndView result;
 		Collection<Parade> parades;
 		Actor principal;
@@ -81,7 +81,8 @@ public class ParadeController extends AbstractController {
 
 		try {
 			principal = this.actorService.findByPrincipal();
-			Assert.isTrue(!this.actorService.checkAuthority(principal, "ADMINISTRATOR"));
+			Assert.isTrue(!this.actorService.checkAuthority(principal,
+					"ADMINISTRATOR"));
 
 			permission = true;
 
@@ -89,21 +90,26 @@ public class ParadeController extends AbstractController {
 
 			if (this.actorService.checkAuthority(principal, "BROTHERHOOD")) {
 
-				parades = this.paradeService.findParadesByBrotherhoodId(principal.getId());
+				parades = this.paradeService
+						.findParadesByBrotherhoodId(principal.getId());
 
-				final String requestURI = "parade/member,brotherhood/list.do?brotherhoodId=" + principal.getId();
+				final String requestURI = "parade/member,brotherhood/list.do?brotherhoodId="
+						+ principal.getId();
 				result = new ModelAndView("parade/list");
 				result.addObject("requestURI", requestURI);
 				result.addObject("parades", parades);
+				result.addObject("permission", permission);
 
 			} else {
 
 				Collection<Parade> toApply;
 
-				parades = this.paradeService.findAcceptedParadesByMemberId(principal.getId());
+				parades = this.paradeService
+						.findAcceptedParadesByMemberId(principal.getId());
 				toApply = this.paradeService.paradesToApply(principal.getId());
 
-				final String requestURI = "parade/member,brotherhood/list.do?memberId=" + principal.getId();
+				final String requestURI = "parade/member,brotherhood/list.do?memberId="
+						+ principal.getId();
 				result = new ModelAndView("parade/list");
 				result.addObject("requestURI", requestURI);
 				result.addObject("parades", parades);
@@ -137,8 +143,10 @@ public class ParadeController extends AbstractController {
 			Assert.isTrue(principal.getId() == chapterId);
 			permission = true;
 
-			parades = this.paradeService.findParadesByAres(principal.getZone().getId());
-			requestURI = "parade/member,brotherhood/list.do?brotherhoodId=" + chapterId;
+			parades = this.paradeService.findParadesByAres(principal.getZone()
+					.getId());
+			requestURI = "parade/member,brotherhood/list.do?brotherhoodId="
+					+ chapterId;
 
 			result = new ModelAndView("chapter/listparade");
 			result.addObject("requestURI", requestURI);
@@ -163,7 +171,8 @@ public class ParadeController extends AbstractController {
 
 		try {
 			principal = this.actorService.findByPrincipal();
-			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+			Assert.isTrue(this.actorService.checkAuthority(principal,
+					"BROTHERHOOD"));
 
 			parade = this.paradeService.create();
 
@@ -192,7 +201,8 @@ public class ParadeController extends AbstractController {
 
 		try {
 			principal = this.actorService.findByPrincipal();
-			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+			Assert.isTrue(this.actorService.checkAuthority(principal,
+					"BROTHERHOOD"));
 
 			parade = this.paradeService.findOne(paradeId);
 			Assert.notNull(parade);
@@ -326,7 +336,8 @@ public class ParadeController extends AbstractController {
 
 				result = new ModelAndView("redirect:member,brotherhood/list.do");
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(parade, "march.commit.error");
+				result = this.createEditModelAndView(parade,
+						"march.commit.error");
 			}
 		return result;
 	}
@@ -340,21 +351,26 @@ public class ParadeController extends AbstractController {
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final Parade parade, final String messageCode) {
+	protected ModelAndView createEditModelAndView(final Parade parade,
+			final String messageCode) {
 		final ModelAndView result;
 		Actor principal;
 		boolean isPrincipal = false;
 		Collection<Platform> platforms;
 
 		principal = this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"), "not.allowed");
+		Assert.isTrue(
+				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
+				"not.allowed");
 
 		final Brotherhood actorBrother = (Brotherhood) principal;
 
-		if (parade.getId() != 0 && parade.getBrotherhood().getId() == principal.getId())
+		if (parade.getId() != 0
+				&& parade.getBrotherhood().getId() == principal.getId())
 			isPrincipal = true;
 
-		platforms = this.platformService.findPlatformsByBrotherhoodId(principal.getId());
+		platforms = this.platformService.findPlatformsByBrotherhoodId(principal
+				.getId());
 
 		result = new ModelAndView("parade/edit");
 		result.addObject("parade", parade);
@@ -373,7 +389,8 @@ public class ParadeController extends AbstractController {
 		Boolean error;
 		try {
 			parade = this.paradeService.copyParade(paradeId);
-			result = new ModelAndView("redirect:/parade/display.do?paradeId=" + parade.getId());
+			result = new ModelAndView("redirect:/parade/display.do?paradeId="
+					+ parade.getId());
 		} catch (final IllegalArgumentException oops) {
 			result = new ModelAndView("misc/403");
 		} catch (final Throwable oopsie) {

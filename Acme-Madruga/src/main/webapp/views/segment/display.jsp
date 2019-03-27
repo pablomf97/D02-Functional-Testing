@@ -27,38 +27,40 @@
 
 			<table class="displayStyle">
 				<tr>
-					<td><strong> <spring:message code="segment.expectedTimeOrigin" />
-							:
+					<td><strong> <spring:message
+								code="segment.expectedTimeOrigin" /> :
 					</strong></td>
 					<td><jstl:out value="${segment.expectedTimeOrigin}" /></td>
 				</tr>
 
 				<tr>
-					<td><strong> <spring:message code="segment.expectedTimeDestination" />
-							:
+					<td><strong> <spring:message
+								code="segment.expectedTimeDestination" /> :
 					</strong></td>
 					<td><jstl:out value="${segment.expectedTimeDestination}" /></td>
 				</tr>
 
 				<tr>
-					<td><strong> <spring:message
-								code="segment.parade" /> :
+					<td><strong> <spring:message code="segment.parade" />
+							:
 					</strong></td>
 					<td><jstl:out value="${segment.parade.title}" /></td>
 				</tr>
 
 				<tr>
-					<td><strong> <spring:message
-								code="segment.origin" /> :
+					<td><strong> <spring:message code="segment.origin" />
+							:
 					</strong></td>
-					<td><jstl:out value="${segment.originLatitude }, ${segment.originLongitude } " /></td>
+					<td><jstl:out
+							value="${segment.originLatitude }, ${segment.originLongitude } " /></td>
 				</tr>
 
 				<tr>
 					<td><strong> <spring:message
 								code="segment.destination" /> :
 					</strong></td>
-					<td><jstl:out value="${segment.destinationLatitude }, ${segment.destinationLongitude } " /></td>
+					<td><jstl:out
+							value="${segment.destinationLatitude }, ${segment.destinationLongitude } " /></td>
 				</tr>
 
 			</table>
@@ -83,39 +85,41 @@
 			<jstl:when test="${!segment.parade.isDraft}">
 				<table class="displayStyle">
 					<tr>
-					<td><strong> <spring:message code="segment.expectedTimeOrigin" />
-							:
-					</strong></td>
-					<td><jstl:out value="${segment.expectedTimeOrigin}" /></td>
-				</tr>
+						<td><strong> <spring:message
+									code="segment.expectedTimeOrigin" /> :
+						</strong></td>
+						<td><jstl:out value="${segment.expectedTimeOrigin}" /></td>
+					</tr>
 
-				<tr>
-					<td><strong> <spring:message code="segment.expectedTimeDestination" />
-							:
-					</strong></td>
-					<td><jstl:out value="${segment.expectedTimeDestination}" /></td>
-				</tr>
+					<tr>
+						<td><strong> <spring:message
+									code="segment.expectedTimeDestination" /> :
+						</strong></td>
+						<td><jstl:out value="${segment.expectedTimeDestination}" /></td>
+					</tr>
 
-				<tr>
-					<td><strong> <spring:message
-								code="segment.parade" /> :
-					</strong></td>
-					<td><jstl:out value="${segment.parade.title}" /></td>
-				</tr>
+					<tr>
+						<td><strong> <spring:message code="segment.parade" />
+								:
+						</strong></td>
+						<td><jstl:out value="${segment.parade.title}" /></td>
+					</tr>
 
-				<tr>
-					<td><strong> <spring:message
-								code="segment.origin" /> :
-					</strong></td>
-					<td><jstl:out value="${row.originLatitude }, ${row.originLongitude } "/></td>
-				</tr>
+					<tr>
+						<td><strong> <spring:message code="segment.origin" />
+								:
+						</strong></td>
+						<td><jstl:out
+								value="${segment.originLatitude }, ${segment.originLongitude } " /></td>
+					</tr>
 
-				<tr>
-					<td><strong> <spring:message
-								code="segment.destination" /> :
-					</strong></td>
-					<td><jstl:out value="${row.destinationLatitude }, ${row.destinationLongitude } "/></td>
-				</tr>
+					<tr>
+						<td><strong> <spring:message
+									code="segment.destination" /> :
+						</strong></td>
+						<td><jstl:out
+								value="${segment.destinationLatitude }, ${segment.destinationLongitude } " /></td>
+					</tr>
 
 				</table>
 			</jstl:when>
