@@ -11,7 +11,7 @@
 
 <jstl:choose>
 	<jstl:when test="${isPrincipal && parade.status == 'SUBMITTED'}">
-		<form:form action="procession/rejectb.do" modelAttribute="parade"
+		<form:form action="parade/rejectb.do" modelAttribute="parade"
 			id="form">
 			<fieldset>
 				<br>

@@ -1,3 +1,4 @@
+
 package controllers;
 
 import java.util.Collection;
@@ -31,42 +32,43 @@ public class DashboardAdministratorController extends AbstractController {
 	// Services
 
 	@Autowired
-	private MemberService memberService;
+	private MemberService			memberService;
 
 	@Autowired
-	private BrotherhoodService brotherhoodService;
+	private BrotherhoodService		brotherhoodService;
 
 	@Autowired
-	private MarchService marchService;
+	private MarchService			marchService;
 
 	@Autowired
-	private ParadeService processionService;
+	private ParadeService			paradeService;
 
 	@Autowired
-	private PositionService positionService;
+	private PositionService			positionService;
 
 	@Autowired
-	private FinderService finderService;
+	private FinderService			finderService;
 
 	@Autowired
-	private InceptionRecordService inceptionRecordService;
+	private InceptionRecordService	inceptionRecordService;
 
 	@Autowired
-	private ChapterService chapterService;
+	private ChapterService			chapterService;
+
 
 	// Display
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
-	public ModelAndView display(Locale locale) {
+	public ModelAndView display(final Locale locale) {
 
 		final ModelAndView result;
-		Collection<Member> members = this.memberService.findAll();
-		Collection<Brotherhood> bros = this.brotherhoodService.findAll();
-		Collection<Parade> processions;
-		processions = this.processionService.findAll();
-		Collection<March> marchs = this.marchService.findAll();
+		final Collection<Member> members = this.memberService.findAll();
+		final Collection<Brotherhood> bros = this.brotherhoodService.findAll();
+		Collection<Parade> parades;
+		parades = this.paradeService.findAll();
+		final Collection<March> marchs = this.marchService.findAll();
 
-		Collection<Finder> finders = this.finderService.findAll();
+		final Collection<Finder> finders = this.finderService.findAll();
 
 		Collection<Position> positions;
 		positions = this.positionService.findAll();
@@ -83,14 +85,14 @@ public class DashboardAdministratorController extends AbstractController {
 		Double ratioApprovedRequests;
 		Double ratioRejectedRequests;
 		Double ratioPendingRequests;
-		Double[] ratioApprovedRequestsInAProcession;
-		Double[] ratioRejectedInAProcession;
-		Double[] ratioPendingInAProcession;
+		Double[] ratioApprovedRequestsInAparade;
+		Double[] ratioRejectedInAparade;
+		Double[] ratioPendingInAparade;
 
 		// Integer[] histogram;
 		Collection<Integer> countPositions;
 		countPositions = this.positionService.countPositions();
-		Collection<Parade> earlyProcessions;
+		Collection<Parade> earlyparades;
 		Collection<String> nameEsPositions;
 		Collection<String> nameEnPositions;
 
@@ -114,19 +116,14 @@ public class DashboardAdministratorController extends AbstractController {
 
 		maxBrotherhoodPerArea = this.brotherhoodService.maxBrotherhoodPerArea();
 		minBrotherhoodPerArea = this.brotherhoodService.minBrotherhoodPerArea();
-		ratioBrotherhoodsPerArea = this.brotherhoodService
-				.ratioBrotherhoodsPerArea();
-		countBrotherhoodsPerArea = this.brotherhoodService
-				.countBrotherhoodsPerArea();
-		stdevBrotherhoodPerArea = this.brotherhoodService
-				.stdevBrotherhoodPerArea();
+		ratioBrotherhoodsPerArea = this.brotherhoodService.ratioBrotherhoodsPerArea();
+		countBrotherhoodsPerArea = this.brotherhoodService.countBrotherhoodsPerArea();
+		stdevBrotherhoodPerArea = this.brotherhoodService.stdevBrotherhoodPerArea();
 
-		averageMemberPerBrotherhood = this.memberService
-				.averageMemberPerBrotherhood();
+		averageMemberPerBrotherhood = this.memberService.averageMemberPerBrotherhood();
 		minMemberPerBrotherhood = this.memberService.minMemberPerBrotherhood();
 		maxMemberPerBrotherhood = this.memberService.maxMemberPerBrotherhood();
-		stdevMemberPerBrotherhood = this.memberService
-				.stdevMembersPerBrotherhood();
+		stdevMemberPerBrotherhood = this.memberService.stdevMembersPerBrotherhood();
 		acceptedMembers = this.memberService.acceptedMembers();
 
 		largestBrotherhood = this.brotherhoodService.largestBrotherhood();
@@ -135,29 +132,20 @@ public class DashboardAdministratorController extends AbstractController {
 		ratioApprovedRequests = this.marchService.ratioApprovedRequests();
 		ratioRejectedRequests = this.marchService.ratioRejectedRequests();
 		ratioPendingRequests = this.marchService.ratioPendingRequests();
-		ratioApprovedRequestsInAProcession = this.marchService
-				.ratioApprovedInAParade();
-		ratioRejectedInAProcession = this.marchService
-				.ratioRejectedInAParade();
-		ratioPendingInAProcession = this.marchService
-				.ratioPendingInAParade();
+		ratioApprovedRequestsInAparade = this.marchService.ratioApprovedInAParade();
+		ratioRejectedInAparade = this.marchService.ratioRejectedInAParade();
+		ratioPendingInAparade = this.marchService.ratioPendingInAParade();
 
-		earlyProcessions = this.processionService.findEarlyParades();
+		earlyparades = this.paradeService.findEarlyParades();
 
 		// histogram = this.positionService.histogram();
 
-		Double minRecordsPerHistory = this.inceptionRecordService
-				.minRecordsPerHistory();
-		Double maxRecordsPerHistory = this.inceptionRecordService
-				.maxRecordsPerHistory();
-		Double avgRecordsPerHistory = this.inceptionRecordService
-				.avgRecordsPerHistory();
-		Double stedvRecordsPerHistory = this.inceptionRecordService
-				.stedvRecordsPerHistory();
-		Collection<Brotherhood> largerBrosthanAvg = this.inceptionRecordService
-				.largerBrosthanAvg();
-		String getLargestBrotherhood = this.inceptionRecordService
-				.getLargestBrotherhood();
+		final Double minRecordsPerHistory = this.inceptionRecordService.minRecordsPerHistory();
+		final Double maxRecordsPerHistory = this.inceptionRecordService.maxRecordsPerHistory();
+		final Double avgRecordsPerHistory = this.inceptionRecordService.avgRecordsPerHistory();
+		final Double stedvRecordsPerHistory = this.inceptionRecordService.stedvRecordsPerHistory();
+		final Collection<Brotherhood> largerBrosthanAvg = this.inceptionRecordService.largerBrosthanAvg();
+		final String getLargestBrotherhood = this.inceptionRecordService.getLargestBrotherhood();
 
 		result = new ModelAndView("administrator/statistics");
 
@@ -179,16 +167,14 @@ public class DashboardAdministratorController extends AbstractController {
 		// result.addObject("histogram", histogram);
 		result.addObject("countPositions", countPositions);
 
-		result.addObject("earlyProcessions", earlyProcessions);
+		result.addObject("earlyparades", earlyparades);
 
 		result.addObject("ratioApprovedRequests", ratioApprovedRequests);
 		result.addObject("ratioRejectedRequests", ratioRejectedRequests);
 		result.addObject("ratioPendingRequests", ratioPendingRequests);
-		result.addObject("ratioApprovedProcession",
-				ratioApprovedRequestsInAProcession);
-		result.addObject("ratioRejectedInAProcession",
-				ratioRejectedInAProcession);
-		result.addObject("ratioPendingInAProcession", ratioPendingInAProcession);
+		result.addObject("ratioApprovedparade", ratioApprovedRequestsInAparade);
+		result.addObject("ratioRejectedInAparade", ratioRejectedInAparade);
+		result.addObject("ratioPendingInAparade", ratioPendingInAparade);
 
 		result.addObject("largestBrotherhood", largestBrotherhood);
 		result.addObject("smallestBrotherhood", smallestBrotherhood);
@@ -196,8 +182,7 @@ public class DashboardAdministratorController extends AbstractController {
 		result.addObject("acceptedMembers", acceptedMembers);
 		result.addObject("maxMemberPerBrotherhood", maxMemberPerBrotherhood);
 		result.addObject("minMemberPerBrotherhood", minMemberPerBrotherhood);
-		result.addObject("averageMemberPerBrotherhood",
-				averageMemberPerBrotherhood);
+		result.addObject("averageMemberPerBrotherhood", averageMemberPerBrotherhood);
 		result.addObject("stdevMemberPerBrotherhood", stdevMemberPerBrotherhood);
 
 		result.addObject("statsFinder", statsFinder);
@@ -208,19 +193,14 @@ public class DashboardAdministratorController extends AbstractController {
 		result.addObject("ratioBrotherhoodsPerArea", ratioBrotherhoodsPerArea);
 		result.addObject("countBrotherhoodsPerArea", countBrotherhoodsPerArea);
 
-		result.addObject("processions", processions.size());
+		result.addObject("parades", parades.size());
 		result.addObject("language", language);
 
-		result.addObject("ratioAreasNotManaged",
-				this.chapterService.ratioAreasNotManaged());
-		result.addObject("paradeChapterStatistics",
-				this.chapterService.paradeChapterStatistics());
-		result.addObject("10percentMore",
-				this.chapterService.chapter10percentMore());
-		result.addObject("ratioDraftVsFinal",
-				this.processionService.ratioDraftVsFinal());
-		result.addObject("ratioFinalModeGroupedByStatus",
-				this.processionService.ratioFinalModeGroupedByStatus());
+		result.addObject("ratioAreasNotManaged", this.chapterService.ratioAreasNotManaged());
+		result.addObject("paradeChapterStatistics", this.chapterService.paradeChapterStatistics());
+		result.addObject("10percentMore", this.chapterService.chapter10percentMore());
+		result.addObject("ratioDraftVsFinal", this.paradeService.ratioDraftVsFinal());
+		result.addObject("ratioFinalModeGroupedByStatus", this.paradeService.ratioFinalModeGroupedByStatus());
 
 		result.addObject("requestURI", "statistics/administrator/display.do");
 		return result;

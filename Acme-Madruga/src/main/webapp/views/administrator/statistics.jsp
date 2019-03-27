@@ -156,12 +156,12 @@
 				<td><spring:message code="administrator.requests.pending" /></td>
 				<td style="text-align: right">${ratioPendingRequests}</td>
 			</tr>
-			<jstl:if test="${not empty processions}">
+			<jstl:if test="${not empty parades}">
 				<tr>
 					<td><spring:message
-							code="administrator.requests.approved.procession" /></td>
-					<jstl:forEach var="i" begin="0" end="${processions}">
-						<td style="text-align: right">${ratioApprovedProcession[i]}</td>
+							code="administrator.requests.approved.parade" /></td>
+					<jstl:forEach var="i" begin="0" end="${parades}">
+						<td style="text-align: right">${ratioApprovedparade[i]}</td>
 					</jstl:forEach>
 
 				</tr>
@@ -169,34 +169,34 @@
 
 				<tr>
 					<td><spring:message
-							code="administrator.requests.rejected.procession" /></td>
-					<jstl:forEach var="i" begin="0" end="${processions}">
-						<td style="text-align: right">${ratioRejectedInAProcession[i]}</td>
+							code="administrator.requests.rejected.parade" /></td>
+					<jstl:forEach var="i" begin="0" end="${parades}">
+						<td style="text-align: right">${ratioRejectedInAparade[i]}</td>
 					</jstl:forEach>
 
 				</tr>
 
 				<tr>
 					<td><spring:message
-							code="administrator.requests.pending.procession" /></td>
-					<jstl:forEach var="i" begin="0" end="${processions}">
-						<td style="text-align: right">${ratioPendingInAProcession[i]}</td>
+							code="administrator.requests.pending.parade" /></td>
+					<jstl:forEach var="i" begin="0" end="${parades}">
+						<td style="text-align: right">${ratioPendingInAparade[i]}</td>
 					</jstl:forEach>
 
 				</tr>
 			</jstl:if>
 		</table>
 	</jstl:if>
-	<jstl:if test="${not empty earlyProcessions}">
+	<jstl:if test="${not empty earlyparades}">
 		<table class="displayStyle" style="width: 50%">
 			<tr>
 				<th colspan="2"><spring:message
-						code="administrator.processions.statistics" /></th>
+						code="administrator.parades.statistics" /></th>
 			</tr>
 
 			<tr>
-				<td><spring:message code="administrator.early.processions" /></td>
-				<jstl:forEach var="p" items="${earlyProcessions}">
+				<td><spring:message code="administrator.early.parades" /></td>
+				<jstl:forEach var="p" items="${earlyparades}">
 					<td style="text-align: right"><jstl:out value="${p.title}" /></td>
 					<br />
 				</jstl:forEach>

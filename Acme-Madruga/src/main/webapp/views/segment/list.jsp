@@ -13,8 +13,6 @@
 <display:table pagesize="5" class="displaytag" name="segments"
 	requestURI="segment/list.do" id="row">
 
-
-
 	<!-- Attributes-->
 
 	<display:column titleKey="segment.expectedTimeOrigin" sortable="true">
@@ -26,11 +24,11 @@
 	</display:column>
 
 	<display:column titleKey="segment.origin">
-		<jstl:out value="${row.origin }"></jstl:out>
+		<jstl:out value="${row.originLatitude }, ${row.originLongitude } "></jstl:out>
 	</display:column>
 
-	<display:column titleKey="segment.destination" sortable="true">
-		<jstl:out value="${row.destination }"></jstl:out>
+	<display:column titleKey="segment.destination">
+		<jstl:out value="${row.destinationLatitude }, ${row.destinationLongitude } "></jstl:out>
 	</display:column>
 	
 	<display:column titleKey="segment.parade" sortable="true">

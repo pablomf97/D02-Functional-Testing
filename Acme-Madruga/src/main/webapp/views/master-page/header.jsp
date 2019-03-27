@@ -101,7 +101,7 @@
 				</ul></li>
 
 
-			<li><a class="fNiv" href="march/member,brotherhood/list.do"><spring:message
+			<li><a class="fNiv"><spring:message
 						code="master.page.member.march" /></a>
 				<ul>
 					<li class="arrow"></li>
@@ -173,11 +173,8 @@
 
 			<li><a class="fNiv" href="brotherhood/list.do"><spring:message
 						code="master.page.administrator.brotherhoods" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="brotherhood/members/list.do"><spring:message
-								code="master.page.brotherhood.members.list" /></a></li>
-				</ul></li>
+
+				</li>
 
 
 		</security:authorize>
@@ -186,11 +183,7 @@
 
 			<li><a class="fNiv" href="brotherhood/list.do"><spring:message
 						code="master.page.administrator.brotherhoods" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="brotherhood/members/list.do"><spring:message
-								code="master.page.brotherhood.members.list" /></a></li>
-				</ul></li>
+			</li>
 
 
 			<li><a class="fNiv"> <spring:message
@@ -203,7 +196,7 @@
 								code="master.page.profile.view" /></a></li>
 					<li><a href="actor/edit.do"><spring:message
 								code="master.page.profile.edit" /></a></li>
-					<li><a href="box/actor/list.do"><spring:message
+					<li><a href="messagebox/list.do"><spring:message
 								code="master.page.profile.message.boxes" /></a></li>
 					<li><a href="messagebox/create.do"><spring:message
 								code="master.page.box.new" /></a></li>
@@ -215,11 +208,11 @@
 	</ul>
 </div>
 
-<security:authorize access="isAuthenticated()">
+<%-- <security:authorize access="isAuthenticated()">
 	<jstl:if test="${pageContext.response.locale.language == 'es'}">
 		<h2>
 			<strong style="color: red;"><jstl:out
-					value="${breachNotification.get('Espaï¿½ol')}"></jstl:out><br /> </strong>
+					value="${breachNotification.get('Español')}"></jstl:out><br /> </strong>
 		</h2>
 	</jstl:if>
 	<jstl:if test="${pageContext.response.locale.language == 'en'}">
@@ -230,4 +223,4 @@
 		</h2>
 	</jstl:if>
 </security:authorize>
-
+ --%>
