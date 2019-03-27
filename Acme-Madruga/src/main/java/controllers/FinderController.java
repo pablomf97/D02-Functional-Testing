@@ -1,3 +1,4 @@
+
 package controllers;
 
 import java.util.Collection;
@@ -26,16 +27,18 @@ import domain.Parade;
 @Controller
 @RequestMapping("/finder/member")
 public class FinderController extends AbstractController {
+
 	// Services
 
 	@Autowired
-	private FinderService finderService;
+	private FinderService				finderService;
 
 	@Autowired
-	private MemberService memberService;
+	private MemberService				memberService;
 
 	@Autowired
-	private SystemConfigurationService systemConfigurationService;
+	private SystemConfigurationService	systemConfigurationService;
+
 
 	// Constructors
 
@@ -55,10 +58,10 @@ public class FinderController extends AbstractController {
 		principal = this.memberService.findByPrincipal();
 		finder = principal.getFinder();
 
-		Collection<Parade> processions = finder.getSearchResults();
+		final Collection<Parade> parades = finder.getSearchResults();
 
 		result = new ModelAndView("finder/list");
-		result.addObject("processions", processions);
+		result.addObject("parades", parades);
 		result.addObject("requestUri", "finder/member/list.do");
 
 		return result;
@@ -76,21 +79,17 @@ public class FinderController extends AbstractController {
 
 		finder = principal.getFinder();
 		if (finder.getSearchMoment() != null) {
-			int timeChachedFind = this.systemConfigurationService
-					.findMySystemConfiguration().getTimeResultsCached();
-			maxLivedMoment = DateUtils.addHours(maxLivedMoment,
-					-timeChachedFind);
+			final int timeChachedFind = this.systemConfigurationService.findMySystemConfiguration().getTimeResultsCached();
+			maxLivedMoment = DateUtils.addHours(maxLivedMoment, -timeChachedFind);
 
-			if (finder.getSearchMoment().before(maxLivedMoment)) {
+			if (finder.getSearchMoment().before(maxLivedMoment))
 				this.finderService.deleteExpiredFinder(finder);
-			}
 		}
 
 		result = new ModelAndView("finder/search");
 		result.addObject("finder", finder);
-		if (!finder.getSearchResults().isEmpty()) {
-			result.addObject("processions", finder.getSearchResults());
-		}
+		if (!finder.getSearchResults().isEmpty())
+			result.addObject("parades", finder.getSearchResults());
 		result.addObject("requestUri", "finder/member/search.do");
 		return result;
 	}
@@ -99,7 +98,7 @@ public class FinderController extends AbstractController {
 	@RequestMapping(value = "/search", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(final Finder finder, final BindingResult binding) {
 		ModelAndView result;
-		Member principal = this.memberService.findByPrincipal();
+		final Member principal = this.memberService.findByPrincipal();
 
 		try {
 			Assert.isTrue(principal.getFinder().getId() == finder.getId());
@@ -113,10 +112,9 @@ public class FinderController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.POST, params = "save")
-	public ModelAndView search(@Valid final Finder finder,
-			final BindingResult binding) {
+	public ModelAndView search(@Valid final Finder finder, final BindingResult binding) {
 		ModelAndView result;
-		Member principal = this.memberService.findByPrincipal();
+		final Member principal = this.memberService.findByPrincipal();
 
 		if (binding.hasErrors()) {
 			final List<ObjectError> errors = binding.getAllErrors();
@@ -136,8 +134,7 @@ public class FinderController extends AbstractController {
 				System.out.println(oops.getClass());
 				System.out.println(oops.getCause());
 
-				result = this.createEditModelAndView(finder,
-						"finder.commit.error");
+				result = this.createEditModelAndView(finder, "finder.commit.error");
 
 			}
 
@@ -154,16 +151,15 @@ public class FinderController extends AbstractController {
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final Finder finder,
-			final String messageCode) {
+	protected ModelAndView createEditModelAndView(final Finder finder, final String messageCode) {
 		ModelAndView result;
-		final Collection<Parade> processions;
-		processions = finder.getSearchResults();
+		final Collection<Parade> parades;
+		parades = finder.getSearchResults();
 
 		result = new ModelAndView("finder/search");
 		result.addObject("message", messageCode);
 		result.addObject("finder", finder);
-		result.addObject("processions", processions);
+		result.addObject("parades", parades);
 
 		return result;
 	}

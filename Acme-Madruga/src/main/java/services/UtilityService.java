@@ -1,3 +1,4 @@
+
 package services;
 
 import java.security.SecureRandom;
@@ -23,16 +24,17 @@ public class UtilityService {
 	// Supporting Services ------------------------------------
 
 	@Autowired
-	private ParadeService processionService;
+	private ParadeService				paradeService;
 
 	@Autowired
-	private MessageService messageService;
+	private MessageService				messageService;
 
 	@Autowired
-	private ActorService actorService;
+	private ActorService				actorService;
 
 	@Autowired
-	private SystemConfigurationService systemConfigurationService;
+	private SystemConfigurationService	systemConfigurationService;
+
 
 	// Utility methods ----------------------------------------
 
@@ -47,20 +49,18 @@ public class UtilityService {
 		year = String.valueOf(date.get(Calendar.YEAR));
 		year = year.substring(year.length() - 2, year.length());
 		month = String.valueOf(date.get(Calendar.MONTH) + 1);
-		if (month.length() == 1) {
+		if (month.length() == 1)
 			month = "0" + month;
-		}
 		day = String.valueOf(date.get(Calendar.DAY_OF_MONTH));
-		if (day.length() == 1) {
+		if (day.length() == 1)
 			day = "0" + day;
-		}
 
 		while (unique == false) {
 			alphaNum = this.randomString();
 			todayDate = year + month + day;
 			uniqueTicker = todayDate + "-" + alphaNum;
-			for (final Parade procession : this.processionService.findAll())
-				if (procession.getTicker().equals(uniqueTicker))
+			for (final Parade parade : this.paradeService.findAll())
+				if (parade.getTicker().equals(uniqueTicker))
 					continue;
 			unique = true;
 		}
@@ -76,37 +76,31 @@ public class UtilityService {
 		final StringBuilder stringBuilder = new StringBuilder(length);
 
 		for (int i = 0; i < length; i++)
-			stringBuilder.append(possibleChars.charAt(rnd.nextInt(possibleChars
-					.length())));
+			stringBuilder.append(possibleChars.charAt(rnd.nextInt(possibleChars.length())));
 		return stringBuilder.toString();
 
 	}
 
 	public Integer checkSpammers() {
-		Collection<Actor> allActors = this.actorService.findAll();
+		final Collection<Actor> allActors = this.actorService.findAll();
 		Integer numMessages = 0;
 		Integer spammers = 0;
 
-		for (Actor actor : allActors) {
-			numMessages = this.messageService.findNumberMessagesByActorId(actor
-					.getId());
-			if ((this.messageService.findNumberMessagesSpamByActorId(actor
-					.getId()) / ((numMessages != 0) ? numMessages : 1) >= 0.1)) {
+		for (final Actor actor : allActors) {
+			numMessages = this.messageService.findNumberMessagesByActorId(actor.getId());
+			if ((this.messageService.findNumberMessagesSpamByActorId(actor.getId()) / ((numMessages != 0) ? numMessages : 1) >= 0.1)) {
 				actor.setSpammer(true);
 				spammers++;
-			} else {
+			} else
 				actor.setSpammer(false);
-			}
 		}
 		return spammers;
 	}
 
 	public List<String> getNegativeWords() {
 
-		final String neg = this.systemConfigurationService
-				.findMySystemConfiguration().getNegativeWords();
-		final List<String> listNegWords = new ArrayList<String>(
-				Arrays.asList(neg.split(",")));
+		final String neg = this.systemConfigurationService.findMySystemConfiguration().getNegativeWords();
+		final List<String> listNegWords = new ArrayList<String>(Arrays.asList(neg.split(",")));
 
 		return listNegWords;
 
@@ -114,17 +108,14 @@ public class UtilityService {
 
 	public List<String> getPossitiveWords() {
 
-		final String pos = this.systemConfigurationService
-				.findMySystemConfiguration().getPossitiveWords();
-		final List<String> listPosWords = new ArrayList<String>(
-				Arrays.asList(pos.split(",")));
+		final String pos = this.systemConfigurationService.findMySystemConfiguration().getPossitiveWords();
+		final List<String> listPosWords = new ArrayList<String>(Arrays.asList(pos.split(",")));
 
 		return listPosWords;
 
 	}
 
-	public Double getNumberNegativeWords(final String s,
-			List<String> negativeWords) {
+	public Double getNumberNegativeWords(final String s, final List<String> negativeWords) {
 
 		Double res = 0.;
 
@@ -137,8 +128,7 @@ public class UtilityService {
 		return res;
 	}
 
-	public Double getNumberPossitiveWords(final String s,
-			List<String> possitiveWords) {
+	public Double getNumberPossitiveWords(final String s, final List<String> possitiveWords) {
 
 		Double res = 0.;
 
@@ -151,49 +141,41 @@ public class UtilityService {
 		return res;
 	}
 
-	public boolean isSpam(List<String> atributosAComprobar) {
+	public boolean isSpam(final List<String> atributosAComprobar) {
 		boolean containsSpam = false;
-		String[] spamWords = this.systemConfigurationService
-				.findMySystemConfiguration().getSpamWords().split(",");
-		for (int i = 0; i < atributosAComprobar.size(); i++) {
+		final String[] spamWords = this.systemConfigurationService.findMySystemConfiguration().getSpamWords().split(",");
+		for (int i = 0; i < atributosAComprobar.size(); i++)
 			if (containsSpam == false) {
-				for (String spamWord : spamWords) {
-					if (atributosAComprobar.get(i).toLowerCase()
-							.contains(spamWord.toLowerCase())) {
+				for (final String spamWord : spamWords)
+					if (atributosAComprobar.get(i).toLowerCase().contains(spamWord.toLowerCase())) {
 						containsSpam = true;
 						break;
 					}
-				}
-			} else {
+			} else
 				break;
-			}
-		}
 		return containsSpam;
 	}
 
 	public void computeScore() {
-		Collection<Actor> allActors = this.actorService.findAll();
-		List<String> possitiveWords = this.getPossitiveWords();
-		List<String> negativeWords = this.getNegativeWords();
+		final Collection<Actor> allActors = this.actorService.findAll();
+		final List<String> possitiveWords = this.getPossitiveWords();
+		final List<String> negativeWords = this.getNegativeWords();
 
-		for (Actor actor : allActors) {
+		for (final Actor actor : allActors) {
 			Double possitive = 0.;
 			Double negative = 0.;
-			Collection<Message> mes = this.messageService
-					.findMessagesByActorId(actor.getId());
-			for (Message message : mes) {
-				String toCheck = message.getSubject() + message.getBody();
-				possitive += this.getNumberPossitiveWords(toCheck,
-						possitiveWords);
+			final Collection<Message> mes = this.messageService.findMessagesByActorId(actor.getId());
+			for (final Message message : mes) {
+				final String toCheck = message.getSubject() + message.getBody();
+				possitive += this.getNumberPossitiveWords(toCheck, possitiveWords);
 				negative += this.getNumberNegativeWords(toCheck, negativeWords);
 			}
-			Double pm = possitive - negative;
+			final Double pm = possitive - negative;
 			if (pm != 0.0) {
-				Double res = pm / (possitive + negative);
+				final Double res = pm / (possitive + negative);
 				actor.setScore(res);
-			} else {
+			} else
 				actor.setScore(0.);
-			}
 
 		}
 	}

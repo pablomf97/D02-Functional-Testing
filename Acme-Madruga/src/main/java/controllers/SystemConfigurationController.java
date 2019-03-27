@@ -1,3 +1,4 @@
+
 package controllers;
 
 import java.util.Map;
@@ -23,10 +24,11 @@ public class SystemConfigurationController extends AbstractController {
 	// Services
 
 	@Autowired
-	private SystemConfigurationService systemConfigurationService;
+	private SystemConfigurationService	systemConfigurationService;
 
 	@Autowired
-	private ActorService actorService;
+	private ActorService				actorService;
+
 
 	// Constructor
 
@@ -53,11 +55,9 @@ public class SystemConfigurationController extends AbstractController {
 
 		try {
 			principal = this.actorService.findByPrincipal();
-			Assert.isTrue(this.actorService.checkAuthority(principal,
-					"ADMINISTRATOR"));
+			Assert.isTrue(this.actorService.checkAuthority(principal, "ADMINISTRATOR"));
 
-			sysConfig = this.systemConfigurationService
-					.findMySystemConfiguration();
+			sysConfig = this.systemConfigurationService.findMySystemConfiguration();
 
 			spamWords = sysConfig.getSpamWords().split(",");
 			negativeWords = sysConfig.getNegativeWords().split(",");
@@ -75,9 +75,9 @@ public class SystemConfigurationController extends AbstractController {
 			res.addObject("welcomeMessage", welcomeMessage);
 			res.addObject("breachNotification", breachNotification);
 
-		} catch (IllegalArgumentException oops) {
+		} catch (final IllegalArgumentException oops) {
 			res = new ModelAndView("misc/403");
-		} catch (Throwable oopsie) {
+		} catch (final Throwable oopsie) {
 			res = new ModelAndView("sysConfig/display");
 			err = true;
 
@@ -90,29 +90,26 @@ public class SystemConfigurationController extends AbstractController {
 	// Editing sysConfig
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET, params = "systemconfigurationID")
-	public ModelAndView edit(@RequestParam int systemconfigurationID) {
+	public ModelAndView edit(@RequestParam final int systemconfigurationID) {
 		ModelAndView res;
 		SystemConfiguration systemConfiguration;
 
-		systemConfiguration = this.systemConfigurationService
-				.findOne(systemconfigurationID);
+		systemConfiguration = this.systemConfigurationService.findOne(systemconfigurationID);
 		Assert.notNull(systemConfiguration);
-		res = createEditModelAndView(systemConfiguration);
+		res = this.createEditModelAndView(systemConfiguration);
 
 		return res;
 	}
 
-	protected ModelAndView createEditModelAndView(
-			SystemConfiguration systemConfiguration) {
+	protected ModelAndView createEditModelAndView(final SystemConfiguration systemConfiguration) {
 		ModelAndView res;
 
-		res = createEditModelAndView(systemConfiguration, null);
+		res = this.createEditModelAndView(systemConfiguration, null);
 
 		return res;
 	}
 
-	protected ModelAndView createEditModelAndView(
-			SystemConfiguration systemConfiguration, String messageCode) {
+	protected ModelAndView createEditModelAndView(final SystemConfiguration systemConfiguration, final String messageCode) {
 		ModelAndView res;
 
 		res = new ModelAndView("sysConfig/edit");
@@ -125,38 +122,28 @@ public class SystemConfigurationController extends AbstractController {
 	// Save
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(SystemConfiguration systemConfiguration,
-			@RequestParam("nameES") String nameES,
-			@RequestParam("nameEN") String nameEN,
-			@RequestParam("nEs") String nEs, @RequestParam("nEn") String nEn,
-			BindingResult binding) {
+	public ModelAndView save(SystemConfiguration systemConfiguration, @RequestParam("nameES") final String nameES, @RequestParam("nameEN") final String nameEN, @RequestParam("nEs") final String nEs, @RequestParam("nEn") final String nEn,
+		final BindingResult binding) {
 		ModelAndView res;
 		String message = null;
 
-		if (binding.hasErrors()) {
-			res = createEditModelAndView(systemConfiguration,
-					binding.toString());
-		} else {
+		if (binding.hasErrors())
+			res = this.createEditModelAndView(systemConfiguration, binding.toString());
+		else
 			try {
-				systemConfiguration = this.systemConfigurationService
-						.reconstruct(systemConfiguration, nameES, nameEN, nEs,
-								nEn, binding);
+				systemConfiguration = this.systemConfigurationService.reconstruct(systemConfiguration, nameES, nameEN, nEs, nEn, binding);
 
 				this.systemConfigurationService.save(systemConfiguration);
 				res = new ModelAndView("redirect:display.do");
-			} catch (Throwable oops) {
-				if (systemConfiguration.getMaxResults() <= 0
-						|| systemConfiguration.getMaxResults() > 100) {
+			} catch (final Throwable oops) {
+				if (systemConfiguration.getMaxResults() <= 0 || systemConfiguration.getMaxResults() > 100)
 					message = "sysconfig.max.results.err";
-				} else if (systemConfiguration.getTimeResultsCached() < 0
-						|| systemConfiguration.getTimeResultsCached() >= 24) {
+				else if (systemConfiguration.getTimeResultsCached() < 0 || systemConfiguration.getTimeResultsCached() >= 24)
 					message = "sysconfig.time.err";
-				} else {
+				else
 					message = "sysconfig.commit.error";
-				}
 				res = this.createEditModelAndView(systemConfiguration, message);
 			}
-		}
 		return res;
 	}
 

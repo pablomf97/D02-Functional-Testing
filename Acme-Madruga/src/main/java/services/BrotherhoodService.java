@@ -23,6 +23,7 @@ import security.LoginService;
 import security.UserAccount;
 import domain.Brotherhood;
 import domain.Enrolment;
+import domain.History;
 import domain.Zone;
 import forms.BrotherhoodForm;
 
@@ -51,6 +52,9 @@ public class BrotherhoodService {
 	@Autowired
 	private ZoneService				zoneService;
 
+	@Autowired
+	private HistoryService			historyService;
+
 
 	/**
 	 * Create a new empty brotherhood
@@ -63,12 +67,15 @@ public class BrotherhoodService {
 		final UserAccount a = this.userAccountService.create();
 
 		final Authority auth = new Authority();
+
+		final History history = this.historyService.create();
+
 		auth.setAuthority(Authority.BROTHERHOOD);
 		a.addAuthority(auth);
 		res.setUserAccount(a);
 		final Date establishmentDate = new Date();
 		res.setEstablishmentDate(establishmentDate);
-
+		res.setHistory(history);
 		return res;
 	}
 
@@ -121,6 +128,9 @@ public class BrotherhoodService {
 			brotherhood.getUserAccount().setPassword(hash);
 			final UserAccount savedAccount = this.userAccountService.save(account);
 			brotherhood.setUserAccount(savedAccount);
+			History x = brotherhood.getHistory();
+			x = this.historyService.save(x);
+			brotherhood.setHistory(x);
 			result = this.brotherhoodRepository.save(brotherhood);
 			this.messageBoxService.initializeDefaultBoxes(result);
 		} else {

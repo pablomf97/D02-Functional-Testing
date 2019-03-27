@@ -70,7 +70,7 @@
 		</a>
 	</display:column>
 
-	<security:authorize access="hasRole('MEMBER')">
+	<security:authorize access="permit">
 
 		<jstl:choose>
 

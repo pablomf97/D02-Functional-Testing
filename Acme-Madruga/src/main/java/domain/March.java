@@ -1,3 +1,4 @@
+
 package domain;
 
 import javax.persistence.Access;
@@ -16,47 +17,48 @@ public class March extends DomainEntity {
 
 	/* Attributes */
 
-	private String status;
-	private Integer row;
-	private Integer col;
-	private String reason;
-	private Member member;
-	private Parade procession;
+	private String	status;
+	private Integer	row;
+	private Integer	col;
+	private String	reason;
+	private Member	member;
+	private Parade	parade;
+
 
 	/* Getters&Setters */
 
 	@NotBlank
 	public String getStatus() {
-		return status;
+		return this.status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(final String status) {
 		this.status = status;
 	}
 
 	@Min(value = 1)
 	public Integer getRow() {
-		return row;
+		return this.row;
 	}
 
-	public void setRow(Integer row) {
+	public void setRow(final Integer row) {
 		this.row = row;
 	}
 
 	@Min(value = 1)
 	public Integer getCol() {
-		return col;
+		return this.col;
 	}
 
-	public void setCol(Integer col) {
+	public void setCol(final Integer col) {
 		this.col = col;
 	}
 
 	public String getReason() {
-		return reason;
+		return this.reason;
 	}
 
-	public void setReason(String reason) {
+	public void setReason(final String reason) {
 		this.reason = reason;
 	}
 
@@ -64,10 +66,10 @@ public class March extends DomainEntity {
 	@NotNull
 	@ManyToOne(optional = false)
 	public Member getMember() {
-		return member;
+		return this.member;
 	}
 
-	public void setMember(Member member) {
+	public void setMember(final Member member) {
 		this.member = member;
 	}
 
@@ -75,11 +77,11 @@ public class March extends DomainEntity {
 	@NotNull
 	@ManyToOne(optional = false)
 	public Parade getParade() {
-		return procession;
+		return this.parade;
 	}
 
-	public void setParade(Parade procession) {
-		this.procession = procession;
+	public void setParade(final Parade parade) {
+		this.parade = parade;
 	}
 
 }

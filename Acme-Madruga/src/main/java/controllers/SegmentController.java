@@ -1,3 +1,4 @@
+
 package controllers;
 
 import java.util.Collection;
@@ -37,7 +38,7 @@ public class SegmentController extends AbstractController {
 	// Display
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
-	public ModelAndView display(@RequestParam int segmentId) {
+	public ModelAndView display(@RequestParam final int segmentId) {
 
 		ModelAndView result = null;
 		Segment segment;
@@ -50,7 +51,7 @@ public class SegmentController extends AbstractController {
 					.getId())
 				isPrincipal = true;
 
-		} catch (Throwable oops) {
+		} catch (final Throwable oops) {
 			segment = this.segmentService.findOne(segmentId);
 
 		}
@@ -58,8 +59,7 @@ public class SegmentController extends AbstractController {
 		result = new ModelAndView("segment/display");
 		result.addObject("segment", segment);
 		result.addObject("isPrincipal", isPrincipal);
-		result.addObject("requestURI", "segment/display.do?segmentId="
-				+ segmentId);
+		result.addObject("requestURI", "segment/display.do?segmentId=" + segmentId);
 		return result;
 
 	}
@@ -71,12 +71,11 @@ public class SegmentController extends AbstractController {
 		Actor principal;
 		Collection<Segment> segments = null;
 		String requestURI;
-		int pId = paradeId;
+		final int pId = paradeId;
 
 		try {
 			principal = this.actorService.findByPrincipal();
-			Assert.isTrue(this.actorService.checkAuthority(principal,
-					"BROTHERHOOD"));
+			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
 			requestURI = "segment/list.do?paradeId=" + paradeId;
 			segments = this.segmentService.findAllSegmentsByParadeId(paradeId);
 
@@ -103,16 +102,15 @@ public class SegmentController extends AbstractController {
 
 		try {
 			principal = this.actorService.findByPrincipal();
-			Assert.isTrue(this.actorService.checkAuthority(principal,
-					"BROTHERHOOD"));
+			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
 
 			segment = this.segmentService.create();
 			par = this.paradeService.findOne(paradeId);
 
 			result = this.createEditModelAndView(segment);
-		} catch (IllegalArgumentException oops) {
+		} catch (final IllegalArgumentException oops) {
 			result = new ModelAndView("misc/403");
-		} catch (Throwable oopsie) {
+		} catch (final Throwable oopsie) {
 
 			result = new ModelAndView(
 					"redirect:/parade/member,brotherhood/list.do");
@@ -135,13 +133,12 @@ public class SegmentController extends AbstractController {
 
 		try {
 			principal = this.actorService.findByPrincipal();
-			Assert.isTrue(this.actorService.checkAuthority(principal,
-					"BROTHERHOOD"));
+			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
 
 			segment = this.segmentService.findOne(segmentId);
 			Assert.notNull(segment);
 			result = this.createEditModelAndView(segment);
-		} catch (IllegalArgumentException oops) {
+		} catch (final IllegalArgumentException oops) {
 			result = new ModelAndView("misc/403");
 		} catch (Throwable oopsie) {
 			result = new ModelAndView(
@@ -198,8 +195,7 @@ public class SegmentController extends AbstractController {
 		} catch (IllegalArgumentException oops) {
 			result = new ModelAndView("misc/403");
 		} catch (final Throwable oops) {
-			result = this.createEditModelAndView(segment,
-					"segment.commit.error");
+			result = this.createEditModelAndView(segment, "segment.commit.error");
 		}
 		return result;
 	}
@@ -213,8 +209,7 @@ public class SegmentController extends AbstractController {
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final Segment segment,
-			final String messageCode) {
+	protected ModelAndView createEditModelAndView(final Segment segment, final String messageCode) {
 		final ModelAndView result;
 		Actor principal;
 		boolean isPrincipal = false;

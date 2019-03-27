@@ -1,3 +1,4 @@
+
 package controllers;
 
 import java.util.Collection;
@@ -24,15 +25,16 @@ public class PlatformController extends AbstractController {
 	// Services
 
 	@Autowired
-	private PlatformService platformService;
+	private PlatformService	platformService;
 
 	@Autowired
-	private ActorService actorService;
+	private ActorService	actorService;
+
 
 	// Display
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
-	public ModelAndView display(@RequestParam int platformId) {
+	public ModelAndView display(@RequestParam final int platformId) {
 
 		ModelAndView result = null;
 		Platform platform;
@@ -44,7 +46,7 @@ public class PlatformController extends AbstractController {
 			if (platform.getBrotherhood().getId() == principal.getId())
 				isPrincipal = true;
 
-		} catch (Throwable oops) {
+		} catch (final Throwable oops) {
 			platform = this.platformService.findOne(platformId);
 
 		}
@@ -52,16 +54,14 @@ public class PlatformController extends AbstractController {
 		result = new ModelAndView("platform/display");
 		result.addObject("platform", platform);
 		result.addObject("isPrincipal", isPrincipal);
-		result.addObject("requestURI", "platform/display.do?platformId="
-				+ platformId);
+		result.addObject("requestURI", "platform/display.do?platformId=" + platformId);
 		return result;
 
 	}
 
 	// List
 	@RequestMapping(value = "/list")
-	public ModelAndView list(
-			@RequestParam(required = false) Integer brotherhoodId) {
+	public ModelAndView list(@RequestParam(required = false) final Integer brotherhoodId) {
 		ModelAndView result = null;
 		Actor principal;
 		Collection<Platform> platforms;
@@ -69,17 +69,14 @@ public class PlatformController extends AbstractController {
 
 		try {
 			principal = this.actorService.findByPrincipal();
-			Assert.isTrue(this.actorService.checkAuthority(principal,
-					"BROTHERHOOD"));
+			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
 			requestURI = "platform/list.do?brotherhoodId=" + principal.getId();
-			platforms = this.platformService
-					.findPlatformsByBrotherhoodId(principal.getId());
+			platforms = this.platformService.findPlatformsByBrotherhoodId(principal.getId());
 
-		} catch (Throwable oops) {
+		} catch (final Throwable oops) {
 
 			requestURI = "platform/list.do?brotherhoodId=" + brotherhoodId;
-			platforms = this.platformService
-					.findPlatformsByBrotherhoodId(brotherhoodId);
+			platforms = this.platformService.findPlatformsByBrotherhoodId(brotherhoodId);
 
 		}
 		result = new ModelAndView("platform/list");
@@ -100,15 +97,14 @@ public class PlatformController extends AbstractController {
 
 		try {
 			principal = this.actorService.findByPrincipal();
-			Assert.isTrue(this.actorService.checkAuthority(principal,
-					"BROTHERHOOD"));
+			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
 
 			platform = this.platformService.create();
 
 			result = this.createEditModelAndView(platform);
-		} catch (IllegalArgumentException oops) {
+		} catch (final IllegalArgumentException oops) {
 			result = new ModelAndView("misc/403");
-		} catch (Throwable oopsie) {
+		} catch (final Throwable oopsie) {
 
 			result = new ModelAndView("platform/list");
 			error = true;
@@ -128,15 +124,14 @@ public class PlatformController extends AbstractController {
 
 		try {
 			principal = this.actorService.findByPrincipal();
-			Assert.isTrue(this.actorService.checkAuthority(principal,
-					"BROTHERHOOD"));
+			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
 
 			platform = this.platformService.findOne(platformId);
 			Assert.notNull(platform);
 			result = this.createEditModelAndView(platform);
-		} catch (IllegalArgumentException oops) {
+		} catch (final IllegalArgumentException oops) {
 			result = new ModelAndView("misc/403");
-		} catch (Throwable oopsie) {
+		} catch (final Throwable oopsie) {
 			result = new ModelAndView("redirect:/enrolment/member/list.do");
 		}
 
@@ -146,20 +141,18 @@ public class PlatformController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(Platform platform, final BindingResult binding) {
 		ModelAndView result;
+		platform = this.platformService.reconstruct(platform, binding);
 
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(platform);
 		else
 			try {
-				platform = this.platformService.reconstruct(platform, binding);
 				this.platformService.save(platform);
-				result = new ModelAndView("redirect:list.do?brotherhoodId="
-						+ platform.getBrotherhood().getId());
-			} catch (IllegalArgumentException oops) {
+				result = new ModelAndView("redirect:list.do?brotherhoodId=" + platform.getBrotherhood().getId());
+			} catch (final IllegalArgumentException oops) {
 				result = new ModelAndView("misc/403");
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(platform,
-						"platform.commit.error");
+				result = this.createEditModelAndView(platform, "platform.commit.error");
 			}
 
 		return result;
@@ -172,12 +165,11 @@ public class PlatformController extends AbstractController {
 
 		try {
 			platform = this.platformService.reconstruct(platform, binding);
-			int brotherhoodId = platform.getBrotherhood().getId();
+			final int brotherhoodId = platform.getBrotherhood().getId();
 
 			this.platformService.delete(platform);
 
-			result = new ModelAndView("redirect:list.do?brotherhoodId="
-					+ brotherhoodId);
+			result = new ModelAndView("redirect:list.do?brotherhoodId=" + brotherhoodId);
 		} catch (final Throwable oops) {
 			result = new ModelAndView("welcome/index");
 
@@ -195,8 +187,7 @@ public class PlatformController extends AbstractController {
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final Platform platform,
-			final String messageCode) {
+	protected ModelAndView createEditModelAndView(final Platform platform, final String messageCode) {
 		final ModelAndView result;
 		Actor principal;
 		boolean isBrotherhood = false;
@@ -204,15 +195,12 @@ public class PlatformController extends AbstractController {
 
 		principal = this.actorService.findByPrincipal();
 
-		Brotherhood actorBrother = (Brotherhood) principal;
+		final Brotherhood actorBrother = (Brotherhood) principal;
 
-		if (this.actorService.checkAuthority(principal, "BROTHERHOOD")) {
-
+		if (this.actorService.checkAuthority(principal, "BROTHERHOOD"))
 			isBrotherhood = true;
-		}
 
-		if (platform.getId() != 0
-				&& platform.getBrotherhood().getId() == principal.getId())
+		if (platform.getId() != 0 && platform.getBrotherhood().getId() == principal.getId())
 			isPrincipal = true;
 
 		result = new ModelAndView("platform/edit");

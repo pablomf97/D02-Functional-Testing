@@ -1,9 +1,8 @@
+
 package controllers;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
-import services.BrotherhoodService;
 import services.HistoryService;
 import services.LinkRecordService;
 import domain.Actor;
@@ -23,50 +21,46 @@ import domain.Brotherhood;
 import domain.History;
 import domain.LinkRecord;
 
-
 @Controller
 @RequestMapping("/linkRecord")
-public class LinkRecordController extends AbstractController{
+public class LinkRecordController extends AbstractController {
 
 	//Services
 
 	@Autowired
-	private HistoryService historyService;
+	private HistoryService		historyService;
 
 	@Autowired
-	private LinkRecordService linkRecordService;
+	private LinkRecordService	linkRecordService;
 
 	@Autowired
-	private ActorService actorService;
+	private ActorService		actorService;
 
-	@Autowired
-	private BrotherhoodService brotherhoodService;
 
 	//Create
-	@RequestMapping(value="/create", method = RequestMethod.GET)
-	public ModelAndView create(){
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView create() {
 		ModelAndView result;
 		Actor principal;
 		LinkRecord linkRecord;
 
-		try{
+		try {
 			principal = this.actorService.findByPrincipal();
 			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
 			linkRecord = this.linkRecordService.create();
 
 			result = this.createEditModelAndView(linkRecord);
 
-		}catch(IllegalArgumentException oops){
+		} catch (final IllegalArgumentException oops) {
 			result = new ModelAndView("misc/403");
 		}
 		return result;
 	}
 
-
 	//Display
 
-	@RequestMapping(value="/display", method = RequestMethod.GET)
-	public ModelAndView display(@RequestParam final int linkRecordId){
+	@RequestMapping(value = "/display", method = RequestMethod.GET)
+	public ModelAndView display(@RequestParam final int linkRecordId) {
 		ModelAndView result;
 		LinkRecord record;
 
@@ -78,13 +72,12 @@ public class LinkRecordController extends AbstractController{
 
 		return result;
 
-
 	}
 
 	//List
 
-	@RequestMapping(value="/list" , method = RequestMethod.GET)
-	public ModelAndView list(@RequestParam final int historyId){
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list(@RequestParam final int historyId) {
 		ModelAndView result;
 		Actor principal;
 		History history;
@@ -94,7 +87,7 @@ public class LinkRecordController extends AbstractController{
 		history = this.historyService.findOne(historyId);
 		Assert.notNull(history);
 
-		try{
+		try {
 			principal = this.actorService.findByPrincipal();
 			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
 
@@ -106,10 +99,10 @@ public class LinkRecordController extends AbstractController{
 			result.addObject("linkRecords", linkRecords);
 			result.addObject("possible", possible);
 			result.addObject("historyId", historyId);
-		}catch(IllegalArgumentException oops){
+		} catch (final IllegalArgumentException oops) {
 			result = new ModelAndView("misc/403");
 
-		}catch(Throwable oopsi){
+		} catch (final Throwable oopsi) {
 			result = new ModelAndView("history/display");
 			possible = false;
 
@@ -121,9 +114,8 @@ public class LinkRecordController extends AbstractController{
 
 	//Edition
 
-
-	@RequestMapping(value="/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int linkRecordId){
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int linkRecordId) {
 		ModelAndView result;
 		LinkRecord linkRecord;
 
@@ -135,41 +127,41 @@ public class LinkRecordController extends AbstractController{
 		return result;
 
 	}
-	@RequestMapping(value="/edit", method = RequestMethod.POST, params= "save")
-	public ModelAndView save(final LinkRecord record, final BindingResult binding){
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(final LinkRecord record, final BindingResult binding) {
 		ModelAndView result;
 		LinkRecord linkRecord;
 
 		linkRecord = this.linkRecordService.reconstruct(record, binding);
 
-		if(binding.hasErrors())
+		if (binding.hasErrors())
 			result = this.createEditModelAndView(linkRecord);
 		else
-			try{
+			try {
 				this.linkRecordService.save(linkRecord);
 				result = new ModelAndView("redirect:/history/display.do");
 
-			}catch(final Throwable oops){
+			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(record, "lr.commit.error");
 			}
 
 		return result;
 	}
 
-	@RequestMapping(value="/edit", method = RequestMethod.POST, params= "delete")
-	public ModelAndView delete(final LinkRecord record, final BindingResult binding){
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
+	public ModelAndView delete(final LinkRecord record, final BindingResult binding) {
 		ModelAndView result;
 		LinkRecord linkRecord;
 
 		linkRecord = this.linkRecordService.reconstruct(record, binding);
-		if(binding.hasErrors())
+		if (binding.hasErrors())
 			result = this.createEditModelAndView(linkRecord);
 		else
-			try{
+			try {
 				this.linkRecordService.delete(linkRecord);
 				result = new ModelAndView("redirect:/history/display.do");
 
-			}catch(final Throwable oops){
+			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(linkRecord, "lr.commit.error");
 			}
 
@@ -178,16 +170,16 @@ public class LinkRecordController extends AbstractController{
 
 	//Ancillary methods
 
-	protected ModelAndView createEditModelAndView(final LinkRecord record){
+	protected ModelAndView createEditModelAndView(final LinkRecord record) {
 		ModelAndView result;
 
-		result = this.createEditModelAndView(record,null);
+		result = this.createEditModelAndView(record, null);
 
 		return result;
 
 	}
 
-	protected ModelAndView createEditModelAndView(final LinkRecord record, final String messageError){
+	protected ModelAndView createEditModelAndView(final LinkRecord record, final String messageError) {
 		ModelAndView result;
 		Brotherhood principal;
 		int historyId;
@@ -209,6 +201,5 @@ public class LinkRecordController extends AbstractController{
 
 		return result;
 	}
-
 
 }

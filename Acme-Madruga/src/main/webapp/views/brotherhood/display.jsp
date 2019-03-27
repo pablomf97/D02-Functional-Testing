@@ -44,8 +44,18 @@
 	<b><spring:message code="profile.address" /></b>:
 	<jstl:out value="${brotherhood.address }" />
 </p>
-<div><a href="brotherhood/export.do"><spring:message
-								code="export" /></a></div>
+<security:authorize access="isAuthenticated()">
+
+	<%
+		String name = (String) pageContext.getAttribute("user", PageContext.SESSION_SCOPE);
+	%>
+	<jstl:if test=" ${name == brotherhood.userAccount.username}">
+	<div>
+		<a href="brotherhood/export.do"><spring:message code="export" /></a>
+	</div>
+	</jstl:if>
+</security:authorize>
+
 <security:authorize access="hasRole('ADMINISTRATOR')">
 	<p>
 		<b><spring:message code="profile.score" /></b>:
@@ -73,9 +83,14 @@
 
 <p>
 	<b><spring:message code="brotherhood.pictures" /></b>:
-		<display:table name="pictures" id="row">
-			<display:column>
-				<img class="picture" src="${row}" />
-			</display:column>
-		</display:table>
+	<display:table name="pictures" id="row">
+		<display:column>
+			<img class="picture" src="${row}" />
+		</display:column>
+	</display:table>
 </p>
+
+<div>
+	<a href="history/display.do?brotherhoodId=${brotherhood.id}"><spring:message
+			code="master.page.administrator.history" /></a>
+</div>
