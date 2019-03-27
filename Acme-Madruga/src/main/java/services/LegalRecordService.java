@@ -14,7 +14,6 @@ import repositories.LegalRecordRepository;
 import domain.Actor;
 import domain.Brotherhood;
 import domain.History;
-
 import domain.LegalRecord;
 
 @Service
@@ -27,10 +26,11 @@ public class LegalRecordService {
 	@Autowired
 	private ActorService actorService;
 
-	public LegalRecord findOne(int id) {
+	public LegalRecord findOne(final int id) {
 		LegalRecord res;
 		Assert.isTrue(id != 0, "not saved");
 		res = this.legalRecordRepository.findOne(id);
+		Assert.notNull(res);
 		return res;
 
 	}
@@ -43,6 +43,7 @@ public class LegalRecordService {
 
 		Actor principal;
 		principal = this.actorService.findByPrincipal();
+
 		Assert.isTrue(
 				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
 				"not.allowed");
@@ -52,12 +53,14 @@ public class LegalRecordService {
 
 	}
 
-	public LegalRecord save(LegalRecord legalRecord) {
+	public LegalRecord save(final LegalRecord legalRecord) {
+
 		LegalRecord res;
 		Brotherhood principal;
 		Collection<LegalRecord> legals;
 		History historyBro;
 		principal = (Brotherhood) this.actorService.findByPrincipal();
+
 		Assert.isTrue(
 				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
 				"not.allowed");
@@ -86,7 +89,8 @@ public class LegalRecordService {
 		return res;
 	}
 
-	public void delete(LegalRecord legalRecord) {
+	public void delete(final LegalRecord legalRecord) {
+
 		Brotherhood principal;
 		principal = (Brotherhood) this.actorService.findByPrincipal();
 		Collection<LegalRecord> legals;
@@ -113,13 +117,13 @@ public class LegalRecordService {
 
 	public Collection<String> getSplitLaws(final String laws) {
 		final Collection<String> res = new ArrayList<>();
-		final String[] slice = laws.split(",");
 
-		for (final String p : slice) {
-			if (p.trim() != "") {
-				res.add(p);
+		if (laws != null && !laws.isEmpty()) {
+			final String[] slice = laws.split(",");
 
-			}
+			for (final String p : slice)
+				if (p.trim() != "")
+					res.add(p);
 		}
 		return res;
 	}

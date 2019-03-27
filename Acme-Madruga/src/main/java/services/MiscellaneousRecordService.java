@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -18,10 +19,11 @@ import domain.MiscellaneousRecord;
 public class MiscellaneousRecordService {
 
 	@Autowired
-	private MiscellaneousRecordRepository miscellaneousRecordRepository;
+	private MiscellaneousRecordRepository	miscellaneousRecordRepository;
 
 	@Autowired
-	private ActorService actorService;
+	private ActorService					actorService;
+
 
 	// CRUD Methods
 	// --------------------------------------------------------------
@@ -31,14 +33,12 @@ public class MiscellaneousRecordService {
 		Brotherhood principal;
 
 		principal = (Brotherhood) this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService
-				.checkAuthority(principal, "BROTHERHOOD"));
+		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
 
 		result = new MiscellaneousRecord();
 
 		return result;
 	}
-
 
 	public MiscellaneousRecord save(final MiscellaneousRecord recordParam) {
 		Brotherhood principal;
@@ -51,22 +51,18 @@ public class MiscellaneousRecordService {
 
 		if (recordParam.getId() != 0) {
 
-			Assert.isTrue(this.actorService.checkAuthority(principal,
-					"BROTHERHOOD"));
-			Assert.isTrue(historyBro.getMiscellaneousRecords().contains(
-					recordParam));
+			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+			Assert.isTrue(historyBro.getMiscellaneousRecords().contains(recordParam));
 
-			recordBD = this.miscellaneousRecordRepository.findOne(recordParam
-					.getId());
+			recordBD = this.miscellaneousRecordRepository.findOne(recordParam.getId());
 
 			recordBD.setTitle(recordParam.getTitle());
 			recordBD.setDescription(recordParam.getDescription());
 
 			this.miscellaneousRecordRepository.save(recordBD);
-			
+
 		} else {
-			Assert.isTrue(this.actorService.checkAuthority(principal,
-					"BROTHERHOOD"));
+			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
 
 			recordBD.setTitle(recordParam.getTitle());
 			recordBD.setDescription(recordParam.getDescription());
@@ -83,15 +79,14 @@ public class MiscellaneousRecordService {
 		Brotherhood principal;
 		History historyBro;
 		MiscellaneousRecord recordBD = new MiscellaneousRecord();
-		
+
 		Assert.isTrue(recordParam.getId() != 0);
-		
+
 		principal = (Brotherhood) this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService
-				.checkAuthority(principal, "BROTHERHOOD"));
-		
+		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+
 		recordBD = this.miscellaneousRecordRepository.findOne(recordParam.getId());
-		
+
 		historyBro = principal.getHistory();
 		Assert.notNull(historyBro);
 		Assert.isTrue(historyBro.getMiscellaneousRecords().contains(recordBD));
@@ -102,10 +97,11 @@ public class MiscellaneousRecordService {
 
 	}
 
-	public MiscellaneousRecord findOne(int recordId) {
+	public MiscellaneousRecord findOne(final int recordId) {
 		MiscellaneousRecord result;
 
 		result = this.miscellaneousRecordRepository.findOne(recordId);
+		Assert.notNull(result);
 
 		return result;
 	}

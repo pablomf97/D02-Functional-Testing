@@ -99,17 +99,21 @@ public class InceptionRecordService {
 
 	//ancillary methods
 
-	public Collection<String> getSplitPictures(final String pictures) {
+	public Collection<String> getSplitPictures(final String pictures)
+	//throws MalformedURLException, URISyntaxException 
+	{
 		final Collection<String> res = new ArrayList<>();
-		final String[] slice = pictures.split(",");
 
-		for (final String p : slice)
-			if (p.trim() != "") {
-				Assert.isTrue(ResourceUtils.isUrl(p), "error.url");
-				res.add(p);
+		if (pictures != null && !pictures.isEmpty()) {
 
-			}
-
+			final String[] slice = pictures.split(",");
+			for (final String p : slice)
+				//brotherhoodService.checkUrl(p);
+				if (p.trim() != "") {
+					Assert.isTrue(ResourceUtils.isUrl(p), "error.url");
+					res.add(p);
+				}
+		}
 		return res;
 	}
 
@@ -138,14 +142,13 @@ public class InceptionRecordService {
 		Double periods;
 		Double inception = 0.;
 		Double res;
-		Collection<Brotherhood>bros = this.brotherhoodService.findAll();
+		final Collection<Brotherhood> bros = this.brotherhoodService.findAll();
 
-		for (final Brotherhood b : bros) {
-			if (b.getHistory().getInceptionRecord() != null){
+		for (final Brotherhood b : bros)
+			if (b.getHistory().getInceptionRecord() != null) {
 				inception = 1.;
 				break;
 			}
-		}
 		misc = this.inceptionRecordRepository.statsMisc()[2];
 		periods = this.inceptionRecordRepository.statsPeriod()[2];
 		legals = this.inceptionRecordRepository.statsLegal()[2];
@@ -163,7 +166,7 @@ public class InceptionRecordService {
 		Collection<Brotherhood> bros;
 		final Collection<Double> results = new ArrayList<Double>();
 		Double records;
-		
+
 		Double inception = 0.;
 		bros = this.brotherhoodService.findAll();
 
@@ -172,8 +175,7 @@ public class InceptionRecordService {
 				inception = 1.;
 			records = inception + b.getHistory().getLegalRecords().size() + b.getHistory().getLinkRecords().size() + b.getHistory().getMiscellaneousRecords().size() + b.getHistory().getPeriodRecords().size();
 			results.add(records);
-			
-				
+
 		}
 		return Collections.min(results);
 
@@ -181,11 +183,11 @@ public class InceptionRecordService {
 
 	//the maximum
 	public Double maxRecordsPerHistory() {
-		
+
 		Collection<Brotherhood> bros;
 		final Collection<Double> results = new ArrayList<Double>();
 		Double records;
-		
+
 		Double inception = 0.;
 		bros = this.brotherhoodService.findAll();
 
@@ -194,8 +196,7 @@ public class InceptionRecordService {
 				inception = 1.;
 			records = inception + b.getHistory().getLegalRecords().size() + b.getHistory().getLinkRecords().size() + b.getHistory().getMiscellaneousRecords().size() + b.getHistory().getPeriodRecords().size();
 			results.add(records);
-			
-				
+
 		}
 		return Collections.max(results);
 
@@ -210,14 +211,13 @@ public class InceptionRecordService {
 		Double periods;
 		Double inception = 0.;
 		Double res;
-		Collection<Brotherhood>bros = this.brotherhoodService.findAll();
+		final Collection<Brotherhood> bros = this.brotherhoodService.findAll();
 
-		for (final Brotherhood b : bros) {
-			if (b.getHistory().getInceptionRecord() != null){
+		for (final Brotherhood b : bros)
+			if (b.getHistory().getInceptionRecord() != null) {
 				inception = 1.;
 				break;
 			}
-		}
 
 		misc = this.inceptionRecordRepository.statsMisc()[3];
 		periods = this.inceptionRecordRepository.statsPeriod()[3];
