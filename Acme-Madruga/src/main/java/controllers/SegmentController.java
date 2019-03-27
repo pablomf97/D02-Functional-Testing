@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
-import services.CoordinateService;
 import services.ParadeService;
 import services.SegmentService;
 import domain.Actor;
@@ -27,16 +26,13 @@ public class SegmentController extends AbstractController {
 	// Services
 
 	@Autowired
-	private SegmentService segmentService;
-
-	@Autowired
 	private ActorService actorService;
 
 	@Autowired
-	private ParadeService paradeService;
+	private SegmentService segmentService;
 
 	@Autowired
-	private CoordinateService coordinateService;
+	private ParadeService paradeService;
 
 	// Display
 
@@ -85,7 +81,7 @@ public class SegmentController extends AbstractController {
 			segments = this.segmentService.findAllSegmentsByParadeId(paradeId);
 
 		} catch (Throwable oops) {
-			requestURI = "parade/display.do?processionId=" + paradeId;
+			requestURI = "parade/display.do?paradeId=" + paradeId;
 		}
 		result = new ModelAndView("segment/list");
 		result.addObject("requestURI", requestURI);
@@ -156,32 +152,34 @@ public class SegmentController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(Segment segment,
-			@RequestParam("paradeId") int paradeId, final BindingResult binding) {
+	public ModelAndView save(Segment segment, final BindingResult binding) {
 		ModelAndView result;
 
-		Parade parade = this.paradeService.findOne(paradeId);
-		segment.setParade(parade);
+		try {
+			Segment res = this.segmentService.reconstruct(segment, binding);
 
-		segment = this.segmentService.reconstruct(segment, binding);
+			if (binding.hasErrors())
+				result = this.createEditModelAndView(segment);
+			else
+				try {
+					
+					this.segmentService.save(res);
 
-		if (binding.hasErrors())
-			result = this.createEditModelAndView(segment);
-		else
-			try {
-				this.coordinateService.save(segment.getOrigin());
-				this.coordinateService.save(segment.getDestination());
-
-				this.segmentService.save(segment);
-
-				result = new ModelAndView("redirect:/segment/list.do?paradeId="
-						+ segment.getParade().getId());
-			} catch (IllegalArgumentException oops) {
-				result = new ModelAndView("misc/403");
-			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(segment,
-						"segment.commit.error");
-			}
+					result = new ModelAndView("redirect:/segment/list.do?paradeId="
+							+ segment.getParade().getId());
+				} catch (IllegalArgumentException oops) {
+					result = new ModelAndView("misc/403");
+				} catch (final Throwable oops) {
+					result = this.createEditModelAndView(segment,
+							"segment.commit.error");
+				}
+		} catch (IllegalArgumentException oops) {
+			result = new ModelAndView("misc/403");
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(segment,
+					"segment.commit.error");
+		}
+		
 
 		return result;
 
@@ -190,21 +188,19 @@ public class SegmentController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(Segment segment, final BindingResult binding) {
 		ModelAndView result;
-
-		int paradeId = segment.getParade().getId();
+	
 		try {
+			Segment res = this.segmentService.reconstruct(segment, binding);
+			int paradeId = segment.getParade().getId();
+			this.segmentService.delete(res);
 
-			this.segmentService.delete(segment);
-
-			result = new ModelAndView("redirect:/segment/list.do?paradeId="
-					+ paradeId);
+			result = new ModelAndView("redirect:/segment/list.do?paradeId=" + paradeId);
 		} catch (IllegalArgumentException oops) {
 			result = new ModelAndView("misc/403");
 		} catch (final Throwable oops) {
 			result = this.createEditModelAndView(segment,
 					"segment.commit.error");
 		}
-
 		return result;
 	}
 

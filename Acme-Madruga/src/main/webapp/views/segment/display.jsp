@@ -51,14 +51,14 @@
 					<td><strong> <spring:message
 								code="segment.origin" /> :
 					</strong></td>
-					<td><jstl:out value="${segment.origin}" /></td>
+					<td><jstl:out value="${segment.originLatitude }, ${segment.originLongitude } " /></td>
 				</tr>
 
 				<tr>
 					<td><strong> <spring:message
 								code="segment.destination" /> :
 					</strong></td>
-					<td><jstl:out value="${segment.destination}" /></td>
+					<td><jstl:out value="${segment.destinationLatitude }, ${segment.destinationLongitude } " /></td>
 				</tr>
 
 			</table>
@@ -107,14 +107,14 @@
 					<td><strong> <spring:message
 								code="segment.origin" /> :
 					</strong></td>
-					<td><jstl:out value="${segment.origin}" /></td>
+					<td><jstl:out value="${row.originLatitude }, ${row.originLongitude } "/></td>
 				</tr>
 
 				<tr>
 					<td><strong> <spring:message
 								code="segment.destination" /> :
 					</strong></td>
-					<td><jstl:out value="${segment.destination}" /></td>
+					<td><jstl:out value="${row.destinationLatitude }, ${row.destinationLongitude } "/></td>
 				</tr>
 
 				</table>
