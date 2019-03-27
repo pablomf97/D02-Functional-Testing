@@ -22,17 +22,17 @@
 
 <table class="displayStyle">
 		<tr>
-			<td><strong> <spring:message code="procession.title" />
+			<td><strong> <spring:message code="parade.title" />
 					:
 			</strong></td>
-			<td><jstl:out value="${procession.title}" /></td>
+			<td><jstl:out value="${parade.title}" /></td>
 		</tr>
 
 		<tr>
-			<td><strong> <spring:message code="procession.ticker" />
+			<td><strong> <spring:message code="parade.ticker" />
 					:
 			</strong></td>
-			<td><jstl:out value="${procession.ticker}" /></td>
+			<td><jstl:out value="${parade.ticker}" /></td>
 		</tr>
 
 

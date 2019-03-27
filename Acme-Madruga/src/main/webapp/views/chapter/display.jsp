@@ -45,19 +45,29 @@
 	<jstl:out value="${chapter.address}" />
 </p>
 <p>
-<div><a href="chapter/export.do"><spring:message
-								code="export" /></a></div>
-								<p>
-<security:authorize access="hasRole('ADMINISTRATOR')">
-	<p>
-		<b><spring:message code="profile.score" /></b>:
-		<jstl:out value="${chapter.score}" />
-	</p>
-	<p>
-		<b><spring:message code="profile.spammer" /></b>:
-		<jstl:out value="${chapter.spammer}" />
-	</p>
-</security:authorize>
+	<security:authorize access="isAuthenticated()">
+
+		<%
+			String name = (String) pageContext.getAttribute("user", PageContext.SESSION_SCOPE);
+		%>
+		<jstl:if test=" ${name == chapter.userAccount.username}">
+			<div>
+				<a href="chapter/export.do"><spring:message code="export" /></a>
+			</div>
+
+		</jstl:if>
+	</security:authorize>
+<p>
+	<security:authorize access="hasRole('ADMINISTRATOR')">
+		<p>
+			<b><spring:message code="profile.score" /></b>:
+			<jstl:out value="${chapter.score}" />
+		</p>
+		<p>
+			<b><spring:message code="profile.spammer" /></b>:
+			<jstl:out value="${chapter.spammer}" />
+		</p>
+	</security:authorize>
 <p>
 	<b><spring:message code="chapter.title" /></b>:
 	<jstl:out value="${chapter.title}" />

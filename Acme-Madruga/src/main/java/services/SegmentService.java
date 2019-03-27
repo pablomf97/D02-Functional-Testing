@@ -12,7 +12,6 @@ import org.springframework.validation.Validator;
 
 import repositories.SegmentRepository;
 import domain.Actor;
-import domain.Coordinate;
 import domain.Segment;
 
 @Service
@@ -29,9 +28,6 @@ public class SegmentService {
 
 	@Autowired
 	private Validator validator;
-
-	@Autowired
-	private CoordinateService coordinateService;
 
 	// Constructors
 
@@ -80,13 +76,14 @@ public class SegmentService {
 
 		Assert.notNull(segment.getExpectedTimeDestination(), "segment.NotEmpty");
 		Assert.notNull(segment.getExpectedTimeOrigin(), "segment.NotEmpty");
-		Assert.notNull(segment.getDestination(), "segment.NotEmpty");
-		Assert.notNull(segment.getOrigin(), "segment.NotEmpty");
+		Assert.notNull(segment.getDestinationLatitude(), "segment.NotEmpty");
+		Assert.notNull(segment.getDestinationLongitude(), "segment.NotEmpty");
+		Assert.notNull(segment.getOriginLatitude(), "segment.NotEmpty");
+		Assert.notNull(segment.getOriginLongitude(), "segment.NotEmpty");
 		Assert.notNull(segment.getParade(), "segment.NotEmpty");
-		Assert.isTrue(this.actorService
-				.checkAuthority(principal, "BROTHERHOOD"));
-		Assert.isTrue(segment.getExpectedTimeOrigin().before(
-				segment.getExpectedTimeDestination()));
+		
+		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+		Assert.isTrue(segment.getExpectedTimeOrigin().before(segment.getExpectedTimeDestination()));
 
 		path = this.findAllSegmentsByParadeId(segment.getParade().getId());
 
@@ -98,14 +95,13 @@ public class SegmentService {
 				result = this.segmentRepository.save(segment);
 			} else {
 				for (Segment seg : path) {
-					if (seg.getDestination().toString()
-							.equals(segment.getOrigin().toString())
+					if ((seg.getDestinationLatitude().toString()
+							.equals(segment.getOriginLatitude().toString())) && 
+							(seg.getDestinationLongitude().toString()
+							.equals(segment.getOriginLongitude().toString()))
 							&& seg.getIsEditable()) {
+						
 						segment.setIsEditable(true);
-						Coordinate coor1 = this.coordinateService.create();
-						this.coordinateService.save(coor1);
-						Coordinate coor2 = this.coordinateService.create();
-						this.coordinateService.save(coor2);
 						result = this.segmentRepository.save(segment);
 						seg.setIsEditable(false);
 						this.segmentRepository.save(seg);
@@ -114,34 +110,19 @@ public class SegmentService {
 				}
 			}
 		} else if (segment.getIsEditable()) {
-			Coordinate coor, toDelete = null;
 
 			aux = this.findOne(segment.getId());
-			Assert.isTrue(aux.getOrigin().toString()
-					.equals(segment.getOrigin().toString()));
+			Assert.isTrue((aux.getOriginLatitude().toString()
+					.equals(segment.getOriginLatitude().toString())) && 
+					(aux.getOriginLongitude().toString()
+					.equals(segment.getOriginLongitude().toString())));
 
-			if (!aux.getDestination().toString()
-					.equals(segment.getDestination().toString())) {
-				toDelete = aux.getDestination();
-				coor = this.coordinateService.save(segment.getDestination());
-
-				aux.setDestination(coor);
-			}
-			aux.setExpectedTimeDestination(segment.getExpectedTimeDestination());
-			aux.setExpectedTimeOrigin(segment.getExpectedTimeOrigin());
-
-			result = this.segmentRepository.save(aux);
-
-			if (!aux.getDestination().toString()
-					.equals(segment.getDestination().toString())) {
-				this.coordinateService.delete(toDelete);
-			}
+			result = this.segmentRepository.save(segment);
 		}
 
 		Assert.notNull(result);
 
 		return result;
-
 	}
 
 	// FINDALL
@@ -170,8 +151,10 @@ public class SegmentService {
 		path = this.findAllSegmentsByParadeId(segment.getParade().getId());
 		if (path.size() != 1) {
 			for (Segment seg : path) {
-				if (seg.getDestination().toString()
-						.equals(segment.getOrigin().toString())) {
+				if ((seg.getDestinationLatitude().toString()
+						.equals(segment.getOriginLatitude().toString())) && 
+						(seg.getDestinationLongitude().toString()
+						.equals(segment.getOriginLongitude().toString()))) {
 					seg.setIsEditable(true);
 					this.segmentRepository.save(seg);
 					this.segmentRepository.delete(segment);
@@ -185,18 +168,31 @@ public class SegmentService {
 	// // Other business methods
 
 	public Segment reconstruct(Segment segment, BindingResult binding) {
-		Segment result = null;
 
 		if (segment.getId() != 0) {
+			Segment result = null;
 			result = this.findOne(segment.getId());
+			
+			Assert.isTrue((result.getOriginLatitude().toString()
+					.equals(segment.getOriginLatitude().toString())) && 
+					(result.getOriginLongitude().toString()
+					.equals(segment.getOriginLongitude().toString())));
 
-			segment.setParade(result.getParade());
-			segment.setIsEditable(result.getIsEditable());
+			result.setDestinationLatitude(segment.getDestinationLatitude());
+			result.setDestinationLongitude(segment.getDestinationLongitude());
+			result.setExpectedTimeDestination(segment.getExpectedTimeDestination());
+			result.setExpectedTimeOrigin(segment.getExpectedTimeOrigin());
+			result.setOriginLatitude(segment.getOriginLatitude());
+			result.setOriginLongitude(segment.getOriginLongitude());
+			
+			validator.validate(result, binding);
+
+			return result;
 		}
-
 		validator.validate(segment, binding);
 
 		return segment;
+		
 	}
 
 	public void deleteAll(final Integer paradeId) {

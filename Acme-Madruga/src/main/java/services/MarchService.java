@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.ArrayList;
@@ -18,7 +19,6 @@ import domain.March;
 import domain.Member;
 import domain.Parade;
 
-
 @Service
 @Transactional
 public class MarchService {
@@ -26,18 +26,18 @@ public class MarchService {
 	// Managed repository ------------------------------------
 
 	@Autowired
-	private MarchRepository marchRepository;
+	private MarchRepository	marchRepository;
 
 	// Supporting services -----------------------------------
 
 	@Autowired
-	private ActorService actorService;
+	private ActorService	actorService;
 
 	@Autowired
-	private Validator validator;
+	private Validator		validator;
 
 	@Autowired
-	private ParadeService processionService;
+	private ParadeService	paradeService;
 
 
 	// Simple CRUD methods -----------------------------------
@@ -68,7 +68,6 @@ public class MarchService {
 		return result;
 	}
 
-
 	public March save(final March march) {
 		Member member;
 		Brotherhood brotherhood;
@@ -79,9 +78,9 @@ public class MarchService {
 		Assert.notNull(principal, "not.allowed");
 		Assert.notNull(march);
 
-		if(this.actorService.checkAuthority(principal, "MEMBER")){
+		if (this.actorService.checkAuthority(principal, "MEMBER")) {
 
-			Assert.isTrue(march.getId()== 0, "wrong.id");
+			Assert.isTrue(march.getId() == 0, "wrong.id");
 
 			member = (Member) principal;
 			march.setStatus("PENDING");
@@ -89,19 +88,18 @@ public class MarchService {
 			march.setCol(null);
 			march.setMember(member);
 
-		} else if (this.actorService.checkAuthority(principal, "BROTHERHOOD")){
+		} else if (this.actorService.checkAuthority(principal, "BROTHERHOOD")) {
 
 			Assert.isTrue(march.getId() != 0);
 			Assert.notNull(march.getMember());
 			Assert.notNull(march.getParade());
 			Assert.notNull(march.getStatus());
-			
+
 			brotherhood = (Brotherhood) principal;
 
 			Assert.isTrue(march.getParade().getBrotherhood().equals(brotherhood), "not.allowed");
-			if(march.getStatus() == "REJECT") {
+			if (march.getStatus() == "REJECT")
 				Assert.notNull(march.getReason());
-			}
 
 		}
 
@@ -126,14 +124,13 @@ public class MarchService {
 
 	}
 
-
 	// Other business methods -------------------------------
 
-	public March reconstruct(March march, BindingResult binding) {
+	public March reconstruct(final March march, final BindingResult binding) {
 		March result;
 		Actor principal = null;
 
-		if(march.getId() == 0) {
+		if (march.getId() == 0) {
 			principal = this.actorService.findByPrincipal();
 			result = march;
 			result.setStatus("PENDING");
@@ -148,12 +145,12 @@ public class MarchService {
 
 		}
 
-		validator.validate(result, binding);
+		this.validator.validate(result, binding);
 
 		return result;
 	}
 
-	public Collection<March> findMarchsByMemberId(int memberId) {
+	public Collection<March> findMarchsByMemberId(final int memberId) {
 		Collection<March> result;
 
 		result = this.marchRepository.findMarchsByMemberId(memberId);
@@ -161,7 +158,7 @@ public class MarchService {
 		return result;
 	}
 
-	public Collection<March> findMarchsByBrotherhoodId(int brotherhoodId) {
+	public Collection<March> findMarchsByBrotherhoodId(final int brotherhoodId) {
 		Collection<March> result;
 
 		result = this.marchRepository.findMarchsByBrotherhoodId(brotherhoodId);
@@ -169,80 +166,65 @@ public class MarchService {
 		return result;
 	}
 
-	public Double ratioApprovedRequests(){
+	public Double ratioApprovedRequests() {
 		Double result;
 
 		result = this.marchRepository.ratioApprovedRequests();
-		
 
 		return result;
 	}
 
-	public Double ratioPendingRequests(){
+	public Double ratioPendingRequests() {
 		Double result;
 
 		result = this.marchRepository.ratioPendingRequests();
-		
 
 		return result;
 	}
 
-	public Double ratioRejectedRequests(){
+	public Double ratioRejectedRequests() {
 		Double result;
 
 		result = this.marchRepository.ratioRejectedRequests();
-		
 
 		return result;
 	}
 
+	public Double[] ratioApprovedInAParade() {
 
-	public Double[] ratioApprovedInAParade(){
-		
-		Collection<Parade> processions;
-		Collection<March> marchsInAParade = new ArrayList<March>(),marchsApprovedInAParade = new ArrayList<March>();
+		Collection<Parade> parades;
+		Collection<March> marchsInAParade = new ArrayList<March>();
+		final Collection<March> marchsApprovedInAParade = new ArrayList<March>();
 
 		int count = 0;
 
-		processions = this.processionService.findAll();
-		
-		Double[] result = new Double[processions.size()];
-		
-		for(Parade p : processions){
+		parades = this.paradeService.findAll();
+
+		final Double[] result = new Double[parades.size()];
+
+		for (final Parade p : parades) {
 
 			Double ratio = 0.0;
 
 			marchsInAParade = this.findMarchByParade(p.getId());
-			
 
-			for(March m : marchsInAParade){
-
-				if(m.getStatus().equals("APPROVED")){
+			for (final March m : marchsInAParade)
+				if (m.getStatus().equals("APPROVED"))
 					marchsApprovedInAParade.add(m);
-				}
 
-			}
-			
-			if(marchsInAParade.size() != 0){
-				ratio = (double) (marchsApprovedInAParade.size()/marchsInAParade.size());
-			}
-
+			if (marchsInAParade.size() != 0)
+				ratio = (double) (marchsApprovedInAParade.size() / marchsInAParade.size());
 
 			result[count] = ratio;
 
-
 			count++;
 
-
-
 		}
-
-
 
 		return result;
 
 	}
-	public Collection<March> findByMember(int memberId){
+	public Collection<March> findByMember(final int memberId) {
 		Collection<March> result;
 
 		result = this.marchRepository.findByMember(memberId);
@@ -250,102 +232,82 @@ public class MarchService {
 
 		return result;
 	}
-	
 
-	public Collection<March> findMarchByParade(int processionId){
+	public Collection<March> findMarchByParade(final int paradeId) {
 		Collection<March> result;
 
-		result = this.marchRepository.findMarchByProcession(processionId);
+		result = this.marchRepository.findMarchByparade(paradeId);
 		Assert.notNull(result);
 
 		return result;
 	}
-	
-	public Double[] ratioRejectedInAParade(){
-		
-		Collection<Parade> processions;
-		Collection<March> marchsInAParade = new ArrayList<March>(),marchsRejectedInAParade = new ArrayList<March>();
+
+	public Double[] ratioRejectedInAParade() {
+
+		Collection<Parade> parades;
+		Collection<March> marchsInAParade = new ArrayList<March>();
+		final Collection<March> marchsRejectedInAParade = new ArrayList<March>();
 
 		int count = 0;
 
-		processions = this.processionService.findAll();
-		
-		Double[] result = new Double[processions.size()];
-		
-		for(Parade p : processions){
+		parades = this.paradeService.findAll();
+
+		final Double[] result = new Double[parades.size()];
+
+		for (final Parade p : parades) {
 
 			Double ratio = 0.0;
 
 			marchsInAParade = this.findMarchByParade(p.getId());
 			Assert.notNull(marchsInAParade);
 
-			for(March m : marchsInAParade){
-
-				if(m.getStatus().equals("REJECTED")){
+			for (final March m : marchsInAParade)
+				if (m.getStatus().equals("REJECTED"))
 					marchsRejectedInAParade.add(m);
-				}
-
-			}
-			ratio = (double) ((double)marchsRejectedInAParade.size()/(double)marchsInAParade.size());
-
+			ratio = (double) ((double) marchsRejectedInAParade.size() / (double) marchsInAParade.size());
 
 			result[count] = ratio;
 
-
 			count++;
 
-
-
 		}
-
-
 
 		return result;
 
 	}
-	public Double[] ratioPendingInAParade(){
-		
-		Collection<Parade> processions;
-		Collection<March> marchsInAParade = new ArrayList<March>(),marchsPendingInAParade = new ArrayList<March>();
+	public Double[] ratioPendingInAParade() {
+
+		Collection<Parade> parades;
+		Collection<March> marchsInAParade = new ArrayList<March>();
+		final Collection<March> marchsPendingInAParade = new ArrayList<March>();
 
 		int count = 0;
 
-		processions = this.processionService.findAll();
-		
-		Double[] result = new Double[processions.size()];
-		
-		for(Parade p : processions){
+		parades = this.paradeService.findAll();
+
+		final Double[] result = new Double[parades.size()];
+
+		for (final Parade p : parades) {
 
 			Double ratio = 0.0;
 
 			marchsInAParade = this.findMarchByParade(p.getId());
 			Assert.notNull(marchsInAParade);
 
-			for(March m : marchsInAParade){
-
-				if(m.getStatus().equals("PENDING")){
+			for (final March m : marchsInAParade)
+				if (m.getStatus().equals("PENDING"))
 					marchsPendingInAParade.add(m);
-				}
 
-			}
-
-			ratio = (double) ((double)marchsPendingInAParade.size()/(double)marchsInAParade.size());
-
+			ratio = (double) ((double) marchsPendingInAParade.size() / (double) marchsInAParade.size());
 
 			result[count] = ratio;
 
-
 			count++;
 
-
-
 		}
-
-
 
 		return result;
 
 	}
-
 
 }

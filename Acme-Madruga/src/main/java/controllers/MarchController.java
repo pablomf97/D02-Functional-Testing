@@ -33,30 +33,31 @@ public class MarchController extends AbstractController {
 	private MarchService	marchService;
 
 	@Autowired
-	private ActorService actorService;
-	
+	private ActorService	actorService;
+
 	@Autowired
-	private ParadeService processionService;
-	
+	private ParadeService	paradeService;
+
 	@Autowired
-	private MessageService messageService;
+	private MessageService	messageService;
+
 
 	// Display
-	
+
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
-	public ModelAndView display(@RequestParam int marchId) {
+	public ModelAndView display(@RequestParam final int marchId) {
 
 		ModelAndView result;
 		March march;
 		boolean isPrincipal = false;
 		Actor principal;
-		
+
 		principal = this.actorService.findByPrincipal();
 		march = this.marchService.findOne(marchId);
-		
-		if(march.getMember().getId() == principal.getId())
+
+		if (march.getMember().getId() == principal.getId())
 			isPrincipal = true;
-		
+
 		result = new ModelAndView("march/display");
 		result.addObject("march", march);
 		result.addObject("isPrincipal", isPrincipal);
@@ -64,29 +65,29 @@ public class MarchController extends AbstractController {
 
 		return result;
 	}
-	
+
 	//List
 
 	@RequestMapping(value = "/member,brotherhood/list")
-	public ModelAndView list(@RequestParam(required = false) Integer memberId, @RequestParam(required = false) Integer brotherhoodId) {
+	public ModelAndView list(@RequestParam(required = false) final Integer memberId, @RequestParam(required = false) final Integer brotherhoodId) {
 		ModelAndView result;
 		Collection<March> marchs;
 		Actor principal;
 		Boolean permission;
-		
+
 		try {
 			principal = this.actorService.findByPrincipal();
 			Assert.isTrue(!this.actorService.checkAuthority(principal, "ADMINISTRATOR"));
-			
+
 			permission = true;
-			
+
 			principal = this.actorService.findByPrincipal();
 
 			if (this.actorService.checkAuthority(principal, "BROTHERHOOD")) {
 
 				marchs = this.marchService.findMarchsByBrotherhoodId(principal.getId());
-				
-				String requestURI = "march/member,brotherhood/list.do?brotherhoodId=" + principal.getId();
+
+				final String requestURI = "march/member,brotherhood/list.do?brotherhoodId=" + principal.getId();
 				result = new ModelAndView("march/list");
 				result.addObject("requestURI", requestURI);
 				result.addObject("marchs", marchs);
@@ -94,55 +95,54 @@ public class MarchController extends AbstractController {
 			} else {
 
 				marchs = this.marchService.findMarchsByMemberId(principal.getId());
-				
-				String requestURI = "march/member,brotherhood/list.do?memberId=" + principal.getId();
+				final String requestURI = "march/member,brotherhood/list.do?memberId=" + principal.getId();
 				result = new ModelAndView("march/list");
 				result.addObject("requestURI", requestURI);
 				result.addObject("marchs", marchs);
 
 			}
-		} catch (IllegalArgumentException oops) {
+		} catch (final IllegalArgumentException oops) {
 			result = new ModelAndView("misc/403");
-		} catch (Throwable oopsie) {
-			
+		} catch (final Throwable oopsie) {
+
 			result = new ModelAndView("march/member,brotherhood/list");
 			permission = false;
-			
+
 			result.addObject("oopsie", oopsie);
 			result.addObject("permission", permission);
-		}	
-		
+		}
+
 		return result;
 	}
-		
+
 	// Creation 
-	
+
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result;
 		March march;
-		
+
 		Actor principal;
 		Boolean error;
-		
+
 		try {
 			principal = this.actorService.findByPrincipal();
 			Assert.isTrue(this.actorService.checkAuthority(principal, "MEMBER"));
-						
-			march= this.marchService.create();
+
+			march = this.marchService.create();
 
 			result = this.createEditModelAndView(march);
-		} catch (IllegalArgumentException oops) {
+		} catch (final IllegalArgumentException oops) {
 			result = new ModelAndView("misc/403");
-		} catch (Throwable oopsie) {
-			
+		} catch (final Throwable oopsie) {
+
 			result = new ModelAndView("march/member,brotherhood/list");
 			error = true;
-			
+
 			result.addObject("oopsie", oopsie);
 			result.addObject("error", error);
 		}
-		return result;	
+		return result;
 
 	}
 
@@ -158,9 +158,9 @@ public class MarchController extends AbstractController {
 
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save (March march, final BindingResult binding) {
+	public ModelAndView save(March march, final BindingResult binding) {
 		ModelAndView result;
 
 		march = this.marchService.reconstruct(march, binding);
@@ -171,12 +171,11 @@ public class MarchController extends AbstractController {
 				this.marchService.save(march);
 				result = new ModelAndView("redirect:member,brotherhood/list.do");
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(march,
-						"march.commit.error");
+				result = this.createEditModelAndView(march, "march.commit.error");
 			}
 		return result;
 	}
-	
+
 	//Accept
 	@RequestMapping(value = "/accept", method = RequestMethod.GET)
 	public ModelAndView acceptView(@RequestParam final int marchId) {
@@ -185,18 +184,16 @@ public class MarchController extends AbstractController {
 		boolean isPrincipal = false;
 		Actor principal;
 		List<Integer> recomendedPos;
-	
-		
+
 		principal = this.actorService.findByPrincipal();
 		march = this.marchService.findOne(marchId);
 		Assert.notNull(march);
-		
-		
-		recomendedPos = this.processionService.recommendedPos(march.getParade());
-		
-		if(march.getParade().getBrotherhood().getId() == principal.getId())
+
+		recomendedPos = this.paradeService.recommendedPos(march.getParade());
+
+		if (march.getParade().getBrotherhood().getId() == principal.getId())
 			isPrincipal = true;
-		
+
 		result = new ModelAndView("march/accept");
 		result.addObject("isPrincipal", isPrincipal);
 		result.addObject("recomRow", recomendedPos.get(0));
@@ -205,30 +202,27 @@ public class MarchController extends AbstractController {
 
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/accept", method = RequestMethod.POST, params = "accept")
 	public ModelAndView accept(March march, final BindingResult binding) {
-		
-		
-		
+
 		ModelAndView result;
 
 		march.setStatus("APPROVED");
 
 		march = this.marchService.reconstruct(march, binding);
-		
+
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(march);
 		else
 			try {
 				this.marchService.save(march);
-				
-				this.messageService.changeStatusNotfication(march,march.getMember(), new Date(System.currentTimeMillis()-1));
-				
+
+				this.messageService.changeStatusNotfication(march, march.getMember(), new Date(System.currentTimeMillis() - 1));
+
 				result = new ModelAndView("redirect:member,brotherhood/list.do");
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(march,
-						"march.commit.error");
+				result = this.createEditModelAndView(march, "march.commit.error");
 			}
 		return result;
 	}
@@ -240,63 +234,60 @@ public class MarchController extends AbstractController {
 		March march;
 		boolean isPrincipal = false;
 		Actor principal;
-		
+
 		principal = this.actorService.findByPrincipal();
 		march = this.marchService.findOne(marchId);
 		Assert.notNull(march);
-		
-		if(march.getParade().getBrotherhood().getId() == principal.getId())
+
+		if (march.getParade().getBrotherhood().getId() == principal.getId())
 			isPrincipal = true;
-		
+
 		result = new ModelAndView("march/reject");
 		result.addObject("isPrincipal", isPrincipal);
 		result.addObject("march", march);
-		
+
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/rejectb", method = RequestMethod.POST, params = "reject")
 	public ModelAndView reject(March march, final BindingResult binding) {
 		ModelAndView result;
 
 		march.setStatus("REJECTED");
 		march = this.marchService.reconstruct(march, binding);
-		
-		
-		
+
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(march);
 		else
 			try {
 				this.marchService.save(march);
-				this.messageService.changeStatusNotfication(march,march.getMember(),new Date(System.currentTimeMillis()-1));
-				
+				this.messageService.changeStatusNotfication(march, march.getMember(), new Date(System.currentTimeMillis() - 1));
+
 				result = new ModelAndView("redirect:member,brotherhood/list.do");
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(march,
-						"march.commit.error");
+				result = this.createEditModelAndView(march, "march.commit.error");
 			}
 		return result;
 	}
 
 	@RequestMapping(value = "/delete")
-	public ModelAndView delete(@RequestParam int marchId) {
+	public ModelAndView delete(@RequestParam final int marchId) {
 		ModelAndView result;
 		March toDelete;
 		Collection<March> marchs;
 		Actor principal;
-		
+
 		principal = this.actorService.findByPrincipal();
-		
+
 		toDelete = this.marchService.findOne(marchId);
 		this.marchService.delete(toDelete);
-		
+
 		marchs = this.marchService.findMarchsByMemberId(principal.getId());
-		
-		String requestURI = "march/member,brotherhood/list.do";
+
+		final String requestURI = "march/member,brotherhood/list.do";
 		result = new ModelAndView("march/list");
 		result.addObject("requestURI", requestURI);
-		result.addObject("marchs", marchs);		
+		result.addObject("marchs", marchs);
 
 		return result;
 	}
@@ -315,20 +306,16 @@ public class MarchController extends AbstractController {
 		Actor principal;
 		boolean isPrincipal = false;
 		Collection<Parade> toApply = new ArrayList<>();
-		
+
 		principal = this.actorService.findByPrincipal();
-		
-		
-		
-		if(this.actorService.checkAuthority(principal, "MEMBER")){
-			toApply = this.processionService.findPossibleParadesToMarchByMember(principal.getId());
-			if(principal.getId() == march.getId()){
+
+		if (this.actorService.checkAuthority(principal, "MEMBER")) {
+			toApply = this.paradeService.findPossibleParadesToMarchByMember(principal.getId());
+			if (principal.getId() == march.getId())
 				isPrincipal = true;
-			}
-		} else if(this.actorService.checkAuthority(principal, "BROTHERHOOD") && (principal.getId() == march.getParade().getBrotherhood().getId())){
+		} else if (this.actorService.checkAuthority(principal, "BROTHERHOOD") && (principal.getId() == march.getParade().getBrotherhood().getId()))
 			isPrincipal = true;
-		}
-		
+
 		result = new ModelAndView("march/edit");
 		result.addObject("march", march);
 		result.addObject("message", messageCode);
