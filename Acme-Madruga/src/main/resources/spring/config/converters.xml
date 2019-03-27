@@ -62,11 +62,6 @@
 		<bean class="converters.StringToSegmentConverter" />
 		<bean class="converters.SegmentToStringConverter" />
 		
-		<bean class="converters.StringToCoordinateConverter" />
-		<bean class="converters.CoordinateToStringConverter" />
-
-		
-
 	</util:list>
 
 </beans>
