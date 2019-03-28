@@ -63,15 +63,15 @@ public class LinkRecordController extends AbstractController {
 	public ModelAndView display(@RequestParam final int linkRecordId) {
 		ModelAndView result;
 		LinkRecord record;
+		try {
+			record = this.linkRecordService.findOne(linkRecordId);
+			result = new ModelAndView("linkRecord/display");
+			result.addObject("linkRecord", record);
+		} catch (final Exception e) {
+			result = new ModelAndView("redirect:/welcome/index.do");
 
-		record = this.linkRecordService.findOne(linkRecordId);
-		Assert.notNull(record);
-
-		result = new ModelAndView("linkRecord/display");
-		result.addObject("linkRecord", record);
-
+		}
 		return result;
-
 	}
 
 	//List
@@ -84,10 +84,9 @@ public class LinkRecordController extends AbstractController {
 		Collection<LinkRecord> linkRecords;
 		Boolean possible;
 
-		history = this.historyService.findOne(historyId);
-		Assert.notNull(history);
-
 		try {
+			history = this.historyService.findOne(historyId);
+
 			principal = this.actorService.findByPrincipal();
 			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
 
@@ -118,53 +117,43 @@ public class LinkRecordController extends AbstractController {
 	public ModelAndView edit(@RequestParam final int linkRecordId) {
 		ModelAndView result;
 		LinkRecord linkRecord;
-
-		linkRecord = this.linkRecordService.findOne(linkRecordId);
-		Assert.notNull(linkRecord);
-
-		result = this.createEditModelAndView(linkRecord);
-
+		try {
+			linkRecord = this.linkRecordService.findOne(linkRecordId);
+			result = this.createEditModelAndView(linkRecord);
+		} catch (final Exception e) {
+			result = new ModelAndView("redirect:/welcome/index.do");
+		}
 		return result;
-
 	}
+
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(final LinkRecord record, final BindingResult binding) {
 		ModelAndView result;
-		LinkRecord linkRecord;
-
-		linkRecord = this.linkRecordService.reconstruct(record, binding);
-
-		if (binding.hasErrors())
-			result = this.createEditModelAndView(linkRecord);
-		else
-			try {
+		final LinkRecord linkRecord;
+		try {
+			linkRecord = this.linkRecordService.reconstruct(record, binding);
+			if (binding.hasErrors())
+				result = this.createEditModelAndView(linkRecord);
+			else {
 				this.linkRecordService.save(linkRecord);
 				result = new ModelAndView("redirect:/history/display.do");
-
-			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(record, "lr.commit.error");
 			}
 
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(record, "lr.commit.error");
+		}
 		return result;
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(final LinkRecord record, final BindingResult binding) {
 		ModelAndView result;
-		LinkRecord linkRecord;
-
-		linkRecord = this.linkRecordService.reconstruct(record, binding);
-		if (binding.hasErrors())
-			result = this.createEditModelAndView(linkRecord);
-		else
-			try {
-				this.linkRecordService.delete(linkRecord);
-				result = new ModelAndView("redirect:/history/display.do");
-
-			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(linkRecord, "lr.commit.error");
-			}
-
+		try {
+			this.linkRecordService.delete(record);
+			result = new ModelAndView("redirect:/history/display.do");
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/welcome/index.do");
+		}
 		return result;
 	}
 

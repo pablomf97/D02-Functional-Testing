@@ -1,4 +1,3 @@
-
 package services;
 
 import java.util.ArrayList;
@@ -10,7 +9,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.springframework.util.ResourceUtils;
 
 import repositories.InceptionRecordRepository;
 import domain.Actor;
@@ -23,14 +21,13 @@ import domain.InceptionRecord;
 public class InceptionRecordService {
 
 	@Autowired
-	private InceptionRecordRepository	inceptionRecordRepository;
+	private InceptionRecordRepository inceptionRecordRepository;
 
 	@Autowired
-	private ActorService				actorService;
+	private ActorService actorService;
 
 	@Autowired
-	private BrotherhoodService			brotherhoodService;
-
+	private BrotherhoodService brotherhoodService;
 
 	public InceptionRecord findOne(final int id) {
 		InceptionRecord res;
@@ -39,6 +36,7 @@ public class InceptionRecordService {
 		return res;
 
 	}
+
 	public Collection<InceptionRecord> findAll() {
 
 		return this.inceptionRecordRepository.findAll();
@@ -49,7 +47,9 @@ public class InceptionRecordService {
 		final InceptionRecord res = new InceptionRecord();
 		final Actor principal;
 		principal = this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"), "not.allowed");
+		Assert.isTrue(
+				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
+				"not.allowed");
 		return res;
 
 	}
@@ -62,7 +62,15 @@ public class InceptionRecordService {
 		Assert.notNull(inceptionRecord.getDescription(), "not.null");
 		Assert.notNull(inceptionRecord.getPhotos(), "not.null");
 		principal = (Brotherhood) this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"), "not.allowed");
+		Assert.isTrue(
+				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
+				"not.allowed");
+		if (inceptionRecord.getId() == 0)
+			Assert.isTrue(principal.getHistory().getInceptionRecord() == null);
+		else
+			Assert.isTrue(principal.getHistory().getInceptionRecord()
+					.equals(inceptionRecord));
+
 		final History hist = principal.getHistory();
 		if (inceptionRecord.getId() != 0) {
 			copy = this.findOne(inceptionRecord.getId());
@@ -84,36 +92,45 @@ public class InceptionRecordService {
 		Brotherhood principal;
 		History historyBro;
 		principal = (Brotherhood) this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"), "not.allowed");
-		//comprobar que pertenece a ese brotherhood el record
-		Assert.notNull(inceptionRecord);
-		historyBro = principal.getHistory();
-		Assert.isTrue(historyBro.getInceptionRecord().getId() == inceptionRecord.getId());
-		Assert.notNull(inceptionRecord);
-		//Assert.isTrue(inceptionRecord.getId() != 0, "wrong.id");
+		Assert.isTrue(
+				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
+				"not.allowed");
+		// comprobar que pertenece a ese brotherhood el record
 
-		this.inceptionRecordRepository.delete(this.findOne(inceptionRecord.getId()));
+		historyBro = principal.getHistory();
+		Assert.isTrue(historyBro.getInceptionRecord().getId() == inceptionRecord
+				.getId());
+		Assert.notNull(inceptionRecord);
+		// Assert.isTrue(inceptionRecord.getId() != 0, "wrong.id");
+
+		this.inceptionRecordRepository.delete(this.findOne(inceptionRecord
+				.getId()));
 		historyBro.setInceptionRecord(null);
 
 	}
 
-	//ancillary methods
+	// ancillary methods
 
-	public Collection<String> getSplitPictures(final String pictures) {
+	public Collection<String> getSplitPictures(final String pictures)
+	// throws MalformedURLException, URISyntaxException
+	{
 		final Collection<String> res = new ArrayList<>();
-		final String[] slice = pictures.split(",");
 
-		for (final String p : slice)
-			if (p.trim() != "") {
-				Assert.isTrue(ResourceUtils.isUrl(p), "error.url");
-				res.add(p);
+		if (pictures != null && !pictures.isEmpty()) {
 
-			}
+			final String[] slice = pictures.split(",");
+			for (final String p : slice)
 
+				// brotherhoodService.checkUrl(p);
+				if (p.trim() != "") {
+					Assert.isTrue(ResourceUtils.isUrl(p), "error.url");
+
+					res.add(p);
+		}
 		return res;
 	}
 
-	//number of records of a bro
+	// number of records of a bro
 	public Integer getSizeAll(final Brotherhood b) {
 		Integer res;
 		Integer inceptions = 0;
@@ -128,7 +145,8 @@ public class InceptionRecordService {
 
 		return res;
 	}
-	//The average
+
+	// The average
 
 	public Double avgRecordsPerHistory() {
 
@@ -138,14 +156,13 @@ public class InceptionRecordService {
 		Double periods;
 		Double inception = 0.;
 		Double res;
-		Collection<Brotherhood>bros = this.brotherhoodService.findAll();
+		final Collection<Brotherhood> bros = this.brotherhoodService.findAll();
 
-		for (final Brotherhood b : bros) {
-			if (b.getHistory().getInceptionRecord() != null){
+		for (final Brotherhood b : bros)
+			if (b.getHistory().getInceptionRecord() != null) {
 				inception = 1.;
 				break;
 			}
-		}
 		misc = this.inceptionRecordRepository.statsMisc()[2];
 		periods = this.inceptionRecordRepository.statsPeriod()[2];
 		legals = this.inceptionRecordRepository.statsLegal()[2];
@@ -157,52 +174,56 @@ public class InceptionRecordService {
 
 	}
 
-	//the minimum
+	// the minimum
 
 	public Double minRecordsPerHistory() {
 		Collection<Brotherhood> bros;
 		final Collection<Double> results = new ArrayList<Double>();
 		Double records;
-		
+
 		Double inception = 0.;
 		bros = this.brotherhoodService.findAll();
 
 		for (final Brotherhood b : bros) {
 			if (b.getHistory().getInceptionRecord() != null)
 				inception = 1.;
-			records = inception + b.getHistory().getLegalRecords().size() + b.getHistory().getLinkRecords().size() + b.getHistory().getMiscellaneousRecords().size() + b.getHistory().getPeriodRecords().size();
+			records = inception + b.getHistory().getLegalRecords().size()
+					+ b.getHistory().getLinkRecords().size()
+					+ b.getHistory().getMiscellaneousRecords().size()
+					+ b.getHistory().getPeriodRecords().size();
 			results.add(records);
-			
-				
+
 		}
 		return Collections.min(results);
 
 	}
 
-	//the maximum
+	// the maximum
 	public Double maxRecordsPerHistory() {
-		
+
 		Collection<Brotherhood> bros;
 		final Collection<Double> results = new ArrayList<Double>();
 		Double records;
-		
+
 		Double inception = 0.;
 		bros = this.brotherhoodService.findAll();
 
 		for (final Brotherhood b : bros) {
 			if (b.getHistory().getInceptionRecord() != null)
 				inception = 1.;
-			records = inception + b.getHistory().getLegalRecords().size() + b.getHistory().getLinkRecords().size() + b.getHistory().getMiscellaneousRecords().size() + b.getHistory().getPeriodRecords().size();
+			records = inception + b.getHistory().getLegalRecords().size()
+					+ b.getHistory().getLinkRecords().size()
+					+ b.getHistory().getMiscellaneousRecords().size()
+					+ b.getHistory().getPeriodRecords().size();
 			results.add(records);
-			
-				
+
 		}
 		return Collections.max(results);
 
 	}
 
-	//the standard deviation of the
-	//number of records per history
+	// the standard deviation of the
+	// number of records per history
 	public Double stedvRecordsPerHistory() {
 		Double misc;
 		Double legals;
@@ -210,14 +231,13 @@ public class InceptionRecordService {
 		Double periods;
 		Double inception = 0.;
 		Double res;
-		Collection<Brotherhood>bros = this.brotherhoodService.findAll();
+		final Collection<Brotherhood> bros = this.brotherhoodService.findAll();
 
-		for (final Brotherhood b : bros) {
-			if (b.getHistory().getInceptionRecord() != null){
+		for (final Brotherhood b : bros)
+			if (b.getHistory().getInceptionRecord() != null) {
 				inception = 1.;
 				break;
 			}
-		}
 
 		misc = this.inceptionRecordRepository.statsMisc()[3];
 		periods = this.inceptionRecordRepository.statsPeriod()[3];
@@ -241,13 +261,17 @@ public class InceptionRecordService {
 		for (final Brotherhood b : bros) {
 			if (b.getHistory().getInceptionRecord() != null)
 				inception = 1.;
-			records = inception + b.getHistory().getLegalRecords().size() + b.getHistory().getLinkRecords().size() + b.getHistory().getMiscellaneousRecords().size() + b.getHistory().getPeriodRecords().size();
+			records = inception + b.getHistory().getLegalRecords().size()
+					+ b.getHistory().getLinkRecords().size()
+					+ b.getHistory().getMiscellaneousRecords().size()
+					+ b.getHistory().getPeriodRecords().size();
 			if (records > this.avgRecordsPerHistory())
 				results.add(b);
 		}
 		return results;
 
 	}
+
 	// The brotherhood with the largest history.
 	public String getLargestBrotherhood() {
 
@@ -261,12 +285,20 @@ public class InceptionRecordService {
 		for (final Brotherhood b : bros) {
 			if (b.getHistory().getInceptionRecord() != null)
 				inception = 1.;
-			records = inception + b.getHistory().getLegalRecords().size() + b.getHistory().getLinkRecords().size() + b.getHistory().getMiscellaneousRecords().size() + b.getHistory().getPeriodRecords().size();
+			records = inception + b.getHistory().getLegalRecords().size()
+					+ b.getHistory().getLinkRecords().size()
+					+ b.getHistory().getMiscellaneousRecords().size()
+					+ b.getHistory().getPeriodRecords().size();
 			results.add(records);
 			if (records == Collections.max(results))
 				bro = b.getUserAccount().getUsername();
 		}
 		return bro;
+
+	}
+
+	public void flush() {
+		this.inceptionRecordRepository.flush();
 
 	}
 

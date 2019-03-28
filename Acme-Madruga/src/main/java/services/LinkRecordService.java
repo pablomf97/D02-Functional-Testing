@@ -1,5 +1,5 @@
-package services;
 
+package services;
 
 import java.util.Collection;
 
@@ -21,24 +21,25 @@ import domain.LinkRecord;
 public class LinkRecordService {
 
 	@Autowired
-	private LinkRecordRepository linkRecordRepository;
+	private LinkRecordRepository	linkRecordRepository;
 
 	@Autowired
-	private ActorService actorService;
+	private ActorService			actorService;
 
 	@Autowired
-	private Validator validator;
+	private Validator				validator;
 
 	@Autowired
-	private BrotherhoodService brotherhoodService;
+	private BrotherhoodService		brotherhoodService;
+
 
 	//CRUD Methods-------------------------------------------------------------------------
 
-	public LinkRecord create(){
+	public LinkRecord create() {
 		Brotherhood principal;
 		LinkRecord result;
 
-		principal= (Brotherhood) this.actorService.findByPrincipal();
+		principal = (Brotherhood) this.actorService.findByPrincipal();
 
 		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
 
@@ -48,17 +49,17 @@ public class LinkRecordService {
 
 	}
 
-	public LinkRecord save(final LinkRecord recordParam){
+	public LinkRecord save(final LinkRecord recordParam) {
 		Brotherhood principal;
 		LinkRecord recordBD = new LinkRecord();
 		History historyBro;
-		LinkRecord copy=null;
+		LinkRecord copy = null;
 
 		principal = (Brotherhood) this.actorService.findByPrincipal();
 
 		historyBro = principal.getHistory();
 
-		if(recordParam.getId() != 0){
+		if (recordParam.getId() != 0) {
 
 			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
 			Assert.isTrue(historyBro.getLinkRecords().contains(recordParam));
@@ -69,21 +70,20 @@ public class LinkRecordService {
 			recordBD.setDescription(recordParam.getDescription());
 			recordBD.setLinkedBrotherhood(recordParam.getLinkedBrotherhood());
 
-			copy=this.linkRecordRepository.save(recordBD);
+			copy = this.linkRecordRepository.save(recordBD);
 
-		}else{
+		} else {
 			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
 
 			recordBD.setTitle(recordParam.getTitle());
 			recordBD.setDescription(recordParam.getDescription());
 			recordBD.setLinkedBrotherhood(recordParam.getLinkedBrotherhood());
-			try{
+			try {
 
-				copy=this.linkRecordRepository.save(recordBD);
-			}catch(Throwable oops){
+				copy = this.linkRecordRepository.save(recordBD);
+			} catch (final Throwable oops) {
 
 			}
-
 
 			historyBro.getLinkRecords().add(copy);
 		}
@@ -91,8 +91,7 @@ public class LinkRecordService {
 		return copy;
 	}
 
-
-	public void delete(final LinkRecord link){
+	public void delete(final LinkRecord link) {
 		Brotherhood principal;
 		History historyBro;
 		LinkRecord recordBD;
@@ -114,15 +113,16 @@ public class LinkRecordService {
 
 	}
 
-	public LinkRecord findOne(int linkId){
+	public LinkRecord findOne(final int linkId) {
 		LinkRecord result;
 
 		result = this.linkRecordRepository.findOne(linkId);
+		Assert.notNull(result);
 
 		return result;
 	}
 
-	public Collection<LinkRecord> findAll(){
+	public Collection<LinkRecord> findAll() {
 		Collection<LinkRecord> result;
 
 		result = this.linkRecordRepository.findAll();
@@ -130,40 +130,28 @@ public class LinkRecordService {
 		return result;
 	}
 
-	public LinkRecord reconstruct(final LinkRecord linkRecord, final BindingResult binding){
+	public LinkRecord reconstruct(final LinkRecord linkRecord, final BindingResult binding) {
 		LinkRecord result = new LinkRecord();
 
-		/*if(linkRecord.getId() == 0){
-			result.setTitle(linkRecord.getTitle());
+		if (linkRecord.getId() != 0) {
+			final LinkRecord record = this.findOne(linkRecord.getId());
+			result.setLinkedBrotherhood(record.getLinkedBrotherhood());
 			result.setDescription(linkRecord.getDescription());
-			result.setLinkedBrotherhood(linkRecord.getLinkedBrotherhood());
+			result.setTitle(linkRecord.getTitle());
+			result.setId(record.getId());
+		} else
+			result = linkRecord;
 
-		}*/if(linkRecord.getId() != 0){
-			final LinkRecord record = this.linkRecordRepository.findOne(linkRecord.getId());
-
-			record.setDescription(linkRecord.getDescription());
-			record.setTitle(linkRecord.getTitle());
-			//record.setLinkedBrotherhood(linkRecord.getLinkedBrotherhood());
-
-			result = record;
-
-
-
-		}else{
-			result=linkRecord;
-		}
-		
-		this.validator.validate(result,binding);
+		this.validator.validate(result, binding);
 
 		return result;
 
-
 	}
 
-	public Collection<Brotherhood> getFreeBrotherhoods(){
+	public Collection<Brotherhood> getFreeBrotherhoods() {
 		Collection<Brotherhood> linkedBrotherhoods;
 		Collection<Brotherhood> brotherhoods;
-		Brotherhood prinicipal = (Brotherhood) this.actorService.findByPrincipal();
+		final Brotherhood prinicipal = (Brotherhood) this.actorService.findByPrincipal();
 
 		brotherhoods = this.brotherhoodService.findAll();
 		linkedBrotherhoods = this.linkRecordRepository.getLinkedBrotherhoods();

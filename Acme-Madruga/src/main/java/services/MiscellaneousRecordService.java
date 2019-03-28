@@ -39,7 +39,6 @@ public class MiscellaneousRecordService {
 		return result;
 	}
 
-
 	public MiscellaneousRecord save(final MiscellaneousRecord recordParam) {
 		Brotherhood principal;
 		MiscellaneousRecord recordBD = new MiscellaneousRecord();
@@ -63,7 +62,7 @@ public class MiscellaneousRecordService {
 			recordBD.setDescription(recordParam.getDescription());
 
 			this.miscellaneousRecordRepository.save(recordBD);
-			
+
 		} else {
 			Assert.isTrue(this.actorService.checkAuthority(principal,
 					"BROTHERHOOD"));
@@ -83,15 +82,16 @@ public class MiscellaneousRecordService {
 		Brotherhood principal;
 		History historyBro;
 		MiscellaneousRecord recordBD = new MiscellaneousRecord();
-		
+
 		Assert.isTrue(recordParam.getId() != 0);
-		
+
 		principal = (Brotherhood) this.actorService.findByPrincipal();
 		Assert.isTrue(this.actorService
 				.checkAuthority(principal, "BROTHERHOOD"));
-		
-		recordBD = this.miscellaneousRecordRepository.findOne(recordParam.getId());
-		
+
+		recordBD = this.miscellaneousRecordRepository.findOne(recordParam
+				.getId());
+
 		historyBro = principal.getHistory();
 		Assert.notNull(historyBro);
 		Assert.isTrue(historyBro.getMiscellaneousRecords().contains(recordBD));
@@ -102,10 +102,11 @@ public class MiscellaneousRecordService {
 
 	}
 
-	public MiscellaneousRecord findOne(int recordId) {
+	public MiscellaneousRecord findOne(final int recordId) {
 		MiscellaneousRecord result;
 
 		result = this.miscellaneousRecordRepository.findOne(recordId);
+		Assert.notNull(result);
 
 		return result;
 	}
@@ -116,5 +117,10 @@ public class MiscellaneousRecordService {
 		result = this.miscellaneousRecordRepository.findAll();
 
 		return result;
+	}
+
+	public void flush() {
+		this.miscellaneousRecordRepository.flush();
+
 	}
 }

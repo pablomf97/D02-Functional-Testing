@@ -250,7 +250,9 @@ public class BrotherhoodService {
 				}
 		return result;
 	}
-
+	public void checkUrl(final String picture) throws MalformedURLException, URISyntaxException {
+		(new URL(picture.trim())).toURI();
+	}
 	public String checkURLPictures(final Collection<String> pictures) {
 		String result = "";
 		if (!pictures.isEmpty())
