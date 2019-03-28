@@ -44,6 +44,24 @@
 		<property name="address" value="C/ Rota" />
 		<property name="userAccount" ref="userAdmin2" />
 	</bean>
+	
+	<!-- CHAPTER -->
+	
+	<bean id="chapter1" class="domain.Chapter">
+		<property name="name" value="El tito carlos" />
+		<property name="middleName" value="carelto" />
+		<property name="surname" value="Heredia" />
+		<property name="photo" value="https://ih1.redbubble.net/image.ioasdoi.jpg" />
+		<property name="email" value="carleto@mail.com" />
+		<property name="phoneNumber" value="+34699987654" />
+		<property name="address" value="Av. España" />
+		<property name="userAccount" ref="userChapter1" />
+		<property name="title" value="Ell carleto" />
+		<property name="zone" ref="zone2" />
+	
+
+	</bean>
+	
 	<!-- BROTHERHOOD -->
 
 	<bean id="brotherhood1" class="domain.Brotherhood">
@@ -63,6 +81,8 @@
 
 
 	</bean>
+	
+	
 	
 		<bean id="brotherhood3" class="domain.Brotherhood">
 		<property name="name" value="pepito" />
@@ -152,7 +172,21 @@
 			</list>
 		</property>
 	</bean>
-
+	
+	<!-- CHAPTER -->
+	
+	<bean id="userChapter1" class="security.UserAccount">
+		<property name="username" value="chapter1" />
+		<property name="password" value="178494d73a41f7d68e80f685324d3662" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="CHAPTER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
 	<!-- MEMBER -->
 
 	<bean id="userMember1" class="security.UserAccount">
@@ -1298,7 +1332,7 @@ your parades." />
 			<ref bean="brotherhood2" />
 		</property>
 
-		<property name="status" value="REJECTED"></property>
+		<property name="status" value="SUBMITTED"></property>
 		<property name="reason" value="No me gusta"></property>
 	</bean>
 	
@@ -1678,7 +1712,7 @@ your parades." />
 
 	<bean id="segment3" class="domain.Segment">
 		<property name="expectedTimeOrigin" value="21/05/2020 10:00" />
-		<property name="expectedTimeDestination" value="20/05/2020 12:00" />
+		<property name="expectedTimeDestination" value="21/05/2020 12:00" />
 		<property name="isEditable" value="true"/>
 		<property name="parade">
 			<ref bean="parade2" />

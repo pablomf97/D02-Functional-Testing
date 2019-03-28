@@ -84,7 +84,7 @@ public class SegmentService {
 		
 		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
 		Assert.isTrue(segment.getExpectedTimeOrigin().before(segment.getExpectedTimeDestination()));
-
+		Assert.isTrue(segment.getParade().getBrotherhood().getId() == principal.getId());
 		path = this.findAllSegmentsByParadeId(segment.getParade().getId());
 
 		if (segment.getId() == 0) {
@@ -147,6 +147,8 @@ public class SegmentService {
 
 		principal = this.actorService.findByPrincipal();
 		Assert.notNull(principal);
+		
+		Assert.isTrue(segment.getParade().getBrotherhood().getId() == principal.getId());
 
 		path = this.findAllSegmentsByParadeId(segment.getParade().getId());
 		if (path.size() != 1) {
@@ -221,5 +223,9 @@ public class SegmentService {
 		Assert.notNull(result);
 
 		return result;
+	}
+	
+	public void flush(){
+		this.segmentRepository.flush();
 	}
 }

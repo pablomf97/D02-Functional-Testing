@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import services.ParadeService;
 import utilities.AbstractTest;
+import domain.Parade;
 
 @ContextConfiguration(locations = {
 		"classpath:spring/junit.xml"
@@ -60,7 +61,57 @@ public class ParadeServiceTest extends AbstractTest {
 
 		super.checkExceptions(expected, caught);
 	}
-
+	
+	//Testing UC 8.2 ----------------------------------------------
+	
+	@Test
+	public void driver2(){
+		Object testingData[][] = {
+				{"chapter1","parade3","accept",null},//positive
+				{"chapter1","parade4","accept",IllegalArgumentException.class},//intenta aceptar una parade cuyo estado no es submitted, peta
+				{"chapter1","parade5","reject",null},//positive
+				{"chapter1","parade4","reject",IllegalArgumentException.class}//intenta rechazar una parade cuyo estado no es submitted, peta
+		};
+		
+		for(int i = 0; i < testingData.length; i++){
+			template2((String)testingData[i][0],
+					(int)super.getEntityId((String)testingData[i][1]),
+					(String) testingData[i][2],
+					(Class<?>) testingData[i][3]);
+					
+			
+		}
+	}
+	
+	protected void template2(String username, int paradeId, String currentOperation,Class<?>expected){
+		Class<?> caught;
+		
+		caught = null;
+		
+		try{
+			if(currentOperation.equals("accept")){
+				authenticate(username);
+				Parade parade = paradeService.findOne(paradeId);
+				
+				paradeService.accept(parade);
+				paradeService.flush();
+				unauthenticate();
+				
+			}else if(currentOperation.equals("reject")){
+				authenticate(username);
+				Parade parade = paradeService.findOne(paradeId);
+				
+				paradeService.reject(parade);
+				paradeService.flush();
+				unauthenticate();
+			}
+		}catch(Throwable oops){
+			caught = oops.getClass();
+		}
+		
+		super.checkExceptions(expected, caught);
+		
+	}
 
 }
 

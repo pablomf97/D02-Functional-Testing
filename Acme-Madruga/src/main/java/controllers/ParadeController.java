@@ -293,8 +293,7 @@ public class ParadeController extends AbstractController {
 
 		if (parade.getBrotherhood().getZone().equals(principal.getZone())) {
 			isPrincipal = true;
-			parade.setStatus("ACCEPTED");
-			this.paradeService.save(parade);
+			this.paradeService.accept(parade);
 		}
 
 		result = new ModelAndView("chapter/listparade");
@@ -329,14 +328,14 @@ public class ParadeController extends AbstractController {
 	public ModelAndView reject(Parade parade, final BindingResult binding) {
 		ModelAndView result;
 
-		parade.setStatus("REJECTED");
+	
 		parade = this.paradeService.reconstruct(parade, binding);
 
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(parade);
 		else
 			try {
-				this.paradeService.save(parade);
+				this.paradeService.reject(parade);
 
 				result = new ModelAndView("redirect:member,brotherhood/list.do");
 			} catch (final Throwable oops) {
