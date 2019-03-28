@@ -56,6 +56,9 @@ public class PeriodRecordService {
 		Assert.isTrue(
 				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
 				"not.allowed");
+		if (periodRecord.getId() != 0)
+			Assert.isTrue(principal.getHistory().getPeriodRecords()
+					.contains(periodRecord));
 		Assert.notNull(periodRecord.getTitle(), "not.null");
 		Assert.notNull(periodRecord.getDescription(), "not.null");
 		Assert.notNull(periodRecord.getStartYear(), "not.null");
@@ -118,6 +121,11 @@ public class PeriodRecordService {
 		}
 
 		return res;
+
+	}
+
+	public void flush() {
+		this.periodRecordRepository.flush();
 
 	}
 
