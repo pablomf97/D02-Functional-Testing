@@ -95,10 +95,10 @@
 						code="master.page.member.parade" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="parade/member,brotherhood/list.do"><spring:message
+					<li><a href="parade/member/list.do"><spring:message
 								code="master.page.member.parade.show" /></a></li>
 
-				</ul></li>
+				</ul></li> 
 
 
 			<li><a class="fNiv"><spring:message
@@ -151,6 +151,19 @@
 
 			<li><a class="fNiv" href="history/display.do"><spring:message
 						code="master.page.administrator.history" /></a></li>
+
+
+		</security:authorize>
+		
+		<security:authorize access="hasRole('CHAPTER')">
+			<li><a class="fNiv"><spring:message
+						code="master.page.chapter.parade" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="parade/chapter/list.do"><spring:message
+								code="master.page.member.parade.show" /></a></li>
+
+				</ul></li>
 
 
 		</security:authorize>

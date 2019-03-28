@@ -30,7 +30,7 @@ public interface ParadeRepository extends JpaRepository<Parade, Integer> {
 	@Query("select p from Parade p where p.organisedMoment > NOW() AND p.organisedMoment < ?1")
 	Collection<Parade> findEarlyParades(Date maxDate);
 
-	@Query("select p from Parade p where p.brotherhood.zone.id = ?1")
+	@Query("select p from Parade p where p.brotherhood.zone.id = ?1 and p.isDraft = false")
 	Collection<Parade> findParadesByAres(int areaId);
 
 	/* The ratio of parades in draft mode versus parades in final mode */

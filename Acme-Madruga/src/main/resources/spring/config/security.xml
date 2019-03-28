@@ -96,7 +96,7 @@
 		<security:intercept-url pattern="parade/member,brotherhood/list.do"
 			access="permitAll" />
 		<security:intercept-url pattern="parade/display.do"
-			access="hasAnyRole('MEMBER','BROTHERHOOD')" />
+			access="permitAll" />
 			
 		<security:intercept-url pattern="platform/list.do"
 			access="hasAnyRole('MEMBER','BROTHERHOOD')" />
