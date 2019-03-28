@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.ZoneService;
 import domain.Actor;
+import domain.InceptionRecord;
 import domain.Zone;
 
 @Controller
@@ -26,6 +27,8 @@ public class ZoneAdministratorController extends AbstractController {
 
 	@Autowired
 	private ZoneService zoneService;
+	
+
 
 	@Autowired
 	private ActorService actorService;
@@ -100,7 +103,31 @@ public class ZoneAdministratorController extends AbstractController {
 		}
 		return result;
 	}
+	
+	// Display ---------------------------------------------------------------
+	
+	// Display
+		@RequestMapping(value = "/display", method = RequestMethod.GET)
+		public ModelAndView display(@RequestParam final int zoneId) {
+			ModelAndView res;
+			Zone zone;
+			try {
+				zone = this.zoneService.findOne(zoneId);
 
+				final Collection<String> pictures = this.zoneService.getSplitPictures(zone.getPictures());
+
+				res = new ModelAndView("zone/display");
+				res.addObject("pictures", pictures);
+				res.addObject("zone", zone);
+				
+			} catch (final Throwable opps) {
+
+				res = new ModelAndView("redirect:/welcome/index.do");
+			}
+			return res;
+
+		}
+	
 	// Edit
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
