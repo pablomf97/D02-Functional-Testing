@@ -1619,10 +1619,6 @@ your parades." />
 
 	<bean id="history2" class="domain.History">
 
-
-		<property name="inceptionRecord">
-			<ref bean="inceptionRecord2" />
-		</property>
 		<property name="periodRecords">
 			<list>
 				<ref bean="periodRecord2" />

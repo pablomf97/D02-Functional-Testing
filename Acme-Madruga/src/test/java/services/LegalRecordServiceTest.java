@@ -376,18 +376,7 @@ public class LegalRecordServiceTest extends AbstractTest {
 	public void driverDeleteLegalRecord() {
 		Object testingData[][] = {
 
-		/* 1. Correct deletion */
-
-		/* Test 1.1 ----------------------------------------------- */
-		{ "brotherhood2", "legalRecord1", null
-		/*
-		 * 
-		 * There is no error expected here, a brotherhood with an history
-		 * deletes a Legal Record that it owns
-		 */
-		},
-
-		/* 2. Incorrect deletion */
+		/* 1. Incorrect deletion */
 
 		/* Test 2.1 ----------------------------------------------- */
 		{ "brotherhood1", "legalRecord1", IllegalArgumentException.class
@@ -413,6 +402,15 @@ public class LegalRecordServiceTest extends AbstractTest {
 		 * 
 		 * In this case, we expect a Illegal Argument Exception because an user
 		 * that it is not logged in is trying to edit a Legal record
+		 */
+		},/* 1. Correct deletion */
+
+		/* Test 1.1 ----------------------------------------------- */
+		{ "brotherhood2", "legalRecord1", null
+		/*
+		 * 
+		 * There is no error expected here, a brotherhood with an history
+		 * deletes a Legal Record that it owns
 		 */
 		} };
 
