@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.ResourceUtils;
 
 import repositories.InceptionRecordRepository;
 import domain.Actor;
@@ -126,6 +127,7 @@ public class InceptionRecordService {
 					Assert.isTrue(ResourceUtils.isUrl(p), "error.url");
 
 					res.add(p);
+				}
 		}
 		return res;
 	}
