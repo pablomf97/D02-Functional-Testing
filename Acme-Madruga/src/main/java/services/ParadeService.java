@@ -128,6 +128,92 @@ public class ParadeService {
 		return result;
 	}
 
+	public Parade accept(Parade parade) {
+		Actor principal;
+		Brotherhood brotherhood;
+		Chapter chapter;
+		Parade result = null;
+
+		Assert.isTrue(parade.getStatus().equals("SUBMITTED"));
+		Assert.isTrue(parade.getIsDraft() == false);
+
+		principal = this.actorService.findByPrincipal();
+
+		try {
+			brotherhood = (Brotherhood) principal;
+
+			Assert.isTrue(parade.getBrotherhood().equals(principal),
+					"not.allowed");
+
+			Assert.notNull(parade);
+			Assert.notNull(parade.getDescription());
+			Assert.notNull(parade.getMaxCols());
+			Assert.notNull(parade.getTitle());
+			Assert.notNull(parade.getOrganisedMoment());
+
+		} catch (Throwable oops) {
+			chapter = (Chapter) principal;
+
+			Assert.isTrue(
+					parade.getBrotherhood().getZone().equals(chapter.getZone()),
+					"not.allowed");
+
+			Assert.notNull(parade);
+			Assert.notNull(parade.getDescription());
+			Assert.notNull(parade.getMaxCols());
+			Assert.notNull(parade.getTitle());
+			Assert.notNull(parade.getOrganisedMoment());
+		}
+		parade.setStatus("ACCEPTED");
+		result = this.paradeRepository.save(parade);
+		Assert.notNull(result);
+
+		return result;
+	}
+
+	public Parade reject(Parade parade) {
+		Actor principal;
+		Brotherhood brotherhood;
+		Chapter chapter;
+		Parade result = null;
+
+		Assert.isTrue(parade.getStatus().equals("SUBMITTED"));
+		Assert.isTrue(parade.getIsDraft() == false);
+
+		principal = this.actorService.findByPrincipal();
+
+		try {
+			brotherhood = (Brotherhood) principal;
+
+			Assert.isTrue(parade.getBrotherhood().equals(principal),
+					"not.allowed");
+
+			Assert.notNull(parade);
+			Assert.notNull(parade.getDescription());
+			Assert.notNull(parade.getMaxCols());
+			Assert.notNull(parade.getTitle());
+			Assert.notNull(parade.getOrganisedMoment());
+
+		} catch (Throwable oops) {
+			chapter = (Chapter) principal;
+
+			Assert.isTrue(
+					parade.getBrotherhood().getZone().equals(chapter.getZone()),
+					"not.allowed");
+
+			Assert.notNull(parade);
+			Assert.notNull(parade.getDescription());
+			Assert.notNull(parade.getMaxCols());
+			Assert.notNull(parade.getTitle());
+			Assert.notNull(parade.getOrganisedMoment());
+		}
+		parade.setStatus("REJECTED");
+		result = this.paradeRepository.save(parade);
+		Assert.notNull(result);
+
+		return result;
+	}
+
 	public void delete(final Parade parade) {
 		Actor principal;
 
@@ -230,13 +316,11 @@ public class ParadeService {
 				.findActiveEnrolmentsByMember(memberId);
 		for (Enrolment enrolment : memberEnrolments)
 			brotherhoodIds.add(enrolment.getBrotherhood().getId());
-		
 
 		for (Parade procesion : toApply)
 			for (Integer brotherhoodId : brotherhoodIds)
 				if (procesion.getBrotherhood().getId() != brotherhoodId)
 					result.remove(procesion);
-		
 
 		return result;
 	}
@@ -334,8 +418,8 @@ public class ParadeService {
 		return result;
 	}
 
-	public Double[] ratioFinalModeGroupedByStatus() {
-		Double[] result;
+	public Collection<Double> ratioFinalModeGroupedByStatus() {
+		Collection<Double> result;
 
 		result = this.paradeRepository.ratioFinalModeGroupedByStatus();
 
@@ -349,7 +433,8 @@ public class ParadeService {
 	public Parade copyParade(final Integer paradeId) {
 		Parade res;
 		final Actor principal = this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+		Assert.isTrue(this.actorService
+				.checkAuthority(principal, "BROTHERHOOD"));
 		res = this.paradeRepository.findOne(paradeId);
 		Assert.isTrue(res.getBrotherhood().equals(principal));
 		final Parade copy = this.create();

@@ -20,158 +20,26 @@ public class InceptionRecordServiceTest extends AbstractTest {
 	@Autowired
 	private InceptionRecordService inceptionRecordService;
 
-	// TODO Documentar coverage
 	/*
-	 * ##################### TEST CREATE INCEPTION RECORDS #####################
+	 * Total coverage of all tests
+	 * 
+	 * 
+	 * Coverage of the total project (%): 28.5
+	 * 
+	 * 
+	 * Coverage of the total project (lines of codes): 8814
+	 * 
+	 * 
+	 * ################################################################
+	 * 
+	 * Total coverage by exclusively executing this test class
+	 * 
+	 * 
+	 * Coverage of the total project (%): 5.2
+	 * 
+	 * 
+	 * Coverage of the total project (lines of codes): 1485
 	 */
-
-	// @Test
-	// public void driverCreateInceptionRecord() {
-	// Object testingData[][] = {
-	//
-	// /* 1. Attribute 'VAT' Testing */
-	//
-	// /* Test 1.1 ----------------------------------------------- */
-	// { "brotherhood1", "title", "description", "www.photos.com",
-	// null
-	// /*
-	// *
-	// * There is no error expected here, a brotherhood with an
-	// * history creates a Legal Record with valid data
-	// */
-	// },
-	//
-	// /* Test 1.2 ----------------------------------------------- */
-	// { "brotherhood1", "", "description", "www.photos.com",
-	// ConstraintViolationException.class
-	// /*
-	// *
-	// * In this case, we are expecting a Constraint Violation
-	// * Exception because we are trying to create a Legal Record
-	// * record with an out of bounds VAT
-	// */
-	// },
-	//
-	// /* 2. Attribute 'brotherhood' Testing */
-	//
-	// /* Test 2.1 ----------------------------------------------- */
-	// { "brotherhood1", "title", "", "www.photos.com",
-	// ConstraintViolationException.class
-	// /*
-	// *
-	// * In this case, we expect a Illegal Argument Exception because
-	// * an user that it is not logged in is trying to create a Legal
-	// * record
-	// */
-	// },
-	//
-	// /* Test 2.2 ----------------------------------------------- */
-	// { "brotherhood1", "title", "description", "",
-	// ConstraintViolationException.class
-	// /*
-	// *
-	// * In this case, we expect Illegal Argument Exception is
-	// * expected because an user that it is logged in as a 'member'
-	// * is trying to create a Legal record
-	// */
-	// },
-	//
-	// /* Test 2.3 ----------------------------------------------- */
-	// { "member", "title", "description", "www.photos.com",
-	// IllegalArgumentException.class
-	// /*
-	// *
-	// * In this case, we expect Illegal Argument Exception because an
-	// * user that it is logged in as an 'admin' is trying to create a
-	// * Legal record
-	// */
-	// },
-	//
-	// /* 3. Attribute 'title' Testing */
-	//
-	// /* Test 3.1 ----------------------------------------------- */
-	// { null, "title", "description", "www.photos.com",
-	// IllegalArgumentException.class
-	// /*
-	// *
-	// *
-	// * In this case, we expect Constraint Violation Exception
-	// * because we are trying to create a Legal Record record with a
-	// * blank title
-	// */
-	// },
-	//
-	// /* 4. Attribute 'description' Testing */
-	//
-	// /* Test 4.1 ----------------------------------------------- */
-	// { "brotherhood1", "", "description", "www.photos.com",
-	// ConstraintViolationException.class
-	// /*
-	// *
-	// * In this case, we expect a Constraint Violation Exception
-	// * because we are trying to create a Legal Record record with a
-	// * blank description
-	// */
-	// },
-	//
-	// /* 5. Attribute 'name' Testing */
-	//
-	// /* Test 5.1 ----------------------------------------------- */
-	// { "brotherhood1", "title", "description", "", .21, "legalaw",
-	// ConstraintViolationException.class
-	// /*
-	// *
-	// * In this case, we expect a Constraint Violation Exception
-	// * because we are trying to create a Legal Record record with a
-	// * blank name
-	// */
-	// },
-	//
-	// /* 6. Attribute 'laws' Testing */
-	//
-	// /* Test 6.1 ----------------------------------------------- */
-	// { "brotherhood1", "title", "description", "photos",
-	// ConstraintViolationException.class
-	// /*
-	// *
-	// * In this case, we expect a Constraint Violation Exception
-	// * because we are trying to create a Legal Record record with a
-	// * blank law
-	// */
-	// }
-	// };
-	// for (int i = 0; i < testingData.length; i++)
-	// this.templateCreateInceptionRecord((String) testingData[i][0],
-	// (String) testingData[i][1], (String) testingData[i][2],
-	// (String) testingData[i][3], (Class<?>) testingData[i][4]);
-	// }
-	//
-	// protected void templateCreateInceptionRecord(String username, String
-	// title,
-	// String description, String photos, Class<?> expected) {
-	//
-	// Class<?> caught = null;
-	//
-	// try {
-	// this.authenticate(username);
-	// InceptionRecord inceptionRecord = this.inceptionRecordService
-	// .create();
-	//
-	// inceptionRecord.setTitle(title);
-	// inceptionRecord.setDescription(description);
-	// inceptionRecord.setPhotos(photos);
-	//
-	// this.inceptionRecordService.save(inceptionRecord);
-	//
-	// this.inceptionRecordService.flush();
-	//
-	// this.unauthenticate();
-	//
-	// } catch (Throwable oops) {
-	// caught = oops.getClass();
-	// }
-	// super.checkExceptions(expected, caught);
-	// }
 
 	/*
 	 * ####################### TEST SAVE LEGAL RECORDS #######################

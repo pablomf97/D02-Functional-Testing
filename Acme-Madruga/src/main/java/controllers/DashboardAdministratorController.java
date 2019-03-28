@@ -146,7 +146,7 @@ public class DashboardAdministratorController extends AbstractController {
 		final Double stedvRecordsPerHistory = this.inceptionRecordService.stedvRecordsPerHistory();
 		final Collection<Brotherhood> largerBrosthanAvg = this.inceptionRecordService.largerBrosthanAvg();
 		final String getLargestBrotherhood = this.inceptionRecordService.getLargestBrotherhood();
-
+		Collection<Double> ratioFinalModeGroupedByStatus =this.paradeService.ratioFinalModeGroupedByStatus();
 		result = new ModelAndView("administrator/statistics");
 
 		result.addObject("getLargestBrotherhood", getLargestBrotherhood);
@@ -200,7 +200,7 @@ public class DashboardAdministratorController extends AbstractController {
 		result.addObject("paradeChapterStatistics", this.chapterService.paradeChapterStatistics());
 		result.addObject("10percentMore", this.chapterService.chapter10percentMore());
 		result.addObject("ratioDraftVsFinal", this.paradeService.ratioDraftVsFinal());
-		result.addObject("ratioFinalModeGroupedByStatus", this.paradeService.ratioFinalModeGroupedByStatus());
+		result.addObject("ratioFinalModeGroupedByStatus", ratioFinalModeGroupedByStatus);
 
 		result.addObject("requestURI", "statistics/administrator/display.do");
 		return result;

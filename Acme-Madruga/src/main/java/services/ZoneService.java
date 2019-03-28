@@ -1,5 +1,6 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.transaction.Transactional;
@@ -7,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.ResourceUtils;
 
 import repositories.ZoneRepository;
 import domain.Actor;
@@ -114,6 +116,25 @@ public class ZoneService {
 		Assert.notNull(result);
 		
 		return result;
+	}
+	public Collection<String> getSplitPictures(final String pictures)
+	// throws MalformedURLException, URISyntaxException
+	{
+		final Collection<String> res = new ArrayList<>();
+
+		if (pictures != null && !pictures.isEmpty()) {
+
+			final String[] slice = pictures.split(",");
+			for (final String p : slice)
+
+				// brotherhoodService.checkUrl(p);
+				if (p.trim() != "") {
+					Assert.isTrue(ResourceUtils.isUrl(p), "error.url");
+
+					res.add(p);
+				}
+		}
+		return res;
 	}
 	
 }

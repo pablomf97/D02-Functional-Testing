@@ -34,6 +34,13 @@
 			</a>
 
 		</display:column>
+		<display:column>
+
+			<a href="zone/administrator/display.do?zoneId=${row.id}"> <spring:message
+					code="zone.display" />
+			</a>
+
+		</display:column>
 
 		<!-- Attributes -->
 		<spring:message code="zone.name" var="nameHeader" />

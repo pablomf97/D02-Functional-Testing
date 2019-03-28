@@ -20,7 +20,27 @@ public class PeriodRecordServiceTest extends AbstractTest {
 	@Autowired
 	private PeriodRecordService periodRecordService;
 
-	// TODO Documentar coverage
+	/*
+	 * Total coverage of all tests
+	 * 
+	 * 
+	 * Coverage of the total project (%): 28.5
+	 * 
+	 * 
+	 * Coverage of the total project (lines of codes): 8814
+	 * 
+	 * 
+	 * ################################################################
+	 * 
+	 * Total coverage by exclusively executing this test class
+	 * 
+	 * 
+	 * Coverage of the total project (%): 7.3
+	 * 
+	 * 
+	 * Coverage of the total project (lines of codes): 2098
+	 */
+
 	/*
 	 * ###################### TEST CREATE PERIOD RECORDS ######################
 	 */

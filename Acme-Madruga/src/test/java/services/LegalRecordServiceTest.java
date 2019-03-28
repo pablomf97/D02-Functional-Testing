@@ -21,7 +21,27 @@ public class LegalRecordServiceTest extends AbstractTest {
 	@Autowired
 	private LegalRecordService legalRecordService;
 
-	// TODO Documentar coverage
+	/*
+	 * Total coverage of all tests
+	 * 
+	 * 
+	 * Coverage of the total project (%): 28.5
+	 * 
+	 * 
+	 * Coverage of the total project (lines of codes): 8814
+	 * 
+	 * 
+	 * ################################################################
+	 * 
+	 * Total coverage by exclusively executing this test class
+	 * 
+	 * 
+	 * Coverage of the total project (%): 7.6
+	 * 
+	 * 
+	 * Coverage of the total project (lines of codes): 2180
+	 */
+
 	/*
 	 * ####################### TEST CREATE LEGAL RECORDS #######################
 	 */
