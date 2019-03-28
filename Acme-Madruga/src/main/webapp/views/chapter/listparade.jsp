@@ -36,27 +36,29 @@
 		requestURI="parade/chapter/list.do" id="parade">
 
 		<security:authorize access="hasRole('CHAPTER')">
+		
+		
+		
+	<jstl:choose>
+		<jstl:when test="${parade.status == 'ACCEPTED'}">
+			<jstl:set var="bgcolor" value="tableColorGreen" />
+		</jstl:when>
 
-			<jstl:choose>
-				<jstl:when test="${row.status == 'APPROVED'}">
-					<jstl:set var="bgcolor" value="tableColorGreen" />
-				</jstl:when>
+		<jstl:when test="${parade.status == 'REJECTED'}">
+			<jstl:set var="bgcolor" value="tableColorOrange" />
+		</jstl:when>
 
-				<jstl:when test="${row.status == 'REJECTED'}">
-					<jstl:set var="bgcolor" value="tableColorOrange" />
-				</jstl:when>
+		<jstl:when test="${parade.status == 'SUBMITTED'}">
+			<jstl:set var="bgcolor" value="tableColorGrey" />
+		</jstl:when>
 
-				<jstl:when test="${row.status == 'SUBMITTED'}">
-					<jstl:set var="bgcolor" value="tableColorGrey" />
-				</jstl:when>
-
-				<jstl:otherwise>
-					<jstl:set var="bgcolor" value="tableColorDefault" />
-				</jstl:otherwise>
-			</jstl:choose>
+		<jstl:otherwise>
+			<jstl:set var="bgcolor" value="tableColorDefault" />
+		</jstl:otherwise>
+	</jstl:choose>
 
 			<!-- Attributes-->
-
+			
 			<display:column titleKey="parade.brotherhood" sortable="true">
 				<jstl:out value="${parade.brotherhood.name}" />
 			</display:column>
@@ -65,9 +67,18 @@
 				<jstl:out value="${parade.title}" />
 			</display:column>
 
-			<display:column titleKey="parade.status" sortable="true"
-				class="${bgcolor}">
-				<jstl:out value="${parade.status}" />
+			<display:column  titleKey="parade.status"
+				sortable="true">
+				<jstl:if test="${parade.status == 'SUBMITTED' }">
+					<span class="SUBMITTED"> <jstl:out value="${ parade.status }" /></span>
+				</jstl:if>
+				<jstl:if test="${parade.status == 'ACCEPTED' }">
+					<span class="ACCEPTED"> <jstl:out value="${ parade.status }" /></span>
+				</jstl:if>
+				<jstl:if test="${parade.status == 'REJECTED' }">
+					<span class="REJECTED"> <jstl:out value="${ parade.status }" /></span>
+				</jstl:if>
+				<br />
 			</display:column>
 
 			<!-- Action links -->

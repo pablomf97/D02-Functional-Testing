@@ -52,7 +52,7 @@
 	</jstl:choose>
 
 	<jstl:choose>
-		<jstl:when test="${not row.isDraft}">
+		<jstl:when test="${not isPrincipal}">
 
 			<!-- Attributes-->
 
@@ -64,7 +64,7 @@
 				<jstl:out value="${row.ticker }"></jstl:out>
 			</display:column>
 
-			<display:column class="${bgcolor}" titleKey="parade.status"
+			<display:column titleKey="parade.status"
 				sortable="true">
 				<jstl:if test="${row.status == 'SUBMITTED' }">
 					<span class="SUBMITTED"> <jstl:out value="${ row.status }" /></span>
@@ -97,15 +97,6 @@
 						code="parade.display" />
 				</a>
 			</display:column>
-			
-			<display:column>
-				<jstl:if test="${row.isDraft == true}">
-					<a href="parade/edit.do?paradeId=${row.id}"> <spring:message
-							code="parade.edit" />
-					</a>
-				</jstl:if>
-
-			</display:column>
 
 			<display:column titleKey="parade.path">
 				<a href="segment/list.do?paradeId=${row.id}"> <spring:message
@@ -114,9 +105,11 @@
 			</display:column>
 		</jstl:when>
 
-		<jstl:when test="${row.isDraft && permission}">
+		<jstl:when test="${isPrincipal}">
 
 			<!-- Attributes-->
+			
+			
 
 			<display:column titleKey="parade.title" sortable="true">
 				<jstl:out value="${row.title }"></jstl:out>
@@ -126,7 +119,7 @@
 				<jstl:out value="${row.ticker }"></jstl:out>
 			</display:column>
 
-			<display:column class="${bgcolor}" titleKey="parade.status"
+			<display:column titleKey="parade.status"
 				sortable="true">
 				<jstl:if test="${row.status == 'SUBMITTED' }">
 					<span class="SUBMITTED"> <jstl:out value="${ row.status }" /></span>
