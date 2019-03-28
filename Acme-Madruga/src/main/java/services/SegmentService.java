@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -20,14 +21,15 @@ public class SegmentService {
 
 	// Managed repository ------------------------------
 	@Autowired
-	private SegmentRepository segmentRepository;
+	private SegmentRepository	segmentRepository;
 
 	// Supporting services -----------------------
 	@Autowired
-	private ActorService actorService;
+	private ActorService		actorService;
 
 	@Autowired
-	private Validator validator;
+	private Validator			validator;
+
 
 	// Constructors
 
@@ -51,10 +53,6 @@ public class SegmentService {
 	// /FINDONE
 	public Segment findOne(final int segmentId) {
 		Segment result;
-		Actor principal;
-
-		principal = this.actorService.findByPrincipal();
-		Assert.notNull(principal);
 
 		result = this.segmentRepository.findOne(segmentId);
 		Assert.notNull(result);
@@ -81,7 +79,7 @@ public class SegmentService {
 		Assert.notNull(segment.getOriginLatitude(), "segment.NotEmpty");
 		Assert.notNull(segment.getOriginLongitude(), "segment.NotEmpty");
 		Assert.notNull(segment.getParade(), "segment.NotEmpty");
-		
+
 		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
 		Assert.isTrue(segment.getExpectedTimeOrigin().before(segment.getExpectedTimeDestination()));
 
@@ -93,29 +91,20 @@ public class SegmentService {
 				segment.setIsEditable(true);
 
 				result = this.segmentRepository.save(segment);
-			} else {
-				for (Segment seg : path) {
-					if ((seg.getDestinationLatitude().toString()
-							.equals(segment.getOriginLatitude().toString())) && 
-							(seg.getDestinationLongitude().toString()
-							.equals(segment.getOriginLongitude().toString()))
-							&& seg.getIsEditable()) {
-						
+			} else
+				for (final Segment seg : path)
+					if ((seg.getDestinationLatitude().toString().equals(segment.getOriginLatitude().toString())) && (seg.getDestinationLongitude().toString().equals(segment.getOriginLongitude().toString())) && seg.getIsEditable()) {
+
 						segment.setIsEditable(true);
 						result = this.segmentRepository.save(segment);
 						seg.setIsEditable(false);
 						this.segmentRepository.save(seg);
 						break;
 					}
-				}
-			}
 		} else if (segment.getIsEditable()) {
 
 			aux = this.findOne(segment.getId());
-			Assert.isTrue((aux.getOriginLatitude().toString()
-					.equals(segment.getOriginLatitude().toString())) && 
-					(aux.getOriginLongitude().toString()
-					.equals(segment.getOriginLongitude().toString())));
+			Assert.isTrue((aux.getOriginLatitude().toString().equals(segment.getOriginLatitude().toString())) && (aux.getOriginLongitude().toString().equals(segment.getOriginLongitude().toString())));
 
 			result = this.segmentRepository.save(segment);
 		}
@@ -150,33 +139,25 @@ public class SegmentService {
 
 		path = this.findAllSegmentsByParadeId(segment.getParade().getId());
 		if (path.size() != 1) {
-			for (Segment seg : path) {
-				if ((seg.getDestinationLatitude().toString()
-						.equals(segment.getOriginLatitude().toString())) && 
-						(seg.getDestinationLongitude().toString()
-						.equals(segment.getOriginLongitude().toString()))) {
+			for (final Segment seg : path)
+				if ((seg.getDestinationLatitude().toString().equals(segment.getOriginLatitude().toString())) && (seg.getDestinationLongitude().toString().equals(segment.getOriginLongitude().toString()))) {
 					seg.setIsEditable(true);
 					this.segmentRepository.save(seg);
 					this.segmentRepository.delete(segment);
 				}
-			}
-		} else {
+		} else
 			this.segmentRepository.delete(segment.getId());
-		}
 	}
 
 	// // Other business methods
 
-	public Segment reconstruct(Segment segment, BindingResult binding) {
+	public Segment reconstruct(final Segment segment, final BindingResult binding) {
 
 		if (segment.getId() != 0) {
 			Segment result = null;
 			result = this.findOne(segment.getId());
-			
-			Assert.isTrue((result.getOriginLatitude().toString()
-					.equals(segment.getOriginLatitude().toString())) && 
-					(result.getOriginLongitude().toString()
-					.equals(segment.getOriginLongitude().toString())));
+
+			Assert.isTrue((result.getOriginLatitude().toString().equals(segment.getOriginLatitude().toString())) && (result.getOriginLongitude().toString().equals(segment.getOriginLongitude().toString())));
 
 			result.setDestinationLatitude(segment.getDestinationLatitude());
 			result.setDestinationLongitude(segment.getDestinationLongitude());
@@ -184,15 +165,15 @@ public class SegmentService {
 			result.setExpectedTimeOrigin(segment.getExpectedTimeOrigin());
 			result.setOriginLatitude(segment.getOriginLatitude());
 			result.setOriginLongitude(segment.getOriginLongitude());
-			
-			validator.validate(result, binding);
+
+			this.validator.validate(result, binding);
 
 			return result;
 		}
-		validator.validate(segment, binding);
+		this.validator.validate(segment, binding);
 
 		return segment;
-		
+
 	}
 
 	public void deleteAll(final Integer paradeId) {
@@ -210,13 +191,8 @@ public class SegmentService {
 
 	}
 
-	public Collection<Segment> findAllSegmentsByParadeId(int paradeId) {
+	public Collection<Segment> findAllSegmentsByParadeId(final int paradeId) {
 		Collection<Segment> result;
-		Actor principal;
-
-		principal = this.actorService.findByPrincipal();
-		Assert.notNull(principal);
-
 		result = this.segmentRepository.findAllSegmentsByParadeId(paradeId);
 		Assert.notNull(result);
 

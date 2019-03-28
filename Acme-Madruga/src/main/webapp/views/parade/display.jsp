@@ -104,14 +104,14 @@
 			value="<spring:message code="parade.edit" />"
 			onclick="redirect: location.href = 'parade/edit.do?paradeId=${parade.id}';" />
 	</jstl:if>
-	
+	<jstl:if test="${isPrincipal}">
 		<input type="button" name="copy"
 		value="<spring:message code="parade.copy" />"
 		onclick="redirect: location.href = 'parade/copy.do?paradeId=${parade.id}';"  />
-
+	</jstl:if>
 </security:authorize>
 
-<security:authorize access="hasRole('MEMBER')">
+<security:authorize access="isAnonymous() or hasAnyRole('MEMBER','CHAPTER','ADMINISTRATOR')">
 
 	<jstl:choose>
 		<jstl:when test="${!parade.isDraft}">

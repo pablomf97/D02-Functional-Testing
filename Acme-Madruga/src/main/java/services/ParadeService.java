@@ -230,13 +230,11 @@ public class ParadeService {
 				.findActiveEnrolmentsByMember(memberId);
 		for (Enrolment enrolment : memberEnrolments)
 			brotherhoodIds.add(enrolment.getBrotherhood().getId());
-		
 
 		for (Parade procesion : toApply)
 			for (Integer brotherhoodId : brotherhoodIds)
 				if (procesion.getBrotherhood().getId() != brotherhoodId)
 					result.remove(procesion);
-		
 
 		return result;
 	}
@@ -334,8 +332,8 @@ public class ParadeService {
 		return result;
 	}
 
-	public Double[] ratioFinalModeGroupedByStatus() {
-		Double[] result;
+	public Collection<Double> ratioFinalModeGroupedByStatus() {
+		Collection<Double> result;
 
 		result = this.paradeRepository.ratioFinalModeGroupedByStatus();
 
@@ -349,7 +347,8 @@ public class ParadeService {
 	public Parade copyParade(final Integer paradeId) {
 		Parade res;
 		final Actor principal = this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+		Assert.isTrue(this.actorService
+				.checkAuthority(principal, "BROTHERHOOD"));
 		res = this.paradeRepository.findOne(paradeId);
 		Assert.isTrue(res.getBrotherhood().equals(principal));
 		final Parade copy = this.create();

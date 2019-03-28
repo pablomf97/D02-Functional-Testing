@@ -24,7 +24,26 @@ public class LinkedRecordServiceTest extends AbstractTest {
 	@Autowired
 	private BrotherhoodService brotherhoodService;
 
-	// TODO Documentar coverage
+	/*
+	 * Total coverage of all tests
+	 * 
+	 * 
+	 * Coverage of the total project (%): 19.0
+	 * 
+	 * 
+	 * Coverage of the total project (lines of codes): 5455
+	 * 
+	 * ################################################################
+	 * 
+	 * Total coverage by exclusively executing this test class
+	 * 
+	 * 
+	 * Coverage of the total project (%): 6.4
+	 * 
+	 * 
+	 * Coverage of the total project (lines of codes): 1823
+	 */
+
 	/*
 	 * ####################### TEST CREATE LINK RECORDS #######################
 	 */
