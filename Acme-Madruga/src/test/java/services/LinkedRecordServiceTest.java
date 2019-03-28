@@ -36,7 +36,7 @@ public class LinkedRecordServiceTest extends AbstractTest {
 				/* 1. Correct link record Testing */
 
 				/* Test 1.1 ----------------------------------------------- */
-				{ "brotherhood2", "title", "description", "brotherhood1", null
+				{ "brotherhood2", "title", "description", "brotherhood3", null
 				/*
 				 * 
 				 * There is no error expected here, a brotherhood with an
