@@ -20,7 +20,26 @@ public class MiscellaneousRecordServiceTest extends AbstractTest {
 	@Autowired
 	private MiscellaneousRecordService miscellaneousRecordService;
 
-	// TODO Documentar coverage
+	/*
+	 * Total coverage of all tests
+	 * 
+	 * 
+	 * Coverage of the total project (%): 19.0
+	 * 
+	 * 
+	 * Coverage of the total project (lines of codes): 5455
+	 * 
+	 * ################################################################
+	 * 
+	 * Total coverage by exclusively executing this test class
+	 * 
+	 * 
+	 * Coverage of the total project (%): 5.7
+	 * 
+	 * 
+	 * Coverage of the total project (lines of codes): 1641
+	 */
+
 	/*
 	 * ####################### TEST CREATE LEGAL RECORDS #######################
 	 */
