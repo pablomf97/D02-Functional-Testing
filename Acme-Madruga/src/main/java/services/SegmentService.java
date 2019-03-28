@@ -172,18 +172,11 @@ public class SegmentService {
 		if (segment.getId() != 0) {
 			Segment result = null;
 			result = this.findOne(segment.getId());
-			
-			Assert.isTrue((result.getOriginLatitude().toString()
-					.equals(segment.getOriginLatitude().toString())) && 
-					(result.getOriginLongitude().toString()
-					.equals(segment.getOriginLongitude().toString())));
 
 			result.setDestinationLatitude(segment.getDestinationLatitude());
 			result.setDestinationLongitude(segment.getDestinationLongitude());
 			result.setExpectedTimeDestination(segment.getExpectedTimeDestination());
 			result.setExpectedTimeOrigin(segment.getExpectedTimeOrigin());
-			result.setOriginLatitude(segment.getOriginLatitude());
-			result.setOriginLongitude(segment.getOriginLongitude());
 			
 			validator.validate(result, binding);
 
