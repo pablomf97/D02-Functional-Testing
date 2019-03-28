@@ -215,6 +215,7 @@ public class ParadeController extends AbstractController {
 	public ModelAndView edit(@RequestParam final int paradeId) {
 		ModelAndView result;
 		Parade parade;
+		boolean isPrincipal = false;
 		Actor principal;
 
 		try {
@@ -224,12 +225,18 @@ public class ParadeController extends AbstractController {
 
 			parade = this.paradeService.findOne(paradeId);
 			Assert.notNull(parade);
+			
+			if(parade.getBrotherhood().getId() == principal.getId()){
+				isPrincipal = true;
+			} 
 			result = this.createEditModelAndView(parade);
+			result.addObject("isPrincipal", isPrincipal);
 
 		} catch (final IllegalArgumentException oops) {
 			result = new ModelAndView("misc/403");
 		} catch (final Throwable oopsie) {
 			result = new ModelAndView("redirect:/enrolment/member/list.do");
+			
 		}
 
 		return result;
@@ -246,7 +253,7 @@ public class ParadeController extends AbstractController {
 			try {
 				parade.setIsDraft(false);
 				this.paradeService.save(parade);
-
+				
 				this.messageService.notificationPublishParade(parade);
 
 				result = new ModelAndView("redirect:member,brotherhood/list.do");
@@ -255,7 +262,7 @@ public class ParadeController extends AbstractController {
 			} catch (final Throwable oops) {
 				result = new ModelAndView("redirect:/welcome/index.do");
 			}
-
+		
 		return result;
 	}
 
@@ -387,14 +394,14 @@ public class ParadeController extends AbstractController {
 			final String messageCode) {
 		final ModelAndView result;
 		Actor principal;
-		boolean isPrincipal = false;
+		
 		Collection<Platform> platforms;
 
 		principal = this.actorService.findByPrincipal();
 		Assert.isTrue(
 				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
 				"not.allowed");
-
+		
 		final Brotherhood actorBrother = (Brotherhood) principal;
 
 		platforms = this.platformService.findPlatformsByBrotherhoodId(principal

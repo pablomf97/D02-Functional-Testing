@@ -68,7 +68,6 @@ public class SegmentController extends AbstractController {
 	@RequestMapping(value = "/list")
 	public ModelAndView list(@RequestParam final Integer paradeId) {
 		ModelAndView result = null;
-		final Actor principal;
 		Collection<Segment> segments = null;
 		String requestURI;
 		final int pId = paradeId;
@@ -151,23 +150,13 @@ public class SegmentController extends AbstractController {
 
 			if (binding.hasErrors())
 				result = this.createEditModelAndView(segment);
-			else
-				try {
-
+			else {
 					this.segmentService.save(res);
-
 					result = new ModelAndView("redirect:/segment/list.do?paradeId=" + segment.getParade().getId());
-				} catch (final IllegalArgumentException oops) {
-					result = new ModelAndView("misc/403");
-				} catch (final Throwable oops) {
-					result = this.createEditModelAndView(segment, "segment.commit.error");
-				}
-		} catch (final IllegalArgumentException oops) {
-			result = new ModelAndView("misc/403");
+				} 
 		} catch (final Throwable oops) {
 			result = this.createEditModelAndView(segment, "segment.commit.error");
 		}
-
 		return result;
 
 	}

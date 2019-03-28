@@ -80,8 +80,6 @@ public class SegmentService {
 
 		Assert.isTrue(this.actorService
 				.checkAuthority(principal, "BROTHERHOOD"));
-		Assert.isTrue(segment.getExpectedTimeOrigin().before(
-				segment.getExpectedTimeDestination()));
 
 		path = this.findAllSegmentsByParadeId(segment.getParade().getId());
 
@@ -181,6 +179,9 @@ public class SegmentService {
 			result.setExpectedTimeDestination(segment
 					.getExpectedTimeDestination());
 			result.setExpectedTimeOrigin(segment.getExpectedTimeOrigin());
+			
+			Assert.isTrue(segment.getExpectedTimeOrigin().before(
+					segment.getExpectedTimeDestination()), "segment.before");
 			
 			validator.validate(result, binding);
 
