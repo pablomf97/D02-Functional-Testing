@@ -28,7 +28,7 @@
 			value="https://ih1.redbubble.net/image.376305132.3400/flat,550x550,075,f.u1.jpg" />
 		<property name="email" value="josgamred@mail.com" />
 		<property name="phoneNumber" value="+34611987654" />
-		<property name="address" value="C/ Atlántica, 1 (Málaga)" />
+		<property name="address" value="C/ Atlántica sex, 1 (Málaga)" />
 		<property name="userAccount" ref="userAdmin1" />
 	</bean>
 
@@ -99,6 +99,23 @@
 		<property name="history" ref="history1" />
 
 	</bean>
+	
+	
+	<!-- CHAPTER -->
+	
+	
+	<bean id="chapter1" class="domain.Chapter">
+	    <property name="name" value="El tito carlos" />
+	    <property name="middleName" value="carelto" />
+	    <property name="surname" value="Heredia" />
+	    <property name="photo" value="https://ih1.redbubble.net/image.ioasdoi.jpg" />
+	    <property name="email" value="carleto@mail.com" />
+	    <property name="phoneNumber" value="+34699987654" />
+	    <property name="address" value="Av. España" />
+	    <property name="userAccount" ref="userChapter1" />
+	    <property name="title" value="Ell carleto" />
+	    <property name="zone" ref="zone1" />	
+    </bean>
 
 	<!-- MEMBER -->
 
@@ -151,6 +168,20 @@
 				</bean>
 			</list>
 		</property>
+	</bean>
+	
+	<!-- CHAPTER -->
+		
+	<bean id="userChapter1" class="security.UserAccount">
+	    <property name="username" value="chapter1" />
+	    <property name="password" value="178494d73a41f7d68e80f685324d3662" />
+	    <property name="authorities">
+	      <list>
+	        <bean class="security.Authority">
+	          <property name="authority" value="CHAPTER" />
+	        </bean>
+	      </list>
+	    </property>
 	</bean>
 
 	<!-- MEMBER -->
@@ -241,7 +272,7 @@ your parades." />
 				<entry key="English" value="" />
 			</util:map>
 		</property>
-		<property name="banner" value="https://image.ibb.co/iuaDgV/Untitled.png" />
+		<property name="banner" value="https://media1.s-nbcnews.com/i/MSNBC/Components/Video/201811/18-11-22T155549Z_1137642265_RC1E15B7FF30_RTRMADP_3_USA-THANKSGIVING-PARADE.jpg" />
 
 
 		<property name="countryCode" value="+034" />
@@ -268,7 +299,7 @@ your parades." />
 	<bean id="message1" class="domain.Message">
 		<property name="sentMoment" value="12/12/2016 05:32:14" />
 		<property name="subject" value="Message 1" />
-		<property name="body" value="Message bad from horrible admin1 to member 1" />
+		<property name="body" value="Message bad sexo viagra from horrible admin1 to member 1" />
 		<property name="priority" value="LOW" />
 		<property name="tags" value="good" />
 		<property name="messageBoxes">
@@ -291,7 +322,7 @@ your parades." />
 		<property name="sentMoment" value="07/08/2016 14:10:53" />
 		<property name="subject" value="Message 2" />
 		<property name="body"
-			value="Message bad good from admin1 to brotherhood 1" />
+			value="Message bad good from admin1 viagra to brotherhood 1" />
 		<property name="priority" value="LOW" />
 		<property name="tags" value="good" />
 		<property name="messageBoxes">
@@ -313,7 +344,7 @@ your parades." />
 	<bean id="message3" class="domain.Message">
 		<property name="sentMoment" value="02/11/2016 10:10:45" />
 		<property name="subject" value="Message 3" />
-		<property name="body" value="Message good perfect from admin2 to member 2" />
+		<property name="body" value="Message good perfect viagra from admin2 to member 2" />
 		<property name="priority" value="LOW" />
 		<property name="tags" value="good" />
 		<property name="messageBoxes">
@@ -336,7 +367,7 @@ your parades." />
 		<property name="sentMoment" value="09/05/2016 17:32:14" />
 		<property name="subject" value="Message 4" />
 		<property name="body"
-			value="Message from good bad admin2 to brotherhood 2" />
+			value="Message from good viagra bad admin2 to brotherhood 2" />
 		<property name="priority" value="LOW" />
 		<property name="tags" value="good" />
 		<property name="messageBoxes">
@@ -360,7 +391,7 @@ your parades." />
 	<bean id="message5" class="domain.Message">
 		<property name="sentMoment" value="10/04/2017 21:45:14" />
 		<property name="subject" value="Message 5" />
-		<property name="body" value="Answer from Member 1 to Admin 1" />
+		<property name="body" value="Answer horrible horrible horrible from Member 1 to Admin 1" />
 		<property name="isSpam" value="true" />
 		<property name="priority" value="LOW" />
 		<property name="tags" value="good" />
@@ -991,6 +1022,177 @@ your parades." />
 
 			<ref bean="brotherhood2" />
 		</property>
+	</bean>	
+	
+	<!-- BROTHERHOOD 3 -->
+		
+	<bean id="inBoxBrotherhood3" class="domain.MessageBox">
+		<property name="name" value="In box" />
+		<property name="isPredefined" value="true" />
+		<property name="parentMessageBoxes">
+			<null />
+		</property>
+		<property name="messages">
+			<null/>
+		</property>
+		<property name="owner">
+
+			<ref bean="brotherhood3" />
+		</property>
+
+
+	</bean>
+
+	<bean id="spamBoxBrotherhood3" class="domain.MessageBox">
+		<property name="name" value="Spam box" />
+		<property name="isPredefined" value="true" />
+		<property name="parentMessageBoxes">
+			<null />
+		</property>
+		<property name="messages">
+			<null />
+		</property>
+		<property name="owner">
+
+			<ref bean="brotherhood3" />
+		</property>
+
+	</bean>
+
+	<bean id="outBoxBrotherhood4" class="domain.MessageBox">
+		<property name="name" value="Out box" />
+		<property name="isPredefined" value="true" />
+		<property name="parentMessageBoxes">
+			<null />
+		</property>
+		<property name="messages">
+			<null/>
+		</property>
+		<property name="owner">
+
+			<ref bean="brotherhood3" />
+		</property>
+
+
+	</bean>
+
+	<bean id="trashBoxBrotherhood3" class="domain.MessageBox">
+		<property name="name" value="Trash box" />
+		<property name="isPredefined" value="true" />
+		<property name="parentMessageBoxes">
+			<null />
+		</property>
+		<property name="messages">
+			<null />
+		</property>
+		<property name="owner">
+
+			<ref bean="brotherhood3" />
+		</property>
+
+	</bean>
+
+	<bean id="notificationBoxBrotherhood3" class="domain.MessageBox">
+		<property name="name" value="Notification box" />
+		<property name="isPredefined" value="true" />
+		<property name="parentMessageBoxes">
+			<null />
+		</property>
+		<property name="messages">
+			<list>
+				<ref bean="message9" />
+			</list>
+		</property>
+		<property name="owner">
+
+			<ref bean="brotherhood3" />
+		</property>
+
+	</bean>
+	
+	<!-- CHAPTER 1 -->
+	<bean id="inBoxChapter1" class="domain.MessageBox">
+		<property name="name" value="In box" />
+		<property name="isPredefined" value="true" />
+		<property name="parentMessageBoxes">
+			<null />
+		</property>
+		<property name="messages">
+			<list>
+				<null/>
+			</list>
+		</property>
+		<property name="owner">
+
+			<ref bean="chapter1" />
+		</property>
+
+
+	</bean>
+
+	<bean id="spamBoxChapter1" class="domain.MessageBox">
+		<property name="name" value="Spam box" />
+		<property name="isPredefined" value="true" />
+		<property name="parentMessageBoxes">
+			<null />
+		</property>
+		<property name="messages">
+			<null />
+		</property>
+		<property name="owner">
+
+			<ref bean="chapter1" />
+		</property>
+
+	</bean>
+
+	<bean id="outBoxChapter1" class="domain.MessageBox">
+		<property name="name" value="Out box" />
+		<property name="isPredefined" value="true" />
+		<property name="parentMessageBoxes">
+			<null />
+		</property>
+		<property name="messages">
+			<null/>
+		</property>
+		<property name="owner">
+
+			<ref bean="chapter1" />
+		</property>
+
+
+	</bean>
+
+	<bean id="trashBoxChapter1" class="domain.MessageBox">
+		<property name="name" value="Trash box" />
+		<property name="isPredefined" value="true" />
+		<property name="parentMessageBoxes">
+			<null />
+		</property>
+		<property name="messages">
+			<null />
+		</property>
+		<property name="owner">
+
+			<ref bean="chapter1" />
+		</property>
+
+	</bean>
+
+	<bean id="notificationBoxChapter1" class="domain.MessageBox">
+		<property name="name" value="Notification box" />
+		<property name="isPredefined" value="true" />
+		<property name="parentMessageBoxes">
+			<null />
+		</property>
+		<property name="messages">
+			<null/>
+		</property>
+		<property name="owner">
+
+			<ref bean="chapter1" />
+		</property>
+
 	</bean>
 
 	<!-- FINDER -->

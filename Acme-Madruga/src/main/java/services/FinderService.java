@@ -159,7 +159,7 @@ public class FinderService {
 		maxLivedMoment = DateUtils.addHours(currentMoment, -timeChachedFind);
 
 		if (finder.getSearchMoment().before(maxLivedMoment)) {
-			finder.setSearchResults(null);
+			finder.setSearchResults(new ArrayList<Parade>());
 			finder.setArea(null);
 			finder.setKeyWord(null);
 			finder.setMaximumMoment(null);

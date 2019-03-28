@@ -136,7 +136,7 @@ public class BrotherhoodController extends AbstractController {
 				try {
 					brotherhood.setPhoneNumber(this.actorService.checkSetPhoneCC(brotherhood.getPhoneNumber()));
 					this.brotherhoodService.save(brotherhood);
-					result = new ModelAndView("redirect:/welcome/index.do");
+					result = new ModelAndView("redirect:/brotherhood/display.do?id=" + brotherhood.getId());
 				} catch (final Throwable opps) {
 					result = new ModelAndView("brotherhood/edit");
 					result.addObject("uri", "brotherhood/edit.do");

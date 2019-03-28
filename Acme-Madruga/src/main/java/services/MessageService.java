@@ -453,7 +453,7 @@ public class MessageService {
 		recipients = this.actorService.findAll();
 
 		for (final Actor a : recipients)
-			notBoxes.add(this.messageBoxService.findByName(a.getId(), "Notification Box"));
+			notBoxes.add(this.messageBoxService.findByName(a.getId(), "Notification box"));
 
 		outBox = this.messageBoxService.findByName(principal.getId(), "Out box");
 

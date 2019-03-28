@@ -52,7 +52,7 @@
 	</jstl:choose>
 
 	<jstl:choose>
-		<jstl:when test="${permission }">
+		<jstl:when test="${not row.isDraft}">
 
 			<!-- Attributes-->
 
@@ -85,6 +85,72 @@
 			<display:column titleKey="parade.organisedMoment" sortable="true">
 				<jstl:out value="${row.organisedMoment }"></jstl:out>
 			</display:column>
+			
+			<display:column titleKey="parade.brotherhood" sortable="true">
+				<jstl:out value="${row.brotherhood.title }"></jstl:out>
+			</display:column>
+
+			<!-- Action links -->
+
+			<display:column>
+				<a href="parade/display.do?paradeId=${row.id}"> <spring:message
+						code="parade.display" />
+				</a>
+			</display:column>
+			
+			<display:column>
+				<jstl:if test="${row.isDraft == true}">
+					<a href="parade/edit.do?paradeId=${row.id}"> <spring:message
+							code="parade.edit" />
+					</a>
+				</jstl:if>
+
+			</display:column>
+
+			<display:column titleKey="parade.path">
+				<a href="segment/list.do?paradeId=${row.id}"> <spring:message
+						code="parade.display" />
+				</a>
+			</display:column>
+		</jstl:when>
+
+		<jstl:when test="${row.isDraft && permission}">
+
+			<!-- Attributes-->
+
+			<display:column titleKey="parade.title" sortable="true">
+				<jstl:out value="${row.title }"></jstl:out>
+			</display:column>
+
+			<display:column titleKey="parade.ticker" sortable="true">
+				<jstl:out value="${row.ticker }"></jstl:out>
+			</display:column>
+
+			<display:column class="${bgcolor}" titleKey="parade.status"
+				sortable="true">
+				<jstl:if test="${row.status == 'SUBMITTED' }">
+					<span class="SUBMITTED"> <jstl:out value="${ row.status }" /></span>
+				</jstl:if>
+				<jstl:if test="${row.status == 'ACCEPTED' }">
+					<span class="ACCEPTED"> <jstl:out value="${ row.status }" /></span>
+				</jstl:if>
+				<jstl:if test="${row.status == 'REJECTED' }">
+					<span class="REJECTED"> <jstl:out value="${ row.status }" /></span>
+				</jstl:if>
+				<br />
+			</display:column>
+
+			<display:column titleKey="parade.description">
+				<jstl:out value="${row.description }"></jstl:out>
+			</display:column>
+
+			<display:column titleKey="parade.organisedMoment" sortable="true">
+				<jstl:out value="${row.organisedMoment }"></jstl:out>
+			</display:column>
+			
+			<display:column titleKey="parade.brotherhood" sortable="true">
+				<jstl:out value="${row.brotherhood.title }"></jstl:out>
+			</display:column>
 
 			<!-- Action links -->
 
@@ -111,54 +177,6 @@
 			</display:column>
 		</jstl:when>
 
-		<jstl:otherwise>
-
-			<jstl:choose>
-
-				<jstl:when test="${row.isDraft == false}">
-
-					<!-- Attributes-->
-
-					<display:column titleKey="parade.title" sortable="true">
-						<jstl:out value="${row.title }"></jstl:out>
-					</display:column>
-
-					<display:column titleKey="parade.ticker" sortable="true">
-						<jstl:out value="${row.ticker }"></jstl:out>
-					</display:column>
-
-					<display:column titleKey="parade.status" sortable="true"
-						class="${bgcolor}">
-						<jstl:out value="${ row.status }" />
-						<br />
-					</display:column>
-
-					<display:column titleKey="parade.description">
-						<jstl:out value="${row.description }"></jstl:out>
-					</display:column>
-
-					<display:column titleKey="parade.organisedMoment" sortable="true">
-						<jstl:out value="${row.organisedMoment }"></jstl:out>
-					</display:column>
-
-					<!-- Action links -->
-
-					<display:column>
-						<a href="parade/display.do?paradeId=${row.id}"> <spring:message
-								code="parade.display" />
-						</a>
-					</display:column>
-
-				</jstl:when>
-				<jstl:otherwise>
-					<p>
-						<spring:message code="march.create" />
-					</p>
-				</jstl:otherwise>
-
-			</jstl:choose>
-
-		</jstl:otherwise>
 	</jstl:choose>
 </display:table>
 

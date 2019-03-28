@@ -18,6 +18,7 @@ import services.PlatformService;
 import domain.Actor;
 import domain.Brotherhood;
 import domain.Chapter;
+import domain.Member;
 import domain.Parade;
 import domain.Platform;
 
@@ -71,67 +72,84 @@ public class ParadeController extends AbstractController {
 
 	@RequestMapping(value = "/member,brotherhood/list")
 	public ModelAndView list(
-			@RequestParam(required = false) final Integer memberId,
 			@RequestParam(required = false) final Integer brotherhoodId) {
 		ModelAndView result;
-		Collection<Parade> parades;
+		Collection<Parade> parades = null;
 		Actor principal;
+		String requestURI;
 
-		Boolean permission;
-
+		Boolean permission = true;
+		
 		try {
-			principal = this.actorService.findByPrincipal();
-			Assert.isTrue(!this.actorService.checkAuthority(principal,
-					"ADMINISTRATOR"));
+				principal = this.actorService.findByPrincipal();
 
-			permission = true;
+				if(brotherhoodId != null) {
+					parades = this.paradeService
+							.findParadesByBrotherhoodId(brotherhoodId);
 
-			principal = this.actorService.findByPrincipal();
+					requestURI = "parade/member,brotherhood/list.do?brotherhoodId="
+							+ brotherhoodId;
+				} else {
+					parades = this.paradeService
+							.findParadesByBrotherhoodId(principal.getId());
 
-			if (this.actorService.checkAuthority(principal, "BROTHERHOOD")) {
-
-				parades = this.paradeService
-						.findParadesByBrotherhoodId(principal.getId());
-
-				final String requestURI = "parade/member,brotherhood/list.do?brotherhoodId="
-						+ principal.getId();
+					requestURI = "parade/member,brotherhood/list.do?brotherhoodId="
+							+ principal.getId();
+				}
+				
 				result = new ModelAndView("parade/list");
 				result.addObject("requestURI", requestURI);
 				result.addObject("parades", parades);
 				result.addObject("permission", permission);
 
-			} else {
-
-				Collection<Parade> toApply;
-
-				parades = this.paradeService
-						.findAcceptedParadesByMemberId(principal.getId());
-				toApply = this.paradeService.paradesToApply(principal.getId());
-
-				final String requestURI = "parade/member,brotherhood/list.do?memberId="
-						+ principal.getId();
-				result = new ModelAndView("parade/list");
-				result.addObject("requestURI", requestURI);
-				result.addObject("parades", parades);
-				result.addObject("toApply", toApply);
-
-			}
+			
 		} catch (final IllegalArgumentException oops) {
 			result = new ModelAndView("misc/403");
 		} catch (final Throwable oopsie) {
 
-			result = new ModelAndView("march/member,brotherhood/list");
+			result = new ModelAndView("parade/member,brotherhood/list");
 			permission = false;
 
 			result.addObject("oopsie", oopsie);
 			result.addObject("permission", permission);
-		}
+		} finally {}
 
+		return result;
+	}
+	
+	@RequestMapping(value = "/member/list")
+	public ModelAndView listMember(@RequestParam(required = false) final Integer memberId) {
+		ModelAndView result;
+		Collection<Parade> parades, toApply;
+		Member principal;
+		String requestURI;
+		Boolean permission = false;
+
+		try {
+			principal = (Member) this.actorService.findByPrincipal();
+			permission = true;
+
+			parades = this.paradeService
+					.findAcceptedParadesByMemberId(principal.getId());
+			toApply = this.paradeService.paradesToApply(principal.getId());
+
+			requestURI = "parade/member/list.do?memberId="
+					+ memberId;
+
+			result = new ModelAndView("chapter/listparade");
+			result.addObject("requestURI", requestURI);
+			result.addObject("parades", parades);
+			result.addObject("permission", permission);
+			result.addObject("toApply", toApply);
+
+		} catch (final IllegalArgumentException oops) {
+			result = new ModelAndView("misc/403");
+		}
 		return result;
 	}
 
 	@RequestMapping(value = "/chapter/list")
-	public ModelAndView listChapter(@RequestParam final Integer chapterId) {
+	public ModelAndView listChapter(@RequestParam(required = false) final Integer chapterId) {
 		ModelAndView result;
 		Collection<Parade> parades;
 		Chapter principal;
@@ -145,7 +163,7 @@ public class ParadeController extends AbstractController {
 
 			parades = this.paradeService.findParadesByAres(principal.getZone()
 					.getId());
-			requestURI = "parade/member,brotherhood/list.do?brotherhoodId="
+			requestURI = "parade/chapter/list.do?chapterId="
 					+ chapterId;
 
 			result = new ModelAndView("chapter/listparade");

@@ -46,6 +46,9 @@ public class ActorAdministratorController extends AbstractController {
 		ModelAndView res;
 		Actor toBan;
 		Actor principal;
+		Collection<Actor> actors;
+		
+		try {
 
 		principal = this.actorService.findByPrincipal();
 		Assert.isTrue(this.actorService.checkAuthority(principal,
@@ -55,14 +58,17 @@ public class ActorAdministratorController extends AbstractController {
 
 		this.actorService.ban(toBan);
 
-		Collection<Actor> actors;
-
 		actors = this.actorService.findAllExceptPrincipal();
 
 		res = new ModelAndView("actor/listSuspiciousActors");
 		res.addObject("requestURI",
 				"actor/administrator/list-suspicious-actors.do");
 		res.addObject("actors", actors);
+		
+		} catch (final IllegalArgumentException oops) {
+			res = new ModelAndView("redirect:/welcome/index.do");
+
+		} 
 
 		return res;
 	}

@@ -195,8 +195,13 @@ public class ActorService {
 		Assert.isTrue(this.checkAuthority(principal, "ADMINISTRATOR"));
 		Assert.notNull(a);
 		Assert.isTrue(!a.getUserAccount().getIsBanned());
-//		Assert.isTrue(a.getScore() < -0.5);
-
+		if(a.getSpammer() != null && a.getScore() != null) {
+			Assert.isTrue(a.getSpammer());
+			Assert.isTrue(a.getScore() < -0.5);
+		} else {
+			Assert.notNull(a.getSpammer());
+			Assert.notNull(a.getScore());
+		}
 		a.getUserAccount().setIsBanned(true);
 		a = this.actorRepository.save(a);
 	}

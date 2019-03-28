@@ -52,27 +52,24 @@
 							<display:column property="userAccount.authorities"
 								titleKey="actor.type" />
 
-							<display:column>
-								<a href="actor/display.do?actorID=${actors.id }"><spring:message
-										code="actor.display" /></a>
-							</display:column>
 
 							<display:column>
 								<jstl:choose>
 									<jstl:when test="${!actors.userAccount.isBanned}">
-
+										
+										<jstl:if test="${actors.spammer and (actors.score < -0.5)}">
 										<input type="button" name="ban"
 											value="<spring:message code="actor.ban" />"
 											onclick="redirect: location.href = 'actor/administrator/ban.do?actorID=${actors.id}';" />
-
+										</jstl:if>
 									</jstl:when>
-									<jstl:otherwise>
+									<jstl:when test="${actors.userAccount.isBanned}">
 
 										<input type="button" name="unban"
 											value="<spring:message code="actor.unban" />"
 											onclick="redirect: location.href = 'actor/administrator/unban.do?actorID=${actors.id}';" />
 
-									</jstl:otherwise>
+									</jstl:when>
 								</jstl:choose>
 							</display:column>
 

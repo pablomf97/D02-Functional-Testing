@@ -64,21 +64,21 @@ public class SystemConfigurationService {
 		Assert.isTrue(this.actorService.checkAuthority(principal, "ADMINISTRATOR"), "not.allowed");
 		final Map<String, String> breachNotification = new HashMap<>();
 		final Map<String, String> wellMap = new HashMap<>();
-		wellMap.put("Espaï¿½ol", "ï¿½Bienvenidos a Acme Madrugï¿½! Tu sitio para organizar procesiones.");
-		wellMap.put("English", "Welcome to Acme Madrugï¿½, the site to organise your parades.");
+		wellMap.put("Español", "¡Bienvenidos a Acme Madruga! Tu sitio para organizar procesiones.");
+		wellMap.put("English", "Welcome to Acme Madruga, the site to organise your parades.");
 
-		breachNotification.put("Espaï¿½ol", "");
+		breachNotification.put("Español", "");
 		breachNotification.put("English", "");
 		final SystemConfiguration systemConfiguration = new SystemConfiguration();
-		systemConfiguration.setSystemName("Acme-MadrugÃ¡");
+		systemConfiguration.setSystemName("Acme-Madruga");
 		systemConfiguration.setWelcomeMessage(wellMap);
 		systemConfiguration.setBreachNotification(breachNotification);
-		systemConfiguration.setBanner("https://image.ibb.co/iuaDgV/Untitled.png");
+		systemConfiguration.setBanner("https://media1.s-nbcnews.com/i/MSNBC/Components/Video/201811/18-11-22T155549Z_1137642265_RC1E15B7FF30_RTRMADP_3_USA-THANKSGIVING-PARADE.jpg");
 		systemConfiguration.setCountryCode("+034");
 		systemConfiguration.setTimeResultsCached(1);
 		systemConfiguration.setMaxResults(10);
-		systemConfiguration.setSpamWords("sex,viagra,cialis,one million,you've been selected,nigeria,sexo,un millon,un millï¿½n,ha sido seleccionado");
-		systemConfiguration.setPossitiveWords("good,fantastic,excellent,great,amazing,terrific,beautiful,bueno,fantastico,fantï¿½stico,excelente,genial," + "increï¿½ble,increible,asombroso,bonito");
+		systemConfiguration.setSpamWords("sex,viagra,cialis,one million,you've been selected,nigeria,sexo,un millon,un millón,ha sido seleccionado");
+		systemConfiguration.setPossitiveWords("good,fantastic,excellent,great,amazing,terrific,beautiful,bueno,fantastico,fantástico,excelente,genial," + "increíble,incredible,asombroso,bonito");
 		systemConfiguration.setNegativeWords("not,bad,horrible,average,disaster,no,malo,mediocre,desastre,desastroso");
 		return systemConfiguration;
 	}
@@ -155,9 +155,9 @@ public class SystemConfigurationService {
 		if (systemConfiguration.getId() == 0) {
 			systemConfiguration.setWelcomeMessage(new HashMap<String, String>());
 			systemConfiguration.setBreachNotification(new HashMap<String, String>());
-			systemConfiguration.getWelcomeMessage().put("Espaï¿½ol", nameES);
+			systemConfiguration.getWelcomeMessage().put("Español", nameES);
 			systemConfiguration.getWelcomeMessage().put("English", nameEN);
-			systemConfiguration.getBreachNotification().put("Espaï¿½ol", nEs);
+			systemConfiguration.getBreachNotification().put("Español", nEs);
 			systemConfiguration.getBreachNotification().put("English", nEn);
 			res = systemConfiguration;
 		} else {
@@ -165,10 +165,10 @@ public class SystemConfigurationService {
 
 			systemConfiguration.setWelcomeMessage(new HashMap<String, String>());
 
-			systemConfiguration.getWelcomeMessage().put("Espaï¿½ol", nameES);
+			systemConfiguration.getWelcomeMessage().put("Español", nameES);
 			systemConfiguration.getWelcomeMessage().put("English", nameEN);
 			systemConfiguration.setBreachNotification(new HashMap<String, String>());
-			systemConfiguration.getBreachNotification().put("Espaï¿½ol", nEs);
+			systemConfiguration.getBreachNotification().put("Español", nEs);
 			systemConfiguration.getBreachNotification().put("English", nEn);
 
 			bd.setWelcomeMessage(systemConfiguration.getWelcomeMessage());
