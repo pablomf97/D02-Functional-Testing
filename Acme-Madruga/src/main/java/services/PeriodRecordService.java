@@ -9,7 +9,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.springframework.util.ResourceUtils;
 
 import repositories.PeriodRecordRepository;
 import domain.Brotherhood;
@@ -60,8 +59,7 @@ public class PeriodRecordService {
 		Assert.notNull(periodRecord.getStartYear(), "not.null");
 		Assert.notNull(periodRecord.getEndYear(), "not.null");
 		Assert.notNull(periodRecord.getPhotos(), "not.null");
-		Assert.isTrue(periodRecord.getStartYear() <= (periodRecord.getEndYear()), "not.date");
-		Assert.isTrue(periodRecord.getStartYear() > 1500 && (periodRecord.getEndYear() < 2100), "not.date");
+		this.checkYear(periodRecord);
 		historyBro = principal.getHistory();
 		Assert.notNull(historyBro);
 		//periodRecords=historyBro.getPeriodRecords();
@@ -76,7 +74,10 @@ public class PeriodRecordService {
 		Assert.notNull(res);
 		return res;
 	}
-
+	public void checkYear(final PeriodRecord periodRecord) {
+		Assert.isTrue(periodRecord.getStartYear() <= (periodRecord.getEndYear()), "not.date");
+		Assert.isTrue(periodRecord.getStartYear() > 1500 && (periodRecord.getEndYear() < 2100), "not.date");
+	}
 	public void delete(final PeriodRecord periodRecord) {
 		Brotherhood principal;
 		History historyBro;
@@ -102,11 +103,8 @@ public class PeriodRecordService {
 			final String[] slice = pictures.split(",");
 
 			for (final String p : slice)
-				if (p.trim() != "") {
-					Assert.isTrue(ResourceUtils.isUrl(p), "error.url");
+				if (p.trim() != "")
 					res.add(p);
-
-				}
 		}
 
 		return res;

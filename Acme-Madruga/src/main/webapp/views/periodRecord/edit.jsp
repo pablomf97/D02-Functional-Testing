@@ -44,7 +44,9 @@
 			<input name=photos value="${pic}" placeholder="https://www.imgur.com/f3odiyg"/>
 		</jstl:forEach>
 		<form:errors path="photos" cssClass="error" />
-
+		<jstl:if test="${not empty s }">
+		<a class="error"><spring:message code = "${s}"/></a>
+		</jstl:if>
 		<br>
 		<br>
 		<acme:submit code="periodRecord.save" name="save" />&nbsp;

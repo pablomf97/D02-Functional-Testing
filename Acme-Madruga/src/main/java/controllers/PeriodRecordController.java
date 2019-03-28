@@ -134,6 +134,7 @@ public class PeriodRecordController extends AbstractController {
 
 			result = this.createEditModelAndView(periodRecord);
 			result.addObject("photos", photos);
+
 		} catch (final Exception e) {
 			result = new ModelAndView("redirect:/welcome/index.do");
 		}
@@ -145,10 +146,9 @@ public class PeriodRecordController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid final PeriodRecord periodRecord, final BindingResult binding) {
 		ModelAndView result;
-
+		final String s = null;
 		Brotherhood principal;
 		Integer historyId;
-
 		if (binding.hasErrors()) {
 			result = this.createEditModelAndView(periodRecord);
 			final Collection<String> photos = this.periodRecordService.getSplitPictures(periodRecord.getPhotos());
@@ -162,15 +162,16 @@ public class PeriodRecordController extends AbstractController {
 				this.periodRecordService.save(periodRecord);
 				result = new ModelAndView("redirect:/periodRecord/list.do?historyId=" + historyId);
 
-			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(periodRecord, "mr.commit.error");
+			} catch (final Exception oops) {
+				if (oops.getMessage() == "not.date")
+					result = this.createEditModelAndView(periodRecord, oops.getMessage());
+				else
+					result = this.createEditModelAndView(periodRecord, "mr.commit.error");
 				final Collection<String> photos = this.periodRecordService.getSplitPictures(periodRecord.getPhotos());
 				result.addObject("photos", photos);
 			}
-
 		return result;
 	}
-
 	// delete
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(final PeriodRecord periodRecord, final BindingResult binding) {

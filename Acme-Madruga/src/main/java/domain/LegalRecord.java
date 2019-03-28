@@ -1,3 +1,4 @@
+
 package domain;
 
 import javax.persistence.Access;
@@ -6,17 +7,17 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.Range;
 
 @Entity
 @Access(AccessType.PROPERTY)
 public class LegalRecord extends DomainEntity {
 
-	private String title;
-	private String description;
-	private String name;
-	private Double VAT;
-	private String laws;
+	private String	title;
+	private String	description;
+	private String	name;
+	private Double	VAT;
+	private String	laws;
+
 
 	@NotBlank
 	public String getTitle() {
@@ -46,7 +47,6 @@ public class LegalRecord extends DomainEntity {
 	}
 
 	@NotNull
-	@Range(min = 0, max = 1)
 	public Double getVAT() {
 		return this.VAT;
 	}

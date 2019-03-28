@@ -24,6 +24,7 @@
 		<spring:message code="legalRecord.description" />
 		<br>
 		<form:textarea code="legalRecord.description" path="description" />
+		<form:errors cssClass="error" path="description" />
 
 		<br>
 		<br>
