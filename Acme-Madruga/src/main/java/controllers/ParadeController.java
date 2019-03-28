@@ -79,31 +79,30 @@ public class ParadeController extends AbstractController {
 		String requestURI;
 		Boolean isPrincipal = false;
 		Boolean permission = true;
-		
+
 		try {
-				if(brotherhoodId != null) {
-					parades = this.paradeService
-							.findParadesByBrotherhoodId(brotherhoodId);
+			if (brotherhoodId != null) {
+				parades = this.paradeService
+						.findParadesByBrotherhoodId(brotherhoodId);
 
-					requestURI = "parade/member,brotherhood/list.do?brotherhoodId="
-							+ brotherhoodId;
-				} else {
-					principal = this.actorService.findByPrincipal();
-					isPrincipal = true;
-					parades = this.paradeService
-							.findParadesByBrotherhoodId(principal.getId());
+				requestURI = "parade/member,brotherhood/list.do?brotherhoodId="
+						+ brotherhoodId;
+			} else {
+				principal = this.actorService.findByPrincipal();
+				isPrincipal = true;
+				parades = this.paradeService
+						.findParadesByBrotherhoodId(principal.getId());
 
-					requestURI = "parade/member,brotherhood/list.do?brotherhoodId="
-							+ principal.getId();
-				}
-				
-				result = new ModelAndView("parade/list");
-				result.addObject("requestURI", requestURI);
-				result.addObject("parades", parades);
-				result.addObject("permission", permission);
-				result.addObject("isPrincipal", isPrincipal);
+				requestURI = "parade/member,brotherhood/list.do?brotherhoodId="
+						+ principal.getId();
+			}
 
-			
+			result = new ModelAndView("parade/list");
+			result.addObject("requestURI", requestURI);
+			result.addObject("parades", parades);
+			result.addObject("permission", permission);
+			result.addObject("isPrincipal", isPrincipal);
+
 		} catch (final IllegalArgumentException oops) {
 			result = new ModelAndView("misc/403");
 		} catch (final Throwable oopsie) {
@@ -113,13 +112,15 @@ public class ParadeController extends AbstractController {
 
 			result.addObject("oopsie", oopsie);
 			result.addObject("permission", permission);
-		} finally {}
+		} finally {
+		}
 
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/member/list")
-	public ModelAndView listMember(@RequestParam(required = false) final Integer memberId) {
+	public ModelAndView listMember(
+			@RequestParam(required = false) final Integer memberId) {
 		ModelAndView result;
 		Collection<Parade> parades, toApply;
 		Member principal;
@@ -134,8 +135,7 @@ public class ParadeController extends AbstractController {
 					.findAcceptedParadesByMemberId(principal.getId());
 			toApply = this.paradeService.paradesToApply(principal.getId());
 
-			requestURI = "parade/member/list.do?memberId="
-					+ memberId;
+			requestURI = "parade/member/list.do?memberId=" + memberId;
 
 			result = new ModelAndView("parade/list");
 			result.addObject("requestURI", requestURI);
@@ -150,7 +150,8 @@ public class ParadeController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/chapter/list")
-	public ModelAndView listChapter(@RequestParam(required = false) final Integer chapterId) {
+	public ModelAndView listChapter(
+			@RequestParam(required = false) final Integer chapterId) {
 		ModelAndView result;
 		Collection<Parade> parades;
 		Chapter principal;
@@ -163,8 +164,7 @@ public class ParadeController extends AbstractController {
 
 			parades = this.paradeService.findParadesByAres(principal.getZone()
 					.getId());
-			requestURI = "parade/chapter/list.do?chapterId="
-					+ chapterId;
+			requestURI = "parade/chapter/list.do?chapterId=" + chapterId;
 
 			result = new ModelAndView("chapter/listparade");
 			result.addObject("requestURI", requestURI);
@@ -308,13 +308,13 @@ public class ParadeController extends AbstractController {
 
 		if (parade.getBrotherhood().getZone().equals(principal.getZone())) {
 			isPrincipal = true;
-			parade.setStatus("ACCEPTED");
-			this.paradeService.save(parade);
+			this.paradeService.accept(parade);
 		}
 
 		this.paradeService.save(parade);
-		
-		Collection <Parade> coll = this.paradeService.findParadesByAres(parade.getBrotherhood().getZone().getId());
+
+		Collection<Parade> coll = this.paradeService.findParadesByAres(parade
+				.getBrotherhood().getZone().getId());
 
 		result = new ModelAndView("redirect:chapter/list.do");
 		result.addObject("parades", coll);
@@ -350,7 +350,6 @@ public class ParadeController extends AbstractController {
 		ModelAndView result;
 		Actor principal;
 
-		parade.setStatus("REJECTED");
 		parade = this.paradeService.reconstruct(parade, binding);
 
 		if (binding.hasErrors())
@@ -358,10 +357,13 @@ public class ParadeController extends AbstractController {
 		else
 			try {
 				principal = this.actorService.findByPrincipal();
-				Assert.isTrue(this.actorService.checkAuthority(principal, "CHAPTER"));
-				this.paradeService.save(parade);
-				
-				Collection <Parade> coll = this.paradeService.findParadesByAres(parade.getBrotherhood().getZone().getId());
+				Assert.isTrue(this.actorService.checkAuthority(principal,
+						"CHAPTER"));
+				this.paradeService.reject(parade);
+
+				Collection<Parade> coll = this.paradeService
+						.findParadesByAres(parade.getBrotherhood().getZone()
+								.getId());
 
 				result = new ModelAndView("redirect:chapter/list.do");
 				result.addObject("parades", coll);

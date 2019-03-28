@@ -235,10 +235,10 @@
 		</table>
 	</jstl:if>
 	<jstl:if test="${not empty paradeChapterStatistics}">
-		<table class="displayStyle" style="width: 50%">
+		<table class="displayStyle" style="width: 60%">
 			<tr>
 				<th colspan="2"><spring:message
-						code="administrator.finder.statistics" /></th>
+						code="administrator.chapter.statistics" /></th>
 			</tr>
 			<tr>
 				<td><spring:message
@@ -265,9 +265,18 @@
 				<td style="text-align: right">${ratioDraftVsFinal}</td>
 			</tr>
 			<tr>
+				<td><spring:message code="administrator.ratioFinalModeGroupedByStatus" /></td>
+				
+				<td style="text-align: right"><spring:message code="administrator.status" />${ratioFinalModeGroupedByStatus[0]},${ratioFinalModeGroupedByStatus[1]},${ratioFinalModeGroupedByStatus[2]}</td>
+			
+			</tr>
+		
+			<tr>
 				<td><spring:message code="administrator.ratioAreasNotManaged" /></td>
 				<td style="text-align: right">${ratioAreasNotManaged}</td>
 			</tr>
+			
+			
 		</table>
 	</jstl:if>
 	<table class="displayStyle" style="width: 50%">

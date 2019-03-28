@@ -25,10 +25,11 @@ public class LegalRecordServiceTest extends AbstractTest {
 	 * Total coverage of all tests
 	 * 
 	 * 
-	 * Coverage of the total project (%): 19.0
+	 * Coverage of the total project (%): 28.5
 	 * 
 	 * 
-	 * Coverage of the total project (lines of codes): 5455
+	 * Coverage of the total project (lines of codes): 8814
+	 * 
 	 * 
 	 * ################################################################
 	 * 
