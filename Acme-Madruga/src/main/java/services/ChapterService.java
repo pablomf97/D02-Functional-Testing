@@ -245,7 +245,7 @@ public class ChapterService {
 	}
 
 	public Double ratioAreasNotManaged() {
-		return this.chapterRepository.ratioAreasNotManaged();
+		return 1.-this.chapterRepository.ratioAreasNotManaged();
 	}
 
 	/**
@@ -274,7 +274,7 @@ public class ChapterService {
 								.getId()) {
 							values.add((double) (this.paradeService
 									.findParadesByBrotherhoodId(
-											brotherhood.getId()).size() - 1));
+											brotherhood.getId()).size()));
 							break;
 						}
 					}
@@ -360,14 +360,14 @@ public class ChapterService {
 	/* Auxiliary method to get the average of a list of values */
 	private Double getAvg(List<Double> values) {
 		Double res = 0.;
-
+		Double result;
 		for (Double value : values) {
 			res += value;
 		}
 
-		res = res / values.size();
+		result = this.findAll().size()/res;
 
-		return res;
+		return result;
 	}
 
 	/* Auxiiary method to get the SD of a list of values */

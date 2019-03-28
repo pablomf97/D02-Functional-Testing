@@ -87,7 +87,7 @@ public class ParadeServiceTest extends AbstractTest {
 		Class<?> caught;
 		
 		caught = null;
-		
+		 
 		try{
 			if(currentOperation.equals("accept")){
 				authenticate(username);

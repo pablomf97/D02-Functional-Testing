@@ -276,6 +276,7 @@
 				<td style="text-align: right">${ratioAreasNotManaged}</td>
 			</tr>
 			
+			
 		</table>
 	</jstl:if>
 	<table class="displayStyle" style="width: 50%">

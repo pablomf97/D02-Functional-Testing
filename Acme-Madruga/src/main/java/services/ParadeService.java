@@ -262,7 +262,7 @@ public class ParadeService {
 			} catch (Throwable oops) {
 				chapter = (Chapter) principal;
 				Assert.isTrue(result.getBrotherhood().getZone().getId() == (chapter
-						.getZone().getId()));
+			 			.getZone().getId()));
 				if (parade.getStatus() != null)
 					result.setStatus(parade.getStatus());
 			}

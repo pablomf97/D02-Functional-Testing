@@ -13,7 +13,7 @@ import domain.Parade;
 public interface ChapterRepository extends JpaRepository<Chapter, Integer> {
 
 	/* Ratio of the areas that are not coordinated by any chapter */
-	@Query("select count(a) / (select count(b) from Zone b)*1.0 from Chapter c join c.zone a where a is null")
+	@Query("select count(a) / (select count(b) from Zone b)*1.0 from Chapter c join c.zone a where a != null")
 	Double ratioAreasNotManaged();
 
 	@Query("select p from Parade p where p.brotherhood.zone.id = ?1")
