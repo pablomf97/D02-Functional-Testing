@@ -42,6 +42,14 @@ public class PeriodRecordServiceTest extends AbstractTest {
 	 */
 
 	/*
+	 * 
+	 * During this test we are going to try:
+	 * 
+	 * (RF3.1) Manage their history, which includes listing, displaying,
+	 * creating, updating, and deleting its records.
+	 */
+
+	/*
 	 * ###################### TEST CREATE PERIOD RECORDS ######################
 	 */
 

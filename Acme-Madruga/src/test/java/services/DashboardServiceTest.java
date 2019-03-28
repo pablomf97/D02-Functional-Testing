@@ -174,6 +174,11 @@ public class DashboardServiceTest extends AbstractTest {
 
 	@Test
 	public void ratioAreasNotCoordinatedDriver() {
+
+		/*
+		 * (RF8.1.1) The ratio of areas that are not coordinated by any
+		 * chapters.
+		 */
 		Object testingData[][] = {
 
 		{ "admin", 0.5, null },// positive
@@ -214,6 +219,12 @@ public class DashboardServiceTest extends AbstractTest {
 
 	@Test
 	public void statisticsChapterDriver() {
+
+		/*
+		 * (RF8.1.2) The average, the minimum, the maximum, and the standard
+		 * deviation of the number of parades co-ordinated by the chapters.
+		 */
+
 		Object testingData[][] = {
 
 				{ "admin", 0.3333333333333333, 0.0, 5.0, 2.7284509239574835,
@@ -262,6 +273,12 @@ public class DashboardServiceTest extends AbstractTest {
 
 	@Test
 	public void statisticsRecordsDriver() {
+
+		/*
+		 * (R4.1.1) The average, the minimum, the maximum, and the standard
+		 * deviation of the number of records per history.
+		 */
+
 		Object testingData[][] = {
 
 				{ "admin", 5.0, 2.0, 3.6667, 0.6461420286492252, null },// positive
@@ -309,6 +326,9 @@ public class DashboardServiceTest extends AbstractTest {
 
 	@Test
 	public void largestHisoryDriver() {
+
+		/* (FR4.1.2) The brotherhood with the largest history. */
+
 		Object testingData[][] = {
 
 		{ "admin", "brotherhood1", null },// positive
@@ -347,6 +367,8 @@ public class DashboardServiceTest extends AbstractTest {
 
 	@Test
 	public void largestHisoryAvgDriver() {
+
+		/* (FR4.1.3)The brotherhoods whose history is larger than the average. */
 		Object testingData[][] = {
 
 				{ "admin", "brotherhood1", "brotherhood2", null },// positive
