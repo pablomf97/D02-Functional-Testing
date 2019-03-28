@@ -18,6 +18,7 @@ import repositories.ChapterRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
+import domain.Actor;
 import domain.Brotherhood;
 import domain.Chapter;
 import forms.ChapterForm;
@@ -381,5 +382,12 @@ public class ChapterService {
 		return Math.sqrt(standardDeviation / values.size());
 
 	}
-
+	//CU:7.1:Register as a chapter
+	public void registerChapter(){
+		final Chapter principal = (Chapter) this.actorService.findByPrincipal();
+		Assert.isTrue(principal==null);
+		this.create();
+		this.save(principal);
+	}
+	
 }
